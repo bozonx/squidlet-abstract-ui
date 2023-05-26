@@ -1,5 +1,5 @@
 import {Logger} from 'squidlet-lib'
-import {Main} from './Main';
+import {Main} from './Main.js';
 
 
 export class PackageContext {

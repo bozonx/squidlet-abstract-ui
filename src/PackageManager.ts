@@ -1,6 +1,6 @@
-import {Main} from './Main';
-import {PackageContext} from './PackageContext';
-import {AbstractUiPackage} from './types/types';
+import {Main} from './Main.js';
+import {PackageContext} from './PackageContext.js';
+import {AbstractUiPackage} from './types/types.js';
 
 
 export class PackageManager {

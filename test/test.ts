@@ -1,15 +1,15 @@
 import {pathDirname} from 'squidlet-lib';
 import * as fs from 'node:fs/promises';
 import {fileURLToPath} from 'url';
-import {Main} from './Main';
+import {Main} from '../src/Main.js';
 import path from 'node:path';
-import {preloader} from './preloader';
-import {IncomeEvents, OutcomeEvents} from './types/DomEvents';
-import {RenderedElement} from './types/RenderedElement';
-import {transformToTg} from '../../squidlet-ui-builder/src/renderTelegram/transformToTg';
-import {goodUiPlugin} from './goodUi/goodUiPlugin';
-import {routerPlugin} from './router/routerPlugin';
-import {AppConfig} from './types/AppConfig';
+import {preloader} from '../src/preloader.js';
+import {IncomeEvents, OutcomeEvents} from '../src/types/DomEvents.js';
+import {RenderedElement} from '../src/types/RenderedElement.js';
+import {goodUiPlugin} from '../src/goodUi/goodUiPlugin.js';
+import {routerPlugin} from '../src/router/routerPlugin.js';
+import {AppConfig} from '../src/types/AppConfig.js';
+import {transformToTg} from '../src/connectorTelegram/transformToTg.js';
 
 
 (async () => {

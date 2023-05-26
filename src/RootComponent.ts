@@ -1,8 +1,8 @@
-import {Component, ComponentDefinition} from './Component';
-import {SuperStruct} from '../../../../../../mnt/disk2/workspace/squidlet-sprog/src';
-import {SlotsDefinition} from './ComponentSlotsManager';
-import {ScreenDefinition} from './router/Screen';
-import {AppSingleton} from './AppSingleton';
+import {SuperStruct} from 'squidlet-sprog';
+import {Component, ComponentDefinition} from './Component.js';
+import {SlotsDefinition} from './ComponentSlotsManager.js';
+import {ScreenDefinition} from './router/Screen.js';
+import {AppSingleton} from './AppSingleton.js';
 
 
 // TODO: может это screen?

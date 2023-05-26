@@ -1,9 +1,9 @@
 import {IndexedEventEmitter, IndexedEvents} from 'squidlet-lib'
-import {Main} from './Main';
-import {RootComponent} from './RootComponent';
-import {IncomeEvents, OutcomeEvents} from './types/DomEvents';
-import {RenderedElement} from './types/RenderedElement';
-import {ComponentDefinition} from './Component';
+import {Main} from './Main.js';
+import {RootComponent} from './RootComponent.js';
+import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js';
+import {RenderedElement} from './types/RenderedElement.js';
+import {ComponentDefinition} from './Component.js';
 
 
 type OutcomeEventHandler = (event: OutcomeEvents, el: RenderedElement) => void

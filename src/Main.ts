@@ -1,9 +1,9 @@
 import {IndexedEventEmitter, ConsoleLogger, Logger} from 'squidlet-lib'
-import {AppSingleton} from './AppSingleton';
-import {AbstractUiPackage} from './types/types';
-import {PackageManager} from './PackageManager';
-import {ComponentsManager} from './ComponentsManager';
-import {APP_CONFIG_DEFAULTS, AppConfig} from './types/AppConfig';
+import {AppSingleton} from './AppSingleton.js';
+import {AbstractUiPackage} from './types/types.js';
+import {PackageManager} from './PackageManager.js';
+import {ComponentsManager} from './ComponentsManager.js';
+import {APP_CONFIG_DEFAULTS, AppConfig} from './types/AppConfig.js';
 
 
 export enum APP_EVENTS {
