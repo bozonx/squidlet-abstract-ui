@@ -1,4 +1,4 @@
-import {IndexedEventEmitter, IndexedEvents} from 'squidlet-lib'
+import {IndexedEventEmitter, IndexedEvents, Logger} from 'squidlet-lib'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
 import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js';
@@ -20,6 +20,11 @@ export class AppSingleton {
   readonly incomeEvents = new IndexedEventEmitter()
   readonly root: RootComponent = new RootComponent(this)
   private readonly main: Main
+
+
+  get log(): Logger {
+    return this.main.log
+  }
 
 
   // TODO: сделать по нормальному
