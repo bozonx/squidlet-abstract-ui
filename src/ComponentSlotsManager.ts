@@ -1,9 +1,9 @@
-import {UiElementDefinition} from './types/CmpInstanceDefinition';
+import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js';
 
 
 export interface SlotsDefinition {
-  default?: UiElementDefinition[]
-  [index: string]: UiElementDefinition[] | undefined
+  default?: CmpInstanceDefinition[]
+  [index: string]: CmpInstanceDefinition[] | undefined
 }
 
 
@@ -24,7 +24,7 @@ export class ComponentSlotsManager {
   }
 
 
-  getDefaultDefinition(): UiElementDefinition[] | undefined {
+  getDefaultDefinition(): CmpInstanceDefinition[] | undefined {
     return this.slotsDefinition.default
   }
 

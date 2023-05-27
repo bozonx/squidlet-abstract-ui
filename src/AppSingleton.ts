@@ -15,6 +15,8 @@ export const COMPONENT_EVENT_PREFIX = 'C|'
 /**
  * It is a context for components and whole app structure.
  * Think of this as one of instances for one of users.
+ * This is main and the only singleton for whole browser tab or application instance
+ * or server side renderer.
  */
 export class AppSingleton {
   readonly outcomeEvents = new IndexedEvents<OutcomeEventHandler>()

@@ -8,14 +8,14 @@ import {
   SimpleFuncDefinition,
   ProxyfiedStruct,
   ProxyfiedArray
-} from 'squidlet-sprog';
-import {omitObj, makeUniqId} from 'squidlet-lib';
-import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js';
-import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js';
-import {RenderedElement} from './types/RenderedElement.js';
-import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js';
-import {COMPONENT_ID_BYTES_NUM} from './types/constants.js';
-import {AppSingleton, COMPONENT_EVENT_PREFIX} from './AppSingleton.js';
+} from 'squidlet-sprog'
+import {omitObj, makeUniqId} from 'squidlet-lib'
+import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
+import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js'
+import {RenderedElement} from './types/RenderedElement.js'
+import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
+import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
+import {AppSingleton, COMPONENT_EVENT_PREFIX} from './AppSingleton.js'
 
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
