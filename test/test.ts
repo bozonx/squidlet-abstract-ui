@@ -11,7 +11,7 @@ import {
   RenderedElement
 } from '../src/index.js';
 import {goodUiPlugin} from '../src/goodUi/goodUiPlugin.js';
-import {routerPlugin} from '../src/router/routerPlugin.js';
+import {routerPlugin} from '../src/routerBase/routerPlugin.js';
 import {transformToTg} from '../src/connectorTelegram/index.js'
 
 

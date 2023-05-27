@@ -9,7 +9,7 @@ export interface BreadCrumbsStep {
   name: string
   // local state of path
   state: UiState
-  // it is set from router
+  // it is set from routerBase
   params: Record<string, any>
 }
 

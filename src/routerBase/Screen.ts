@@ -7,7 +7,7 @@ export interface ScreenDefinition extends ComponentDefinition {
 }
 
 
-// TODO: router and route - in props
+// TODO: routerBase and route - in props
 
 
 export class Screen extends Component {

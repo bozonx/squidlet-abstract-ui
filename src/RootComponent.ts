@@ -1,7 +1,7 @@
 import {SuperStruct} from 'squidlet-sprog';
 import {Component, ComponentDefinition} from './Component.js';
 import {SlotsDefinition} from './ComponentSlotsManager.js';
-import {ScreenDefinition} from './router/Screen.js';
+import {ScreenDefinition} from './routerBase/Screen.js';
 import {AppSingleton} from './AppSingleton.js';
 
 
