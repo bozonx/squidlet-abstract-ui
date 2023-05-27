@@ -129,6 +129,9 @@ export class Component {
   async init() {
     await this.instantiateChildren()
 
+    this.state.$super.init()
+
+    // TODO: call children init and put children to it
     // TODO: run onInit callback
 
     // init all the children components
@@ -271,7 +274,11 @@ export class Component {
       componentDefinition,
       slotDefinition,
       props,
+      // TODO: а реально ли пропс потомка должен иметь scope родителя???
+      // TODO: или всётаки свой scope???
+      // TODO: propSetter надо сохранить себе чтобы потом устанавливать значения
     } = parseCmpInstanceDefinition(this.app, childInstanceDefinition)
+
 
     //console.log(1111, childUiDefinition, componentDefinition, slotDefinition, props)
 

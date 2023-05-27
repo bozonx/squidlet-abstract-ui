@@ -30,32 +30,26 @@ export function parseCmpInstanceDefinition(
     'slot'
   )
   const componentDefinition = app.getComponentDefinition(componentName)
-
-  // TODO: а реально ли пропс потомка должен иметь scope родителя???
-  // TODO: или всётаки свой scope???
   // create a new props which is have parent scope
   const props = (new SuperStruct(
+    // TODO: нужно создавать новый или брать от родителя?
     newScope(),
     // if no props then put just empty props
     componentDefinition.props || {},
     // props are readonly by default
     true
   )).getProxy()
-  const propSetter = props.init(propsValues)
+  const propSetter = props.$super.init(propsValues)
   let slotDefinition: SlotsDefinition = {}
 
-  if (Array.isArray(childUiDefinition.slot)) {
+  if (Array.isArray(instanceDefinition.slot)) {
     slotDefinition = {
-      default: childUiDefinition.slot
+      default: instanceDefinition.slot
     }
   }
-  else if (typeof childUiDefinition.slot === 'object') {
-    slotDefinition = childUiDefinition.slot
+  else if (typeof instanceDefinition.slot === 'object') {
+    slotDefinition = instanceDefinition.slot
   }
-
-  // TODO: в childPropsValues как примитивы, так и sprog - надо его выполнить наверное
-  // TODO: props должен быть связан с текущим компонентом
-  // TODO: propSetter надо сохранить себе чтобы потом устанавливать значения
 
   return {
     componentName,
