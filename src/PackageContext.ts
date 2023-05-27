@@ -1,6 +1,7 @@
 import {Logger, IndexedEventEmitter} from 'squidlet-lib'
 import {Main, SYSTEM_EVENTS} from './Main.js';
 import {AppSingleton} from './AppSingleton.js';
+import {ComponentDefinition} from './Component.js';
 
 
 export class PackageContext {
@@ -25,7 +26,7 @@ export class PackageContext {
     this.main.setLogger(logger)
   }
 
-  registerComponents(components: Record<string, string>) {
+  registerComponents(components: Record<string, string | ComponentDefinition>) {
     this.main.componentsManager.registerComponents(components)
   }
 
