@@ -1,6 +1,7 @@
 import {
   SuperStruct,
   ProxyfiedStruct,
+  newScope,
 } from 'squidlet-sprog'
 import {omitObj} from 'squidlet-lib'
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
@@ -10,7 +11,10 @@ import {AppSingleton} from '../AppSingleton.js';
 import {RenderedElement} from '../types/RenderedElement.js';
 
 
-export function parseCmpDefinition(app: AppSingleton, childUiDefinition: CmpInstanceDefinition): {
+export function parseCmpInstanceDefinition(
+  app: AppSingleton,
+  instanceDefinition: CmpInstanceDefinition
+): {
   componentName: string
   propsValues: Record<string, any>
   slotDefinition: SlotsDefinition
@@ -18,21 +22,25 @@ export function parseCmpDefinition(app: AppSingleton, childUiDefinition: CmpInst
   props: ProxyfiedStruct
   propSetter: (pathTo: string, newValue: any) => void
 } {
-  const componentName: string = childUiDefinition.component
+  const componentName: string = instanceDefinition.component
   // values of child props which are set in this (parent) component
   const propsValues: Record<string, any> = omitObj(
-    childUiDefinition,
+    instanceDefinition,
     'component',
     'slot'
   )
   const componentDefinition = app.getComponentDefinition(componentName)
-  // TODO: use proxy
-  const props = new SuperStruct(
+
+  // TODO: а реально ли пропс потомка должен иметь scope родителя???
+  // TODO: или всётаки свой scope???
+  // create a new props which is have parent scope
+  const props = (new SuperStruct(
+    newScope(),
     // if no props then put just empty props
     componentDefinition.props || {},
     // props are readonly by default
     true
-  )
+  )).getProxy()
   const propSetter = props.init(propsValues)
   let slotDefinition: SlotsDefinition = {}
 

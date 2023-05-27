@@ -16,7 +16,7 @@ import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
 import {AppSingleton, COMPONENT_EVENT_PREFIX} from './AppSingleton.js'
-import {makeComponentUiParams, parseCmpDefinition, renderComponentBase} from './helpers/componentHelper.js';
+import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} from './helpers/componentHelper.js';
 
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
@@ -153,7 +153,6 @@ export class Component {
   }
 
 
-  // TODO: review
   /**
    * Mount this component's element.
    * Actually means emit mount event and listen element's income events.
@@ -254,25 +253,25 @@ export class Component {
   private async instantiateChildren() {
     // If component have tmpl then get child from it - it is default behaviour
     if (this.componentDefinition.tmpl) {
-      for (const child of this.componentDefinition.tmpl) {
-        await this.instantiateChild(child)
+      for (const childInstanceDef of this.componentDefinition.tmpl) {
+        await this.instantiateChild(childInstanceDef)
       }
     }
     // if component doesn't have a tmpl then just render default slot like it is tmpl
     else {
-      for (const child of this.slots.getDefaultDefinition() || []) {
-        await this.instantiateChild(child)
+      for (const childInstanceDef of this.slots.getDefaultDefinition() || []) {
+        await this.instantiateChild(childInstanceDef)
       }
     }
     // if not - so not one children then
   }
 
-  async instantiateChild(childTmplDefinition: CmpInstanceDefinition) {
+  async instantiateChild(childInstanceDefinition: CmpInstanceDefinition) {
     const {
       componentDefinition,
       slotDefinition,
       props,
-    } = parseCmpDefinition(this.app, childTmplDefinition)
+    } = parseCmpInstanceDefinition(this.app, childInstanceDefinition)
 
     //console.log(1111, childUiDefinition, componentDefinition, slotDefinition, props)
 
