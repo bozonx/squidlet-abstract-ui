@@ -39,8 +39,6 @@ export class AppSingleton {
 
   constructor(main: Main) {
     this.main = main
-
-    // TODO: где взять definition???
     this.root = new RootComponent(this)
   }
 
@@ -74,7 +72,7 @@ export class AppSingleton {
     this.incomeEvents.emit(COMPONENT_EVENT_PREFIX + componentId, event, ...data)
   }
 
-  getComponentDefinition(componentName: string): ComponentDefinition {
+  getComponentDefinition = (componentName: string): ComponentDefinition => {
     return this.main.componentsManager.getComponentDefinition(componentName)
   }
 

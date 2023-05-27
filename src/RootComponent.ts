@@ -1,17 +1,17 @@
 import {SuperStruct, newScope} from 'squidlet-sprog';
 import {Component, ComponentDefinition} from './Component.js';
-import {SlotsDefinition} from './ComponentSlotsManager.js';
-import {ScreenDefinition} from './routerBase/Screen.js';
 import {AppSingleton} from './AppSingleton.js';
+import {ScreenDefinition} from './routerBase/Screen.js';
 
 
 // TODO: может это screen?
 
-
-// export interface RootComponentDefinition extends ComponentDefinition {
-//   components?: ComponentDefinition[]
-//   screens?: ScreenDefinition[]
-// }
+export interface RootComponentDefinition extends ComponentDefinition {
+  // it is just app's components lib
+  components?: ComponentDefinition[]
+  // it is just app's screens lib
+  screens?: ScreenDefinition[]
+}
 
 
 export const ROOT_COMPONENT_ID = 'root'
@@ -19,32 +19,21 @@ export const ROOT_COMPONENT_ID = 'root'
 
 export class RootComponent extends Component {
   readonly isRoot: boolean = true
-  readonly id = ROOT_COMPONENT_ID
-  //readonly uiElId = ROOT_COMPONENT_ID
 
 
-  constructor(
-    app: AppSingleton,
-    componentDefinition: ComponentDefinition,
-  ) {
-    const slots: SlotsDefinition = {
-      // TODO: правильно ???
-      default: componentDefinition.tmpl
-    }
+  constructor(app: AppSingleton) {
+    const componentDefinition: ComponentDefinition = app
+      .getComponentDefinition(ROOT_COMPONENT_ID)
     // TODO: не очень хорошо так делать
     const parent = null as any
     // TODO: а чё всмысле???
     const props = new SuperStruct(newScope(), {}).getProxy()
 
-    super(app, parent, componentDefinition, slots, props)
+    super(app, parent, componentDefinition, {}, props)
+    // replace scope of props to make it the same as RootComponent's
+    props.$super.$$replaceScope(this.scope)
   }
 
-
-  async init() {
-    //, componentDefinition: ComponentDefinition
-    //this.app.getComponentDefinition(ROOT_COMPONENT_ID)
-    await super.init()
-  }
 
   protected makeId(): string {
     return ROOT_COMPONENT_ID
