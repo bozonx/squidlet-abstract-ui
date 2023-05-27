@@ -58,6 +58,10 @@ export class Main {
     this.log = logger
   }
 
+  registerRouter() {
+    // TODO: add - регистрировать базу на систему
+  }
+
   use(pkg: AbstractUiPackage) {
     this.packageManager.use(pkg)
   }

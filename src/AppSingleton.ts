@@ -30,12 +30,11 @@ export class AppSingleton {
   }
 
 
-  // TODO: сделать по нормальному
-  router = {
-    toPath: (p: Record<any, any>) => {
-      console.log(777, p)
-    }
-  }
+  // router = {
+  //   toPath: (p: Record<any, any>) => {
+  //     console.log(777, p)
+  //   }
+  // }
 
 
   constructor(main: Main) {
@@ -44,6 +43,9 @@ export class AppSingleton {
 
 
   async init() {
+
+    // TODO: создать свой инстанс роутера
+
     await this.root.init()
     // render root component
     await this.root.mount()
@@ -67,10 +69,6 @@ export class AppSingleton {
     this.incomeEvents.emit(event, componentId, ...data)
     // emit component specific event
     this.incomeEvents.emit(COMPONENT_EVENT_PREFIX + componentId, event, ...data)
-  }
-
-  setRouter() {
-    // TODO: add
   }
 
   getComponentDefinition(componentName: string): ComponentDefinition {
