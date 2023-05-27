@@ -21,6 +21,7 @@ import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} 
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: внимательно продумать unmount и destroy
+// TODO: продумать связь props с потомками компонента
 
 // TODO: run onUpdate callback of component definition
 // TODO: call onMount component's callback of component definition
@@ -127,11 +128,12 @@ export class Component {
 
 
   async init() {
-    await this.instantiateChildren()
-
     this.state.$super.init()
 
-    // TODO: call children init and put children to it
+    const childrenInitArr = this.instantiateChildren()
+
+    this.children.$super.init(childrenInitArr)
+
     // TODO: run onInit callback
 
     // init all the children components
@@ -253,23 +255,26 @@ export class Component {
       .catch(this.app.log.error)
   }
 
-  private async instantiateChildren() {
+  private instantiateChildren(): Component[] {
+    const res: Component[] = []
+
     // If component have tmpl then get child from it - it is default behaviour
     if (this.componentDefinition.tmpl) {
       for (const childInstanceDef of this.componentDefinition.tmpl) {
-        await this.instantiateChild(childInstanceDef)
+        res.push(this.instantiateChild(childInstanceDef))
       }
     }
     // if component doesn't have a tmpl then just render default slot like it is tmpl
     else {
       for (const childInstanceDef of this.slots.getDefaultDefinition() || []) {
-        await this.instantiateChild(childInstanceDef)
+        res.push(this.instantiateChild(childInstanceDef))
       }
     }
     // if not - so not one children then
+    return res
   }
 
-  async instantiateChild(childInstanceDefinition: CmpInstanceDefinition) {
+  instantiateChild(childInstanceDefinition: CmpInstanceDefinition): Component {
     const {
       componentDefinition,
       slotDefinition,
@@ -279,18 +284,15 @@ export class Component {
       // TODO: propSetter надо сохранить себе чтобы потом устанавливать значения
     } = parseCmpInstanceDefinition(this.app, childInstanceDefinition)
 
-
     //console.log(1111, childUiDefinition, componentDefinition, slotDefinition, props)
 
-    const childComponent = new Component(
+    return new Component(
       this.app,
       this,
       componentDefinition,
       slotDefinition,
       props
     )
-
-    this.children.push(childComponent)
   }
 
   private getChildrenUiEls(): RenderedElement[] | undefined {
