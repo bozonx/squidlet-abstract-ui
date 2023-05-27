@@ -10,6 +10,7 @@ export enum SYSTEM_EVENTS {
   initStarted,
   initFinished,
   destroyStarted,
+  newApp,
   appStarted,
 }
 
@@ -24,7 +25,7 @@ export class Main {
   log: Logger
   readonly componentsManager = new ComponentsManager(this)
   readonly config: AppConfig
-  readonly app = new AppSingleton(this)
+  app!: AppSingleton
   private readonly packageManager = new PackageManager(this)
 
 
@@ -38,6 +39,10 @@ export class Main {
 
   async init() {
     this.systemEvents.emit(SYSTEM_EVENTS.initStarted)
+
+    this.app = new AppSingleton(this)
+
+    this.systemEvents.emit(SYSTEM_EVENTS.newApp, this.app)
 
     await this.app.init()
 
