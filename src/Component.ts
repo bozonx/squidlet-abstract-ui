@@ -19,10 +19,12 @@ import {AppSingleton, COMPONENT_EVENT_PREFIX} from './AppSingleton.js'
 
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
+// TODO: внимательно продумать unmount и destroy
 
 // TODO: run onUpdate callback of component definition
 // TODO: call onMount component's callback of component definition
 // TODO: call onUnmount component's callback of component definition
+
 
 // It is definition of component class
 export interface ComponentDefinition {
@@ -34,6 +36,7 @@ export interface ComponentDefinition {
   // names of params which will be sent to UI.
   // they will be got from props and state.
   // to rename or get param from component use [newName, () => { return ... }]
+  // deep param path is supported
   uiParams?: (string | [string, () => any])[]
   // handlers of income ui events. Like {click: $expDefinition}
   handlers?: Record<string, SuperFuncDefinition | SimpleFuncDefinition>
@@ -54,13 +57,17 @@ export interface ComponentScope {
 }
 
 
-
+/**
+ * All the items of Abstract UI are components or inherit it.
+ * Each UI element which is sent to renderer is component, but renderer can
+ * render it as several elements if needs, but it actually doesn't matter.
+ */
 export class Component {
   readonly isRoot: boolean = false
   // componentId
   readonly id: string
-  // Not ordered children components. Like {componentId: Component}
-  //readonly children: Record<string, Component> = {}
+  // ordered children in super array. Add, remove or reorder children will
+  // emit an array's change event
   readonly children: ProxyfiedArray<Component>
   // Parent of this component. If it is root then it will be null
   readonly parent: Component
@@ -145,15 +152,6 @@ export class Component {
   }
 
 
-  // TODO: а это нужно ???
-  /**
-   * Get position of child by its UI el id.
-   * -1 means - can't find child
-   */
-  getPositionOfChildrenEl(childrenElId: string): number {
-    return this.childrenPosition.indexOf(childrenElId)
-  }
-
   // TODO: review
   /**
    * Mount this component's element.
@@ -173,13 +171,12 @@ export class Component {
       this.app.outcomeEvents.emit(OutcomeEvents.mount, this.render())
     }
 
-    for (const childId of Object.keys(this.children)) {
+    for (const child of this.children) {
       // mount child always silent
-      await this.children[childId].mount(true)
+      await child.mount(true)
     }
   }
 
-  // TODO: review
   /**
    * Unmount this component's element.
    * Means stop listenint ui change events and But the component won't be destroyed
@@ -188,9 +185,9 @@ export class Component {
     // stop listening income events
     this.app.incomeEvents.removeListener(this.incomeEventListenerIndex)
 
-    for (const childId of Object.keys(this.children)) {
+    for (const child of this.children) {
       // unmount child always silent
-      await this.children[childId].unmount(true)
+      await child.unmount(true)
     }
 
     if (!silent) {
@@ -198,14 +195,24 @@ export class Component {
     }
   }
 
-  // async update() {
-  //
-  //
-  //
-  //   this.main.outcomeEvents.emit(OutcomeEvents.update, this.renderSelf())
-  // }
+  /**
+   * Get position of child by its UI el id.
+   * -1 means - can't find child
+   */
+  getIndexOfChild(childId: string): number | undefined {
+    return this.children.findIndex((el) => el.id === childId)
+  }
 
-  // TODO: review
+  /**
+   * Make full render element with children
+   */
+  render(): RenderedElement {
+    return {
+      ...this.renderSelf(),
+      children: this.getChildrenUiEls(),
+    }
+  }
+
   /**
    * Make render element only for itself without children
    */
@@ -216,16 +223,6 @@ export class Component {
     }
   }
 
-  // TODO: review
-  /**
-   * Make full render element with children
-   */
-  render(): RenderedElement {
-    return {
-      ...this.renderSelf(),
-      children: this.getChildrenUiEls(),
-    }
-  }
 
   protected makeId(): string {
     return makeUniqId(COMPONENT_ID_BYTES_NUM)
@@ -250,8 +247,7 @@ export class Component {
           break
       }
     })()
-      // TODO: put to main logger
-      .catch(console.error)
+      .catch(this.app.log.error)
   }
 
   private async instantiateChildren() {
@@ -336,7 +332,6 @@ export class Component {
     }
   }
 
-  // TODO: review
   private makeRenderedEl(): RenderedElement {
     const baseParams = {
       name: this.name,
@@ -352,30 +347,34 @@ export class Component {
     }
     else {
       // not root means it is Component. It has to have parent
-      const cmpParent: Component = this.parent!
+      if (!this.parent) {
+        throw new Error(`It "${this.id}" isn't root but doesn't have parent`)
+      }
+
+      const parentChildPosition = this.parent.getIndexOfChild(this.id)
+
+      if (typeof parentChildPosition === 'undefined') {
+        throw new Error(`Can't find my "${this.id}" position of parent ${this.parent.id}`)
+      }
 
       return {
         ...baseParams,
-        parentId: cmpParent.id,
-        parentChildPosition: cmpParent.getPositionOfChildrenEl(this.id),
+        parentId: this.parent.id,
+        parentChildPosition,
       }
     }
   }
 
-  // TODO: review
   private getChildrenUiEls(): RenderedElement[] | undefined {
     const res: RenderedElement[] = []
 
-    for (const childComponentId of this.childrenPosition) {
-      res.push(this.children[childComponentId].render())
-    }
+    for (const child of this.children) res.push(child.render())
 
     if (!res.length) return
 
     return res
   }
 
-  // TODO: review
   private getUiParams(): Record<string, any> | undefined {
     if (!this.componentDefinition.uiParams) return
 
@@ -384,7 +383,7 @@ export class Component {
     for (const item of this.componentDefinition.uiParams) {
       if (typeof item === 'string') {
         if (this.state.hasKey(item)) {
-          // TODO: учитывай что getValue принимает deepPath
+          // deep param path is supported
           res[item] = this.state.getValue(item)
         }
         else if (this.props.hasKey(item)) {

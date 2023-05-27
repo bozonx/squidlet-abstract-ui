@@ -18,7 +18,7 @@ export class PackageContext {
 
 
   setRouter() {
-    this.main.setRouter()
+    this.main.registerRouter()
   }
 
   setLogger(logger: Logger) {
