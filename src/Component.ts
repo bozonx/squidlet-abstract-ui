@@ -128,6 +128,10 @@ export class Component {
   }
 
   async destroy() {
+
+    // TODO: означает ли это unmount тоже???
+    // TODO: нужно сообщить родителю
+
     this.app.incomeEvents.removeListener(this.incomeEventListenerIndex)
 
     for (const component of this.children) await component.destroy()

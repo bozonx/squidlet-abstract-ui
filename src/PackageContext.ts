@@ -1,9 +1,15 @@
-import {Logger} from 'squidlet-lib'
-import {Main} from './Main.js';
+import {Logger, IndexedEventEmitter} from 'squidlet-lib'
+import {Main, SYSTEM_EVENTS} from './Main.js';
+import {AppSingleton} from './AppSingleton.js';
 
 
 export class PackageContext {
   private readonly main: Main
+
+
+  get systemEvents(): IndexedEventEmitter {
+    return this.main.systemEvents
+  }
 
 
   constructor(main: Main) {
@@ -21,6 +27,14 @@ export class PackageContext {
 
   registerComponents(components: Record<string, string>) {
     this.main.componentsManager.registerComponents(components)
+  }
+
+  /**
+   * Listen each app started and manipulate it - listen its events
+   * and call emitIncomeEvent
+   */
+  onAppStarted(handler: (app: AppSingleton) => void): number {
+    return this.main.systemEvents.addListener(SYSTEM_EVENTS.appStarted, handler)
   }
 
 }

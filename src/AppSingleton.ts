@@ -52,7 +52,9 @@ export class AppSingleton {
   async destroy() {
     this.outcomeEvents.destroy()
     this.incomeEvents.destroy()
-    await this.root.unmount()
+    // tell the ui to unmount root
+    // TODO: а нужно ли это? может destroy автоматом значит и unmount?
+    //await this.root.unmount()
     await this.root.destroy()
   }
 
