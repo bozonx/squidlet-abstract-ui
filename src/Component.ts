@@ -16,6 +16,7 @@ import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
 import {AppSingleton, COMPONENT_EVENT_PREFIX} from './AppSingleton.js'
+import {makeComponentUiParams, parseCmpDefinition, renderComponentBase} from './helpers/componentHelper.js';
 
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
@@ -191,7 +192,7 @@ export class Component {
     }
 
     if (!silent) {
-      this.app.outcomeEvents.emit(OutcomeEvents.unMount, this.makeRenderedEl())
+      this.app.outcomeEvents.emit(OutcomeEvents.unMount, renderComponentBase(this))
     }
   }
 
@@ -218,8 +219,8 @@ export class Component {
    */
   renderSelf(): RenderedElement {
     return {
-      ...this.makeRenderedEl(),
-      params: this.getUiParams(),
+      ...renderComponentBase(this),
+      params: makeComponentUiParams(this.componentDefinition, this.props, this.state),
     }
   }
 
@@ -271,7 +272,7 @@ export class Component {
       componentDefinition,
       slotDefinition,
       props,
-    } = this.prepareChild(childTmplDefinition)
+    } = parseCmpDefinition(this.app, childTmplDefinition)
 
     //console.log(1111, childUiDefinition, componentDefinition, slotDefinition, props)
 
@@ -286,117 +287,12 @@ export class Component {
     this.children.push(childComponent)
   }
 
-  // TODO: review
-  private prepareChild(childUiDefinition: CmpInstanceDefinition): {
-    componentName: string
-    propsValues: Record<string, any>
-    slotDefinition: SlotsDefinition
-    componentDefinition: ComponentDefinition
-    props: ProxyfiedStruct
-    propSetter: (pathTo: string, newValue: any) => void
-  } {
-    const componentName: string = childUiDefinition.component
-    // values of child props which are set in this (parent) component
-    const propsValues: Record<string, any> = omitObj(childUiDefinition, 'component', 'slot')
-    const componentDefinition = this.app.getComponentDefinition(componentName)
-    // TODO: use proxy
-    const props = new SuperStruct(
-      // if no props then put just empty props
-      componentDefinition.props || {},
-      // props are readonly by default
-      true
-    )
-    const propSetter = props.init(propsValues)
-    let slotDefinition: SlotsDefinition = {}
-
-    if (Array.isArray(childUiDefinition.slot)) {
-      slotDefinition = {
-        default: childUiDefinition.slot
-      }
-    }
-    else if (typeof childUiDefinition.slot === 'object') {
-      slotDefinition = childUiDefinition.slot
-    }
-
-    // TODO: в childPropsValues как примитивы, так и sprog - надо его выполнить наверное
-    // TODO: props должен быть связан с текущим компонентом
-    // TODO: propSetter надо сохранить себе чтобы потом устанавливать значения
-
-    return {
-      componentName,
-      propsValues,
-      slotDefinition,
-      componentDefinition,
-      props,
-      propSetter,
-    }
-  }
-
-  private makeRenderedEl(): RenderedElement {
-    const baseParams = {
-      name: this.name,
-      componentId: this.id,
-    }
-
-    if (this.isRoot) {
-      return {
-        ...baseParams,
-        parentId: '',
-        parentChildPosition: -1,
-      }
-    }
-    else {
-      // not root means it is Component. It has to have parent
-      if (!this.parent) {
-        throw new Error(`It "${this.id}" isn't root but doesn't have parent`)
-      }
-
-      const parentChildPosition = this.parent.getIndexOfChild(this.id)
-
-      if (typeof parentChildPosition === 'undefined') {
-        throw new Error(`Can't find my "${this.id}" position of parent ${this.parent.id}`)
-      }
-
-      return {
-        ...baseParams,
-        parentId: this.parent.id,
-        parentChildPosition,
-      }
-    }
-  }
-
   private getChildrenUiEls(): RenderedElement[] | undefined {
     const res: RenderedElement[] = []
 
     for (const child of this.children) res.push(child.render())
 
     if (!res.length) return
-
-    return res
-  }
-
-  private getUiParams(): Record<string, any> | undefined {
-    if (!this.componentDefinition.uiParams) return
-
-    const res: Record<string, any> = {}
-
-    for (const item of this.componentDefinition.uiParams) {
-      if (typeof item === 'string') {
-        if (this.state.hasKey(item)) {
-          // deep param path is supported
-          res[item] = this.state.getValue(item)
-        }
-        else if (this.props.hasKey(item)) {
-          res[item] = this.props.getValue(item)
-        }
-      }
-      else {
-        // means [string, () => any]
-        res[item[0]] = item[1]()
-      }
-    }
-
-    if (!Object.keys(res).length) return
 
     return res
   }
