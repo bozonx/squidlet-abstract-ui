@@ -9,7 +9,7 @@ import {
   ProxyfiedStruct,
   ProxyfiedArray
 } from 'squidlet-sprog'
-import {omitObj, makeUniqId} from 'squidlet-lib'
+import {omitUndefined, makeUniqId} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
 import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js'
 import {RenderedElement} from './types/RenderedElement.js'
@@ -212,20 +212,20 @@ export class Component {
    * Make full render element with children
    */
   render(): RenderedElement {
-    return {
+    return omitUndefined({
       ...this.renderSelf(),
       children: this.getChildrenUiEls(),
-    }
+    } as RenderedElement) as RenderedElement
   }
 
   /**
    * Make render element only for itself without children
    */
   renderSelf(): RenderedElement {
-    return {
+    return omitUndefined({
       ...renderComponentBase(this),
       params: makeComponentUiParams(this.componentDefinition, this.props, this.state),
-    }
+    } as RenderedElement) as RenderedElement
   }
 
 

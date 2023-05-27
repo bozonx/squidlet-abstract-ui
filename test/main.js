@@ -6,8 +6,12 @@ import chaiAsPromised from 'chai-as-promised'
 import rewire from 'rewire'
 //import * as lodash from 'lodash'
 
-chai.use(sinonChai)
+
 chai.use(chaiAsPromised)
+chai.use(sinonChai)
+
+
+chai.should();
 
 global.assert = chai.assert
 //global.expect = chai.expect
