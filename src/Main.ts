@@ -6,15 +6,20 @@ import {ComponentsManager} from './ComponentsManager.js';
 import {APP_CONFIG_DEFAULTS, AppConfig} from './types/AppConfig.js';
 
 
-export enum APP_EVENTS {
+export enum SYSTEM_EVENTS {
   initStarted,
   initFinished,
   destroyStarted,
 }
 
 
+/**
+ * Think of it as this is main process which is started on system.
+ * And AppSingleton is a one of subprocess for each instance of each user and his
+ * browser tab or application instance
+ */
 export class Main {
-  readonly appEvents = new IndexedEventEmitter()
+  readonly systemEvents = new IndexedEventEmitter()
   log: Logger
   readonly componentsManager = new ComponentsManager(this)
   readonly config: AppConfig
@@ -31,17 +36,17 @@ export class Main {
   }
 
   async init() {
-    this.appEvents.emit(APP_EVENTS.initStarted)
+    this.systemEvents.emit(SYSTEM_EVENTS.initStarted)
 
     await this.app.init()
 
-    this.appEvents.emit(APP_EVENTS.initFinished)
+    this.systemEvents.emit(SYSTEM_EVENTS.initFinished)
   }
 
   async destroy() {
-    this.appEvents.emit(APP_EVENTS.destroyStarted)
+    this.systemEvents.emit(SYSTEM_EVENTS.destroyStarted)
 
-    this.appEvents.destroy()
+    this.systemEvents.destroy()
     await this.app.destroy()
   }
 

@@ -1,6 +1,6 @@
-import {Document} from './Document';
-import {ForEach} from './ForEach';
-import {RenderComponent} from './RenderComponent';
+import {Document} from './Document.js';
+import {ForEach} from './ForEach.js';
+import {RenderComponent} from './RenderComponent.js';
 
 
 export const STD_COMPONENTS: Record<string, string> = {

@@ -1,7 +1,7 @@
 import yaml from 'yaml';
-import {Main} from './Main';
-import {ComponentDefinition} from './Component';
-import {STD_COMPONENTS} from './stdLib';
+import {Main} from './Main.js';
+import {ComponentDefinition} from './Component.js';
+import {STD_COMPONENTS} from './stdLib/index.js';
 
 
 export class ComponentsManager {

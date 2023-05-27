@@ -1,4 +1,4 @@
-import {Component, ComponentDefinition} from '../Component';
+import {Component, ComponentDefinition} from '../Component.js';
 
 
 export interface ScreenDefinition extends ComponentDefinition {

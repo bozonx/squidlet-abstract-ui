@@ -1,5 +1,5 @@
-import {RenderedElement} from '../../../../../../../mnt/disk2/workspace/squidlet-abstract-ui/src/types/RenderedElement.js';
 import {TgReplyButton} from './TgReplyButton.js';
+import {RenderedElement} from '../types/RenderedElement.js';
 
 
 // const CALLBACK_COMMANDS = {

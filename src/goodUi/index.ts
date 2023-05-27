@@ -1,14 +1,14 @@
-import {Button} from './Button';
-import {ButtonGroup} from './ButtonGroup';
-import {Nav} from './Nav';
-import {Text} from './Text';
-import {VerticalMenu} from './VerticalMenu';
-import {NestedMenu} from './NestedMenu';
-import {MainSection} from './MainSection';
-import {SideMenu} from './SideMenu';
-import {Link} from './Link';
-import {Container} from './Container';
-import {ExternalLink} from './ExternalLink';
+import {Button} from './Button.js';
+import {ButtonGroup} from './ButtonGroup.js';
+import {Nav} from './Nav.js';
+import {Text} from './Text.js';
+import {VerticalMenu} from './VerticalMenu.js';
+import {NestedMenu} from './NestedMenu.js';
+import {MainSection} from './MainSection.js';
+import {SideMenu} from './SideMenu.js';
+import {Link} from './Link.js';
+import {Container} from './Container.js';
+import {ExternalLink} from './ExternalLink.js';
 
 
 export const GOOD_UI: Record<string, string> = {
