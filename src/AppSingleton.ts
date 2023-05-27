@@ -21,7 +21,7 @@ export const COMPONENT_EVENT_PREFIX = 'C|'
 export class AppSingleton {
   readonly outcomeEvents = new IndexedEvents<OutcomeEventHandler>()
   readonly incomeEvents = new IndexedEventEmitter()
-  readonly root: RootComponent = new RootComponent(this)
+  readonly root: RootComponent
   private readonly main: Main
 
 
@@ -39,6 +39,9 @@ export class AppSingleton {
 
   constructor(main: Main) {
     this.main = main
+
+    // TODO: где взять definition???
+    this.root = new RootComponent(this)
   }
 
 
