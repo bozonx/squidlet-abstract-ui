@@ -1,7 +1,7 @@
-import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs';
-import {Route} from './Route';
-import {Screen} from './Screen';
-import {RouterDefinition} from './RouterDefinition';
+import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
+import {Route} from './Route.js';
+import {Screen} from './Screen.js';
+import {RouterDefinition} from './RouterDefinition.js';
 
 
 

@@ -4,8 +4,6 @@ import {
   SuperStruct,
   SuperArray,
   SuperItemDefinition,
-  SuperFuncDefinition,
-  SimpleFuncDefinition,
   ProxyfiedStruct,
   ProxyfiedArray
 } from 'squidlet-sprog'

@@ -2,6 +2,7 @@ import yaml from 'yaml';
 import {Main} from './Main.js';
 import {ComponentDefinition} from './Component.js';
 import {STD_COMPONENTS} from './stdLib/index.js';
+import {ROOT_COMPONENT_ID} from './RootComponent.js';
 
 
 export class ComponentsManager {
@@ -32,13 +33,21 @@ export class ComponentsManager {
   registerComponents(components: Record<string, string | ComponentDefinition>) {
     for (const cmpName of Object.keys(components)) {
       const cmp = components[cmpName]
+      let resolvedComponent: ComponentDefinition
 
       if (typeof cmp === 'string') {
-        this.components[cmpName] = yaml.parse(cmp)
+        resolvedComponent = yaml.parse(cmp)
       }
       else if (typeof cmp === 'object') {
-        this.components[cmpName] = cmp
+        resolvedComponent = cmp
       }
+      else {
+        throw new Error(`Unknown type of component "${typeof cmp}"`)
+      }
+      // set root name for root compoent
+      if (cmpName === ROOT_COMPONENT_ID) resolvedComponent.name = 'root'
+
+      this.components[cmpName] = resolvedComponent
     }
   }
 

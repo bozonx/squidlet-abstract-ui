@@ -14,8 +14,8 @@ export const COMPONENT_EVENT_PREFIX = 'C|'
 
 /**
  * It is a context for components and whole app structure.
- * Think of this as one of instances for one of users.
- * This is main and the only singleton for whole browser tab or application instance
+ * Think of this as one of instances for the same app and one of users.
+ * This is the main and the only singleton for whole browser tab or application instance
  * or server side renderer.
  */
 export class AppSingleton {
@@ -23,6 +23,7 @@ export class AppSingleton {
   readonly incomeEvents = new IndexedEventEmitter()
   readonly root: RootComponent
   private readonly main: Main
+  // TODO: add router
 
 
   get log(): Logger {

@@ -4,6 +4,8 @@ import {AbstractUiPackage} from './types/types.js';
 import {PackageManager} from './PackageManager.js';
 import {ComponentsManager} from './ComponentsManager.js';
 import {APP_CONFIG_DEFAULTS, AppConfig} from './types/AppConfig.js';
+import {ComponentDefinition} from './Component.js';
+import {ROOT_COMPONENT_ID} from './RootComponent.js';
 
 
 export enum SYSTEM_EVENTS {
@@ -25,6 +27,7 @@ export class Main {
   log: Logger
   readonly componentsManager = new ComponentsManager(this)
   readonly config: AppConfig
+  // TODO: а вообще имеет смысл делать несколько apps ???
   app!: AppSingleton
   private readonly packageManager = new PackageManager(this)
 
@@ -34,6 +37,7 @@ export class Main {
       ...APP_CONFIG_DEFAULTS,
       ...config,
     }
+    // TODO: а оно надо? можно же слушать события логера
     this.log = new ConsoleLogger((this.config.debug) ? 'debug' : this.config.logLevel)
   }
 
@@ -59,16 +63,26 @@ export class Main {
   }
 
 
+  // TODO: впринципе не нужно, логгер можно просто слушать события логера
   setLogger(logger: Logger) {
     this.log = logger
   }
 
   registerRouter() {
+    // TODO: может тоже внешне подключать - слушать события роутера - push, replace
+    // TODO: хотя роутер то должен быть один всего
     // TODO: add - регистрировать базу на систему
+    // TODO: но его инстанс должен создаваться в AppSingleton
   }
 
   use(pkg: AbstractUiPackage) {
     this.packageManager.use(pkg)
+  }
+
+  setRoot(rootComponent: string | Omit<ComponentDefinition, 'name'>) {
+    this.componentsManager.registerComponents({
+      [ROOT_COMPONENT_ID]: rootComponent as any
+    })
   }
 
 }
