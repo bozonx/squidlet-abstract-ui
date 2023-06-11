@@ -5,6 +5,8 @@ import {ROOT_COMPONENT_ID, RootComponentDefinition} from './RootComponent.js';
 
 const INCLUDE_STATEMENT = '$include:'
 
+// TODO: поддержка sprog в формировании конфига - по сути это и есть sprog
+
 
 /**
  * Loads all the components which are imported in root component and other components.

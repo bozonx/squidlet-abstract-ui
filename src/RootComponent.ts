@@ -25,16 +25,20 @@ export class RootComponent extends Component {
 
 
   constructor(app: AppSingleton) {
+
+    // TODO: это должно быть в init, либо сам root в app.init()
     const componentDefinition: ComponentDefinition = app
       .getComponentDefinition(ROOT_COMPONENT_ID)
-    // TODO: не очень хорошо так делать
+    // root component doesn't have parent
     const parent = null as any
-    // TODO: а чё всмысле???
-    const props = new SuperStruct(newScope(), {}).getProxy()
+    const propsStub = new SuperStruct({}).getProxy()
 
-    super(app, parent, componentDefinition, {}, props)
-    // replace scope of props to make it the same as RootComponent's
-    props.$super.$$replaceScope(this.scope)
+    // TODO: Это всё vvv делать в AppSingleton а RootComponent почти обычный компонент
+    // TODO: надо зарегать все components
+    // TODO: надо зарегать все screens
+    // TODO: надо зарегать конфиг приложения
+
+    super(app, parent, componentDefinition, {}, propsStub)
   }
 
   get name(): string {
