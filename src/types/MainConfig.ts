@@ -1,12 +1,12 @@
 import {LogLevel} from 'squidlet-lib'
 
 
-export interface AppConfig {
+export interface MainConfig {
   logLevel: LogLevel
   debug: boolean
 }
 
-export const APP_CONFIG_DEFAULTS: AppConfig = {
+export const MAIN_CONFIG_DEFAULTS: MainConfig = {
   logLevel: 'info',
   debug: false,
 }

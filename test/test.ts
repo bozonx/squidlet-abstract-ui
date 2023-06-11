@@ -5,7 +5,7 @@ import path from 'node:path';
 import {
   Main,
   preloader,
-  AppConfig,
+  MainConfig,
   IncomeEvents,
   OutcomeEvents,
   RenderedElement
@@ -25,7 +25,7 @@ import {transformToTg} from '../src/connectorTelegram/index.js'
     path.resolve(filesRoot, 'root.yaml'),
     (pathTo: string) => fs.readFile(path.resolve(filesRoot, pathTo), 'utf8')
   )
-  const config: Partial<AppConfig> = {}
+  const config: Partial<MainConfig> = {}
   const main = new Main(config)
 
   main.use(goodUiPlugin())

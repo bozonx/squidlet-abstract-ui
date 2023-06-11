@@ -1,5 +1,5 @@
 export * from './Main.js'
-export * from './types/AppConfig.js'
+export * from './types/MainConfig.js'
 export * from './types/DomEvents.js'
 export * from './types/RenderedElement.js'
 export * from './preloader.js'

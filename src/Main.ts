@@ -3,8 +3,7 @@ import {AppSingleton} from './AppSingleton.js';
 import {AbstractUiPackage} from './types/types.js';
 import {PackageManager} from './PackageManager.js';
 import {ComponentsManager} from './ComponentsManager.js';
-import {APP_CONFIG_DEFAULTS, AppConfig} from './types/AppConfig.js';
-import {ComponentDefinition} from './Component.js';
+import {MAIN_CONFIG_DEFAULTS, MainConfig} from './types/MainConfig.js';
 import {ROOT_COMPONENT_ID, RootComponentDefinition} from './RootComponent.js';
 
 
@@ -26,15 +25,15 @@ export class Main {
   readonly systemEvents = new IndexedEventEmitter()
   log: Logger
   readonly componentsManager = new ComponentsManager(this)
-  readonly config: AppConfig
+  readonly config: MainConfig
   // TODO: а вообще имеет смысл делать несколько apps ???
   app!: AppSingleton
   private readonly packageManager = new PackageManager(this)
 
 
-  constructor(config: Partial<AppConfig>) {
+  constructor(config: Partial<MainConfig>) {
     this.config = {
-      ...APP_CONFIG_DEFAULTS,
+      ...MAIN_CONFIG_DEFAULTS,
       ...config,
     }
     // TODO: а оно надо? можно же слушать события логера
