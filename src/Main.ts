@@ -5,7 +5,7 @@ import {PackageManager} from './PackageManager.js';
 import {ComponentsManager} from './ComponentsManager.js';
 import {APP_CONFIG_DEFAULTS, AppConfig} from './types/AppConfig.js';
 import {ComponentDefinition} from './Component.js';
-import {ROOT_COMPONENT_ID} from './RootComponent.js';
+import {ROOT_COMPONENT_ID, RootComponentDefinition} from './RootComponent.js';
 
 
 export enum SYSTEM_EVENTS {
@@ -79,7 +79,7 @@ export class Main {
     this.packageManager.use(pkg)
   }
 
-  setRoot(rootComponent: string | Omit<ComponentDefinition, 'name'>) {
+  setRoot(rootComponent: string | RootComponentDefinition) {
     this.componentsManager.registerComponents({
       [ROOT_COMPONENT_ID]: rootComponent as any
     })

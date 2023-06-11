@@ -4,17 +4,20 @@ import {AppSingleton} from './AppSingleton.js';
 import {ScreenDefinition} from './routerBase/Screen.js';
 
 
-// TODO: может это screen?
-
-export interface RootComponentDefinition extends ComponentDefinition {
+export interface RootComponentDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state'> {
+  // TODO: сюда пользователь может вставлять либы компонентов
   // it is just app's components lib
   components?: ComponentDefinition[]
   // it is just app's screens lib
   screens?: ScreenDefinition[]
+
+  // TODO: настройка роутера
+  // TODO: пользовательские настройки для приложения
 }
 
 
 export const ROOT_COMPONENT_ID = 'root'
+export const ROOT_COMPONENT_NAME = 'root'
 
 
 export class RootComponent extends Component {
@@ -34,6 +37,9 @@ export class RootComponent extends Component {
     props.$super.$$replaceScope(this.scope)
   }
 
+  get name(): string {
+    return ROOT_COMPONENT_NAME
+  }
 
   protected makeId(): string {
     return ROOT_COMPONENT_ID

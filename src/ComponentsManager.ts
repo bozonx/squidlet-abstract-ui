@@ -2,7 +2,7 @@ import yaml from 'yaml';
 import {Main} from './Main.js';
 import {ComponentDefinition} from './Component.js';
 import {STD_COMPONENTS} from './stdLib/index.js';
-import {ROOT_COMPONENT_ID} from './RootComponent.js';
+import {RootComponentDefinition} from './RootComponent.js';
 import {validateComponentDefinition} from './helpers/componentHelper.js';
 
 
@@ -30,7 +30,7 @@ export class ComponentsManager {
     return this.components[componentName]
   }
 
-  registerComponents(components: Record<string, string | ComponentDefinition>) {
+  registerComponents(components: Record<string, string | ComponentDefinition | RootComponentDefinition>) {
     for (const cmpName of Object.keys(components)) {
       const cmp = components[cmpName]
       let resolvedComponent: ComponentDefinition
@@ -44,8 +44,6 @@ export class ComponentsManager {
       else {
         throw new Error(`Unknown type of component "${typeof cmp}"`)
       }
-      // set root name for root compoent
-      if (cmpName === ROOT_COMPONENT_ID) resolvedComponent.name = 'root'
 
       validateComponentDefinition(resolvedComponent)
 
