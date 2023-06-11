@@ -3,6 +3,7 @@ import {Main} from './Main.js';
 import {ComponentDefinition} from './Component.js';
 import {STD_COMPONENTS} from './stdLib/index.js';
 import {ROOT_COMPONENT_ID} from './RootComponent.js';
+import {validateComponentDefinition} from './helpers/componentHelper.js';
 
 
 export class ComponentsManager {
@@ -20,14 +21,13 @@ export class ComponentsManager {
 
   getComponentDefinition(componentName: string): ComponentDefinition {
 
-    //console.log(111, 'requested cmp - ', pathOrStdComponentName)
+    //console.log('requested cmp - ', pathOrStdComponentName)
 
-    if (this.components[componentName]) {
-      return this.components[componentName]
-    }
-    else {
+    if (!this.components[componentName]) {
       throw new Error(`Can't find component "${componentName}"`)
     }
+
+    return this.components[componentName]
   }
 
   registerComponents(components: Record<string, string | ComponentDefinition>) {
@@ -46,6 +46,8 @@ export class ComponentsManager {
       }
       // set root name for root compoent
       if (cmpName === ROOT_COMPONENT_ID) resolvedComponent.name = 'root'
+
+      validateComponentDefinition(resolvedComponent)
 
       this.components[cmpName] = resolvedComponent
     }

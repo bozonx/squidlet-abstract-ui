@@ -50,5 +50,12 @@ describe(`app`, () => {
     })
 
     // TODO: check system events
+    // TODO: check component specific event
+    // TODO: getComponentDefinition
   })
+
+  it(`rise income event into App`, async () => {
+    // TODO: call app.emitIncomeEvent
+  })
+
 })

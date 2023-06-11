@@ -123,3 +123,8 @@ export function makeComponentUiParams(
 
   return res
 }
+
+export function validateComponentDefinition(cmp: ComponentDefinition) {
+  // TODO: validate component
+}
+
