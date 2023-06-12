@@ -1,12 +1,11 @@
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
-import {Route} from './Route.js';
+import {Route} from '../types/Route.js';
 import {Screen} from './Screen.js';
-import {RouterDefinition} from './RouterDefinition.js';
 import {AppSingleton} from '../AppSingleton.js';
 
 
 
-export class AppRouter implements RouterDefinition {
+export class AppRouter {
   breadCrumbs = new BreadCrumbs()
 
   //private window: Window

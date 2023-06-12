@@ -1,6 +1,6 @@
 import {ComponentDefinition} from '../Component.js';
 import {ScreenDefinition} from '../routerBase/Screen.js';
-import {Route} from '../routerBase/Route.js';
+import {Route} from './Route.js';
 
 
 export interface AppDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state'> {
