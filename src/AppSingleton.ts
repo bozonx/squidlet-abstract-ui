@@ -23,7 +23,7 @@ export class AppSingleton {
   readonly outcomeEvents = new IndexedEvents<OutcomeEventHandler>()
   readonly incomeEvents = new IndexedEventEmitter()
   readonly root: RootComponent
-  readonly router = new AppRouter(this)
+  readonly router = new AppRouter()
   private readonly main: Main
   // TODO: add router
 

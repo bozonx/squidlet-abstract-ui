@@ -1,18 +1,14 @@
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
 import {Route} from '../types/Route.js';
-import {Screen} from './Screen.js';
+import {Screen} from '../Screen.js';
 import {AppSingleton} from '../AppSingleton.js';
-
 
 
 export class AppRouter {
   breadCrumbs = new BreadCrumbs()
-
-  //private window: Window
   private routes: Route[] = []
   private currentScreenInstance!: Screen
   private currentRoute!: Route
-  private app: AppSingleton
 
 
   get screen(): Screen {
@@ -47,12 +43,7 @@ export class AppRouter {
   // }
 
 
-  constructor(app: AppSingleton) {
-    // TODO: может всетаки сделать универсальным. без app
-    this.app = app
-    //this.window = window
-    //
-    //
+  constructor() {
   }
 
   init(routes?: Route[], initialPath: string = BREADCRUMBS_DELIMITER) {

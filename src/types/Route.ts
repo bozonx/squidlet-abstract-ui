@@ -1,4 +1,4 @@
-import {Screen} from '../routerBase/Screen.js';
+import {Screen} from '../Screen.js';
 
 
 export interface Route {

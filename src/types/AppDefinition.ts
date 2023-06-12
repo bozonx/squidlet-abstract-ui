@@ -1,5 +1,5 @@
 import {ComponentDefinition} from '../Component.js';
-import {ScreenDefinition} from '../routerBase/Screen.js';
+import {ScreenDefinition} from '../Screen.js';
 import {Route} from './Route.js';
 
 
