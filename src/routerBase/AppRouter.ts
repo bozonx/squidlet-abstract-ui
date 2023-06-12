@@ -1,14 +1,24 @@
+import {IndexedEvents} from 'squidlet-lib';
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
 import {Route} from '../types/Route.js';
 import {Screen} from '../Screen.js';
-import {AppSingleton} from '../AppSingleton.js';
+
+
+export enum APP_ROUTER_EVENTS {
+  // current route changed
+  change,
+  // added some new routes
+  routesAdded,
+}
 
 
 export class AppRouter {
   breadCrumbs = new BreadCrumbs()
+  readonly events = new IndexedEvents()
   private routes: Route[] = []
   private currentScreenInstance!: Screen
   private currentRoute!: Route
+  private currentPath?: string
 
 
   get screen(): Screen {
@@ -50,7 +60,7 @@ export class AppRouter {
     if (routes) this.routes = routes
 
     this.breadCrumbs.pathChangeEvent.addListener(this.onPathChanged)
-    this.toPath(initialPath)
+    this.push(initialPath)
   }
 
   async destroy() {
@@ -60,7 +70,20 @@ export class AppRouter {
   }
 
 
-  toPath(pathTo: string) {
+  /**
+   * Add some new routes to the top of routes array
+   * @param routes
+   */
+  addRoutes(routes: Route[]) {
+    this.routes = [
+      ...this.routes,
+      ...routes,
+    ]
+
+    this.events.emit(APP_ROUTER_EVENTS.routesAdded)
+  }
+
+  push(pathTo: string) {
     const route = this.resolveRouteByPath(pathTo)
 
     if (!route) {
@@ -70,6 +93,7 @@ export class AppRouter {
     }
 
     this.currentRoute = route
+    this.currentPath = pathTo
 
     // TODO: при извлечении параметров очистить путь
     const clearPath = pathTo
@@ -77,6 +101,12 @@ export class AppRouter {
     const pathParams = {}
 
     this.breadCrumbs.toPath(clearPath, pathParams)
+
+    // TODO: поднять событие смены роута - событие есть и в breadcrumbs
+  }
+
+  replace(route: Route) {
+    // TODO: replace current route but don't change current path
   }
 
 
