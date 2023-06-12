@@ -29,7 +29,7 @@ import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} 
 // It is definition of component class
 export interface ComponentDefinition {
   name: string
-  // props which are controlled by parent component
+  // definition of props which are controlled by parent component
   props?: Record<string, SuperItemDefinition>
   // local state
   state?: Record<string, SuperItemDefinition>
@@ -103,6 +103,8 @@ export class Component {
     componentDefinition: ComponentDefinition,
     // slots of component which get from parent component template
     slotsDefinition: SlotsDefinition,
+
+    // TODO: может просто родитель будет слушать события из props или link???
     // props which parent give
     incomeProps: ProxyfiedStruct
   ) {

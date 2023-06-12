@@ -2,12 +2,6 @@ import {omitObj} from "squidlet-lib";
 import {Main, SYSTEM_EVENTS} from "../../src/index.js";
 
 
-const app = `
-tmpl:
-  - component: Document
-`
-
-
 describe(`app`, () => {
   it(`Init app`, async () => {
 
@@ -15,6 +9,11 @@ describe(`app`, () => {
     const main = new Main(config)
     const sysSpy = sinon.spy()
     const appSpy = sinon.spy()
+    const app = {
+      tmpl: {
+        component: 'Document'
+      }
+    }
 
     await main.setApp(app)
 
