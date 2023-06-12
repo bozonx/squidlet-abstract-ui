@@ -19,14 +19,14 @@ export class RootComponent extends Component {
   ) {
     // root component doesn't have parent
     const parent = null as any
-    const propsStub = new SuperStruct({}).getProxy()
+    //const propsStub = new SuperStruct({}).getProxy()
     const componentDefinition: ComponentDefinition = {
       name: ROOT_COMPONENT_NAME,
       state,
       tmpl,
     }
 
-    super(app, parent, componentDefinition, {}, propsStub)
+    super(app, parent, componentDefinition, {})
   }
 
   protected makeId(): string {

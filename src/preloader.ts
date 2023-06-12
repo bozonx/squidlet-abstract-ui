@@ -5,6 +5,7 @@ import {ROOT_COMPONENT_ID} from './RootComponent.js';
 
 const INCLUDE_STATEMENT = '$include:'
 
+// TODO: перенести в Sprog
 // TODO: поддержка sprog в формировании конфига - по сути это и есть sprog
 
 

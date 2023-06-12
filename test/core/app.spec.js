@@ -10,9 +10,11 @@ describe(`app`, () => {
     const sysSpy = sinon.spy()
     const appSpy = sinon.spy()
     const app = {
-      tmpl: {
-        component: 'Document'
-      }
+      tmpl: [
+        {
+          component: 'Document'
+        }
+      ]
     }
 
     await main.setApp(app)

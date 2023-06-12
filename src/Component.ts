@@ -313,7 +313,7 @@ export class Component {
       this,
       componentDefinition,
       slotDefinition,
-      props
+      //props
     )
   }
 
