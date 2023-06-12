@@ -25,6 +25,8 @@ import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} 
 // TODO: call onMount component's callback of component definition
 // TODO: call onUnmount component's callback of component definition
 
+// TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
+
 
 // It is definition of component class
 export interface ComponentDefinition {
@@ -75,12 +77,17 @@ export class Component {
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
   readonly slots: ComponentSlotsManager
+  // it uses only by parent to set props. Don't use it by yourself
+  $$propsSetter!: (name: string, value: any) => void
 
   protected readonly app: AppSingleton
   // component's class definition
   protected readonly componentDefinition: ComponentDefinition
+
+  // TODO: наверное это геттер из scope
   // local state of component instance
   protected readonly state: ProxyfiedStruct
+  // TODO: наверное это геттер из scope
   // It is scope for template runtime
   protected readonly scope: ComponentScope & SuperScope
   private incomeEventListenerIndex?: number
@@ -115,13 +122,14 @@ export class Component {
     this.componentDefinition = componentDefinition
     this.id = this.makeId()
     this.slots = new ComponentSlotsManager(slotsDefinition)
-    this.props = (new SuperStruct(componentDefinition.props || {})).getProxy()
+    this.props = (new SuperStruct(componentDefinition.props || {}, true)).getProxy()
     this.state = (new SuperStruct(componentDefinition.state || {})).getProxy()
     // TODO: наследовать от родиьельского scope
     this.scope = newScope<ComponentScope>({
       app: this.app,
       props: this.props,
       state: this.state,
+      // TODO: добавить slots
     })
     this.children = (new SuperArray({
       // TODO: а тип какой ????
@@ -133,16 +141,22 @@ export class Component {
 
 
   async init() {
+    // TODO: поставить initial values
+    this.$$propsSetter = this.props.$super.init()
+    // TODO: поставить initial values из свойства data шаблона
     this.state.$super.init()
 
     const childrenInitArr = this.instantiateChildren()
 
     this.children.$super.init(childrenInitArr)
 
-    // TODO: run onInit callback
+    // TODO: run onInit callback - это будут линии sprog
 
     // init all the children components
-    for (const component of this.children) await component.init()
+    for (const childIndex of this.children.$super.allKeys) {
+      // child is component
+      await this.children[childIndex].init()
+    }
   }
 
   async destroy() {
@@ -151,15 +165,16 @@ export class Component {
     // TODO: нужно сообщить родителю
 
     this.app.incomeEvents.removeListener(this.incomeEventListenerIndex)
-
+    // destroy all the children
     for (const component of this.children) await component.destroy()
 
     this.children.$super.destroy()
     await this.slots.destroy()
-    // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
-    //       и удалить его у себя
     this.props.$super.destroy()
     this.state.$super.destroy()
+
+    // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
+    //       и удалить его у себя
   }
 
 
@@ -260,6 +275,7 @@ export class Component {
       .catch(this.app.log.error)
   }
 
+  // TODO: review
   private instantiateChildren(): Component[] {
     const res: Component[] = []
 
@@ -279,6 +295,7 @@ export class Component {
     return res
   }
 
+  // TODO: review
   instantiateChild(childInstanceDefinition: CmpInstanceDefinition): Component {
     const {
       componentDefinition,
@@ -300,6 +317,7 @@ export class Component {
     )
   }
 
+  // TODO: review
   private getChildrenUiEls(): RenderedElement[] | undefined {
     const res: RenderedElement[] = []
 
