@@ -4,6 +4,7 @@ import {RootComponent} from './RootComponent.js';
 import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {ComponentDefinition} from './Component.js';
+import {AppRouter} from './routerBase/AppRouter.js';
 
 
 type OutcomeEventHandler = (event: OutcomeEvents, el: RenderedElement) => void
@@ -22,6 +23,7 @@ export class AppSingleton {
   readonly outcomeEvents = new IndexedEvents<OutcomeEventHandler>()
   readonly incomeEvents = new IndexedEventEmitter()
   readonly root: RootComponent
+  readonly router = new AppRouter(this)
   private readonly main: Main
   // TODO: add router
 
@@ -45,13 +47,14 @@ export class AppSingleton {
       this.main.componentsManager.appDefinition.tmpl,
       this.main.componentsManager.appDefinition.state,
     )
+
+    // TODO: создать свой инстанс роутера
+
   }
 
 
   async init() {
-
-    // TODO: создать свой инстанс роутера
-
+    this.router.init(this.main.componentsManager.appDefinition.routes)
     await this.root.init()
     // render root component
     await this.root.mount()

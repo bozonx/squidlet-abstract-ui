@@ -2,16 +2,18 @@ import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
 import {Route} from './Route.js';
 import {Screen} from './Screen.js';
 import {RouterDefinition} from './RouterDefinition.js';
+import {AppSingleton} from '../AppSingleton.js';
 
 
 
-export class RouterClass implements RouterDefinition {
+export class AppRouter implements RouterDefinition {
   breadCrumbs = new BreadCrumbs()
 
-  private window: Window
+  //private window: Window
   private routes: Route[] = []
   private currentScreenInstance!: Screen
   private currentRoute!: Route
+  private app: AppSingleton
 
 
   get screen(): Screen {
@@ -46,14 +48,19 @@ export class RouterClass implements RouterDefinition {
   // }
 
 
-  constructor(window: Window, routes: Route[]) {
-    this.window = window
-    this.routes = routes
+  constructor(app: AppSingleton) {
+    // TODO: может всетаки сделать универсальным. без app
+    this.app = app
+    //this.window = window
+    //
+    //
   }
 
-  async init(initialPath: string = BREADCRUMBS_DELIMITER) {
+  init(routes?: Route[], initialPath: string = BREADCRUMBS_DELIMITER) {
+    if (routes) this.routes = routes
+
     this.breadCrumbs.pathChangeEvent.addListener(this.onPathChanged)
-    await this.toPath(initialPath)
+    this.toPath(initialPath)
   }
 
   async destroy() {
@@ -63,7 +70,7 @@ export class RouterClass implements RouterDefinition {
   }
 
 
-  async toPath(pathTo: string) {
+  toPath(pathTo: string) {
     const route = this.resolveRouteByPath(pathTo)
 
     if (!route) {
