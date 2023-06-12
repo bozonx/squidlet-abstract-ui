@@ -6,7 +6,7 @@ import {ComponentsManager} from './ComponentsManager.js';
 import {MAIN_CONFIG_DEFAULTS, MainConfig} from './types/MainConfig.js';
 import {AppDefinition} from './types/AppDefinition.js';
 import {ComponentDefinition} from './Component.js';
-import {ROOT_COMPONENT_NAME} from './RootComponent.js';
+import {ROOT_COMPONENT_NAME, RootComponent} from './RootComponent.js';
 
 
 export enum SYSTEM_EVENTS {
@@ -82,19 +82,14 @@ export class Main {
 
   /**
    * Set Application definition
-   * * componets wich is uses
+   * * components witch are used
    * * router config
    * * application config
    * * root template
    * @param appDefinition
    */
   setApp(appDefinition: AppDefinition) {
-    const rootComponent: ComponentDefinition = {
-      name: ROOT_COMPONENT_NAME,
-      tmpl: appDefinition.tmpl,
-    }
-
-    //this.componentsManager.registerRoot(rootComponent)
+    this.componentsManager.registerApp(appDefinition)
   }
 
 }

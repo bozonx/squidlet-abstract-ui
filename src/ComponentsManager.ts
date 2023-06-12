@@ -1,11 +1,14 @@
+import {omitObj} from 'squidlet-lib';
 import yaml from 'yaml';
 import {Main} from './Main.js';
 import {ComponentDefinition} from './Component.js';
 import {STD_COMPONENTS} from './stdLib/index.js';
 import {validateComponentDefinition} from './helpers/componentHelper.js';
+import {AppDefinition} from './types/AppDefinition.js';
 
 
 export class ComponentsManager {
+  appDefinition!: AppDefinition
   private readonly main: Main
   // Components of registered libs and user defined. like: {componentName: ComponentDefinition}
   private readonly components: Record<string, ComponentDefinition> = {}
@@ -29,31 +32,38 @@ export class ComponentsManager {
     return this.components[componentName]
   }
 
-  // registerRoot(rootComponent: string | RootComponentDefinition) {
-  //   this.componentsManager.registerComponents({
-  //     [ROOT_COMPONENT_ID]: rootComponent as any
-  //   })
-  // }
+  registerApp(appDefinition: AppDefinition) {
+    if (this.appDefinition) {
+      throw new Error(`Can't replace the app definition`)
+    }
+
+    if (appDefinition.components) {
+      this.registerComponents(appDefinition.components)
+    }
+
+    this.appDefinition = omitObj(appDefinition, 'components')
+  }
 
   registerComponents(components: Record<string, string | ComponentDefinition>) {
     for (const cmpName of Object.keys(components)) {
       const cmp = components[cmpName]
-      let resolvedComponent: ComponentDefinition
+      let resolvedComponentDef: ComponentDefinition
 
       // TODO: а зачем string??? разве не должно изначально распарситься???
       if (typeof cmp === 'string') {
-        resolvedComponent = yaml.parse(cmp)
+        resolvedComponentDef = yaml.parse(cmp)
       }
       else if (typeof cmp === 'object') {
-        resolvedComponent = cmp
+        resolvedComponentDef = cmp
       }
       else {
         throw new Error(`Unknown type of component "${typeof cmp}"`)
       }
 
-      validateComponentDefinition(resolvedComponent)
+      validateComponentDefinition(resolvedComponentDef)
 
-      this.components[cmpName] = resolvedComponent
+      // TODO: name брать из самого компонента
+      this.components[cmpName] = resolvedComponentDef
     }
   }
 

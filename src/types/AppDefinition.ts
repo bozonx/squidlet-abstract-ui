@@ -7,7 +7,7 @@ export interface AppDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state
   // it is just app's components lib
   components?: ComponentDefinition[]
   // it is just app's screens lib
-  screens?: ScreenDefinition[]
+  //screens?: ScreenDefinition[]
 
   // TODO: настройка роутера
   // TODO: пользовательские настройки для приложения
