@@ -1,4 +1,4 @@
-import {SuperStruct, SuperItemDefinition} from 'squidlet-sprog';
+import {SuperItemDefinition} from 'squidlet-sprog';
 import {Component, ComponentDefinition} from './Component.js';
 import {AppSingleton} from './AppSingleton.js';
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js';

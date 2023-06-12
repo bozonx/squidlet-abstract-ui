@@ -25,19 +25,11 @@ export class AppSingleton {
   readonly root: RootComponent
   readonly router = new AppRouter()
   private readonly main: Main
-  // TODO: add router
 
 
   get log(): Logger {
     return this.main.log
   }
-
-
-  // router = {
-  //   toPath: (p: Record<any, any>) => {
-  //     console.log(777, p)
-  //   }
-  // }
 
 
   constructor(main: Main) {
@@ -47,9 +39,6 @@ export class AppSingleton {
       this.main.componentsManager.appDefinition.tmpl,
       this.main.componentsManager.appDefinition.state,
     )
-
-    // TODO: создать свой инстанс роутера
-
   }
 
 
@@ -67,6 +56,7 @@ export class AppSingleton {
     // TODO: а нужно ли это? может destroy автоматом значит и unmount?
     //await this.root.unmount()
     await this.root.destroy()
+    this.router.destroy()
   }
 
 

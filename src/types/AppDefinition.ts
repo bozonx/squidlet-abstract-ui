@@ -12,6 +12,5 @@ export interface AppDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state
 
   routes?: Route[]
 
-  // TODO: настройка роутера
   // TODO: пользовательские настройки для приложения
 }

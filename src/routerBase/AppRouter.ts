@@ -1,4 +1,4 @@
-import {IndexedEvents} from 'squidlet-lib';
+import {IndexedEventEmitter} from 'squidlet-lib';
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
 import {Route} from '../types/Route.js';
 import {Screen} from '../Screen.js';
@@ -14,7 +14,7 @@ export enum APP_ROUTER_EVENTS {
 
 export class AppRouter {
   breadCrumbs = new BreadCrumbs()
-  readonly events = new IndexedEvents()
+  readonly events = new IndexedEventEmitter()
   private routes: Route[] = []
   private currentScreenInstance!: Screen
   private currentRoute!: Route
@@ -63,10 +63,11 @@ export class AppRouter {
     this.push(initialPath)
   }
 
-  async destroy() {
+  destroy() {
     this.routes = []
 
     this.breadCrumbs.destroy()
+    this.events.destroy()
   }
 
 
