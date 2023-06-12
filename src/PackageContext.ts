@@ -26,7 +26,7 @@ export class PackageContext {
     this.main.setLogger(logger)
   }
 
-  registerComponents(components: Record<string, string | ComponentDefinition>) {
+  registerComponents(components: (string | ComponentDefinition)[]) {
     this.main.componentsManager.registerComponents(components)
   }
 

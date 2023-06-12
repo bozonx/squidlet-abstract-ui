@@ -44,9 +44,8 @@ export class ComponentsManager {
     this.appDefinition = omitObj(appDefinition, 'components')
   }
 
-  registerComponents(components: Record<string, string | ComponentDefinition>) {
-    for (const cmpName of Object.keys(components)) {
-      const cmp = components[cmpName]
+  registerComponents(components: (string | ComponentDefinition)[]) {
+    for (const cmp of components) {
       let resolvedComponentDef: ComponentDefinition
 
       // TODO: а зачем string??? разве не должно изначально распарситься???
@@ -62,8 +61,7 @@ export class ComponentsManager {
 
       validateComponentDefinition(resolvedComponentDef)
 
-      // TODO: name брать из самого компонента
-      this.components[cmpName] = resolvedComponentDef
+      this.components[resolvedComponentDef.name] = resolvedComponentDef
     }
   }
 

@@ -8,9 +8,9 @@ import {Root} from './components/Root.ts';
   const config = {}
   const main = new Main(config)
 
-  main.componentsManager.registerComponents({
-    [ROOT_COMPONENT_ID]: Root
-  })
+  // main.componentsManager.registerComponents({
+  //   [ROOT_COMPONENT_ID]: Root
+  // })
 
 })()
 
