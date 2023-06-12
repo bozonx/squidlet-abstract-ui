@@ -8,7 +8,7 @@ export interface BreadCrumbsStep {
   // Name of the step. It is part of path
   name: string
   // local state of path
-  state: UiState
+  state: Record<string, any>
   // it is set from routerBase
   params: Record<string, any>
 }
@@ -77,7 +77,7 @@ export default class BreadCrumbs {
 
     this.steps.push({
       name,
-      state: new UiState(initialState),
+      state: initialState,
       params,
     })
 
@@ -109,7 +109,7 @@ export default class BreadCrumbs {
     for (const name of pathNames) {
       this.steps.push({
         name,
-        state: new UiState(),
+        state: {},
         params,
       })
     }
