@@ -33,14 +33,10 @@ export class ComponentsManager {
   }
 
   registerApp(appDefinition: AppDefinition) {
-    if (this.appDefinition) {
-      throw new Error(`Can't replace the app definition`)
-    }
-
-    if (appDefinition.components) {
-      this.registerComponents(appDefinition.components)
-    }
-
+    if (this.appDefinition) throw new Error(`Can't replace the app definition`)
+    // register components from definition
+    if (appDefinition.components) this.registerComponents(appDefinition.components)
+    // save app definition without components
     this.appDefinition = omitObj(appDefinition, 'components')
   }
 
@@ -48,7 +44,6 @@ export class ComponentsManager {
     for (const cmp of components) {
       let resolvedComponentDef: ComponentDefinition
 
-      // TODO: а зачем string??? разве не должно изначально распарситься???
       if (typeof cmp === 'string') {
         resolvedComponentDef = yaml.parse(cmp)
       }

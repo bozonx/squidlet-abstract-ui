@@ -1,7 +1,6 @@
 import {
   SuperStruct,
   ProxyfiedStruct,
-  newScope,
 } from 'squidlet-sprog'
 import {omitObj} from 'squidlet-lib'
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
@@ -32,8 +31,6 @@ export function parseCmpInstanceDefinition(
   const componentDefinition = app.getComponentDefinition(componentName)
   // create a new props which is have parent scope
   const props = (new SuperStruct(
-    // TODO: нужно создавать новый или брать от родителя?
-    newScope(),
     // if no props then put just empty props
     componentDefinition.props || {},
     // props are readonly by default

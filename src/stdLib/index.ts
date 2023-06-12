@@ -3,8 +3,8 @@ import {ForEach} from './ForEach.js';
 import {RenderComponent} from './RenderComponent.js';
 
 
-export const STD_COMPONENTS: Record<string, string> = {
+export const STD_COMPONENTS: string[] = [
   Document,
   ForEach,
   RenderComponent,
-}
+]

@@ -5,8 +5,6 @@ import {PackageManager} from './PackageManager.js';
 import {ComponentsManager} from './ComponentsManager.js';
 import {MAIN_CONFIG_DEFAULTS, MainConfig} from './types/MainConfig.js';
 import {AppDefinition} from './types/AppDefinition.js';
-import {ComponentDefinition} from './Component.js';
-import {ROOT_COMPONENT_NAME, RootComponent} from './RootComponent.js';
 
 
 export enum SYSTEM_EVENTS {
