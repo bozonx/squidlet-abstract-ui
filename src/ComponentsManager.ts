@@ -2,7 +2,6 @@ import yaml from 'yaml';
 import {Main} from './Main.js';
 import {ComponentDefinition} from './Component.js';
 import {STD_COMPONENTS} from './stdLib/index.js';
-import {RootComponentDefinition} from './RootComponent.js';
 import {validateComponentDefinition} from './helpers/componentHelper.js';
 
 
@@ -30,11 +29,18 @@ export class ComponentsManager {
     return this.components[componentName]
   }
 
-  registerComponents(components: Record<string, string | ComponentDefinition | RootComponentDefinition>) {
+  // registerRoot(rootComponent: string | RootComponentDefinition) {
+  //   this.componentsManager.registerComponents({
+  //     [ROOT_COMPONENT_ID]: rootComponent as any
+  //   })
+  // }
+
+  registerComponents(components: Record<string, string | ComponentDefinition>) {
     for (const cmpName of Object.keys(components)) {
       const cmp = components[cmpName]
       let resolvedComponent: ComponentDefinition
 
+      // TODO: а зачем string??? разве не должно изначально распарситься???
       if (typeof cmp === 'string') {
         resolvedComponent = yaml.parse(cmp)
       }

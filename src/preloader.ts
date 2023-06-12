@@ -1,6 +1,6 @@
 import yaml from 'yaml';
 import {ComponentDefinition} from './Component.js';
-import {ROOT_COMPONENT_ID, RootComponentDefinition} from './RootComponent.js';
+import {ROOT_COMPONENT_ID} from './RootComponent.js';
 
 
 const INCLUDE_STATEMENT = '$include:'

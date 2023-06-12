@@ -4,7 +4,9 @@ import {AbstractUiPackage} from './types/types.js';
 import {PackageManager} from './PackageManager.js';
 import {ComponentsManager} from './ComponentsManager.js';
 import {MAIN_CONFIG_DEFAULTS, MainConfig} from './types/MainConfig.js';
-import {ROOT_COMPONENT_ID, RootComponentDefinition} from './RootComponent.js';
+import {AppDefinition} from './types/AppDefinition.js';
+import {ComponentDefinition} from './Component.js';
+import {ROOT_COMPONENT_NAME} from './RootComponent.js';
 
 
 export enum SYSTEM_EVENTS {
@@ -78,10 +80,21 @@ export class Main {
     this.packageManager.use(pkg)
   }
 
-  setRoot(rootComponent: string | RootComponentDefinition) {
-    this.componentsManager.registerComponents({
-      [ROOT_COMPONENT_ID]: rootComponent as any
-    })
+  /**
+   * Set Application definition
+   * * componets wich is uses
+   * * router config
+   * * application config
+   * * root template
+   * @param appDefinition
+   */
+  setApp(appDefinition: AppDefinition) {
+    const rootComponent: ComponentDefinition = {
+      name: ROOT_COMPONENT_NAME,
+      tmpl: appDefinition.tmpl,
+    }
+
+    //this.componentsManager.registerRoot(rootComponent)
   }
 
 }

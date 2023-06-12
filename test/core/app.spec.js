@@ -2,7 +2,7 @@ import {omitObj} from "squidlet-lib";
 import {Main, SYSTEM_EVENTS} from "../../src/index.js";
 
 
-const rootCmp = `
+const app = `
 tmpl:
   - component: Document
 `
@@ -16,7 +16,7 @@ describe(`app`, () => {
     const sysSpy = sinon.spy()
     const appSpy = sinon.spy()
 
-    main.setRoot(rootCmp)
+    await main.setApp(app)
 
     main.systemEvents.addListener(sysSpy)
 
