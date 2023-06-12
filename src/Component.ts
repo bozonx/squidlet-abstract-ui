@@ -39,7 +39,8 @@ export interface ComponentDefinition {
   // deep param path is supported
   uiParams?: (string | [string, () => any])[]
   // handlers of income ui events. Like {click: $expDefinition}
-  handlers?: Record<string, SuperFuncDefinition | SimpleFuncDefinition>
+  // TODO: добавить SuperFunc и для обычной прописать аргементы
+  handlers?: Record<string, () => void>
   tmpl?: CmpInstanceDefinition[]
 }
 
@@ -104,26 +105,30 @@ export class Component {
     // slots of component which get from parent component template
     slotsDefinition: SlotsDefinition,
 
-    // TODO: может просто родитель будет слушать события из props или link???
+    // TODO: может просто родитель сам устанавливать значений в одностороннем порядке
+    //       или будет делать Link к себе
     // props which parent give
-    incomeProps: ProxyfiedStruct
+    //incomeProps: ProxyfiedStruct
   ) {
     this.app = app
     this.parent = parent
     this.componentDefinition = componentDefinition
-    this.props = incomeProps
     this.id = this.makeId()
     this.slots = new ComponentSlotsManager(slotsDefinition)
+    this.props = (new SuperStruct(componentDefinition.props || {})).getProxy()
+    this.state = (new SuperStruct(componentDefinition.state || {})).getProxy()
+    // TODO: наследовать от родиьельского scope
     this.scope = newScope<ComponentScope>({
       app: this.app,
       props: this.props,
-      // set it temporary because the state hasn't been initialized yet
-      state: {} as any,
+      state: this.state,
     })
-    this.state = (new SuperStruct(this.scope, componentDefinition.state || {})).getProxy()
-    // set initialized state to scope
-    this.scope.state = this.state
-    this.children = (new SuperArray(this.scope)).getProxy()
+    this.children = (new SuperArray({
+      // TODO: а тип какой ????
+      type: 'any',
+      readonly: false,
+      nullable: false,
+    })).getProxy()
   }
 
 
