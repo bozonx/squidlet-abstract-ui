@@ -1,4 +1,4 @@
-import {SuperItemDefinition} from 'squidlet-sprog';
+import {SuperItemInitDefinition} from 'squidlet-sprog';
 import {Component} from './Component.js';
 import {AppSingleton} from './AppSingleton.js';
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js';
@@ -16,7 +16,7 @@ export class RootComponent extends Component {
   constructor(
     app: AppSingleton,
     tmpl?: CmpInstanceDefinition[],
-    state?: Record<string, SuperItemDefinition>
+    state?: Record<string, SuperItemInitDefinition>
   ) {
     // root component doesn't have parent
     const parent = null as any

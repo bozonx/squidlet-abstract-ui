@@ -1,4 +1,4 @@
-import {SuperItemDefinition} from 'squidlet-sprog'
+import {SuperItemInitDefinition} from 'squidlet-sprog'
 import {CmpInstanceDefinition} from './CmpInstanceDefinition.js';
 
 
@@ -6,9 +6,9 @@ import {CmpInstanceDefinition} from './CmpInstanceDefinition.js';
 export interface ComponentDefinition {
   name: string
   // definition of props which are controlled by parent component
-  props?: Record<string, SuperItemDefinition>
+  props?: Record<string, SuperItemInitDefinition>
   // local state
-  state?: Record<string, SuperItemDefinition>
+  state?: Record<string, SuperItemInitDefinition>
   // names of params which will be sent to UI.
   // they will be got from props and state.
   // to rename or get param from component use [newName, () => { return ... }]
