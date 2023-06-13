@@ -9,6 +9,9 @@ export const ROOT_COMPONENT_ID = 'root'
 export const ROOT_COMPONENT_NAME = 'Root'
 
 
+// TODO: сделать app context доступным в scope всех потомков c router, events, root, log
+
+
 export class RootComponent extends Component {
   readonly isRoot: boolean = true
 

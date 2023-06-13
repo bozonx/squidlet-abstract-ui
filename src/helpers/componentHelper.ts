@@ -1,6 +1,7 @@
 import {
   SuperStruct,
   ProxyfiedStruct,
+  ProxyfiedData,
 } from 'squidlet-sprog'
 import {omitObj} from 'squidlet-lib'
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
@@ -95,7 +96,7 @@ export function renderComponentBase(cmp: Component): RenderedElement {
 export function makeComponentUiParams(
   componentDefinition: ComponentDefinition,
   props: ProxyfiedStruct,
-  state: ProxyfiedStruct,
+  state: ProxyfiedData,
 ): Record<string, any> | undefined {
   if (!componentDefinition.uiParams) return
 

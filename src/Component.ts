@@ -3,9 +3,10 @@ import {
   SuperScope,
   SuperStruct,
   SuperArray,
-  SuperItemDefinition,
   ProxyfiedStruct,
-  ProxyfiedArray
+  ProxyfiedArray,
+  SuperData,
+  ProxyfiedData
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
@@ -46,7 +47,7 @@ export enum COMPONENT_EVENTS {
 export interface ComponentScope {
   app: AppSingleton
   props: ProxyfiedStruct
-  state: ProxyfiedStruct
+  state: ProxyfiedData
 
   // TODO: чо за нах? Нужен контекст от screen
   // local vars and context of functions execution
@@ -81,7 +82,7 @@ export class Component {
 
   // TODO: наверное это геттер из scope
   // local state of component instance
-  protected readonly state: ProxyfiedStruct
+  protected readonly state: ProxyfiedData
   // TODO: наверное это геттер из scope
   // It is scope for template runtime
   protected readonly scope: ComponentScope & SuperScope
@@ -118,7 +119,7 @@ export class Component {
     this.id = this.makeId()
     this.slots = new ComponentSlotsManager(slotsDefinition)
     this.props = (new SuperStruct(componentDefinition.props || {}, true)).getProxy()
-    this.state = (new SuperStruct(componentDefinition.state || {})).getProxy()
+    this.state = (new SuperData(componentDefinition.state || {})).getProxy()
     // TODO: наследовать от родиьельского scope
     this.scope = newScope<ComponentScope>({
       app: this.app,
