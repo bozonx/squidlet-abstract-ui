@@ -34,7 +34,7 @@ export enum COMPONENT_EVENTS {
   unmounted,
   // any changes of component's props of state or children array
   update,
-  // starting of destroy
+  // starting of destroy. It will not emit unmount!
   destroy,
 }
 
@@ -173,12 +173,16 @@ export class Component {
     this.events.emit(COMPONENT_EVENTS.initFinished)
   }
 
+  /**
+   * Destroy my and all the my children.
+   * It will not rise unmount. You have to listen destroying component to totaly
+   * remove it. And umount means that component doesn't remove from memory.
+   */
   async destroy() {
     this.events.emit(COMPONENT_EVENTS.destroy)
 
     this.events.destroy()
 
-    // TODO: означает ли это unmount тоже???
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя
 

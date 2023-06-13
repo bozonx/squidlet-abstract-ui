@@ -5,7 +5,7 @@ import {APP_EVENTS} from "../../src/AppSingleton.js";
 
 
 describe(`app`, () => {
-  it(`Init app`, async () => {
+  it(`Init and destroy`, async () => {
 
     const config = {}
     const main = new Main(config)
@@ -16,7 +16,6 @@ describe(`app`, () => {
     const rootInitStartSpy = sinon.spy()
     const rootInitFinishSpy = sinon.spy()
     const rootInitMountSpy = sinon.spy()
-    const rootInitUnmountSpy = sinon.spy()
     const rootInitDestroySpy = sinon.spy()
     const appDef = {
       tmpl: [
@@ -36,7 +35,6 @@ describe(`app`, () => {
       app.root.events.addListener(COMPONENT_EVENTS.initStart, rootInitStartSpy)
       app.root.events.addListener(COMPONENT_EVENTS.initFinished, rootInitFinishSpy)
       app.root.events.addListener(COMPONENT_EVENTS.mounted, rootInitMountSpy)
-      app.root.events.addListener(COMPONENT_EVENTS.unmounted, rootInitUnmountSpy)
       app.root.events.addListener(COMPONENT_EVENTS.destroy, rootInitDestroySpy)
 
       app.events.addListener(APP_EVENTS.render, (event, el) => {
@@ -60,7 +58,6 @@ describe(`app`, () => {
     rootInitStartSpy.should.have.been.calledOnce
     rootInitFinishSpy.should.have.been.calledOnce
     rootInitMountSpy.should.have.been.calledOnce
-    rootInitUnmountSpy.should.have.not.been.called
     rootInitDestroySpy.should.have.not.been.called
 
     appSpy.should.have.been.calledOnce
@@ -90,8 +87,6 @@ describe(`app`, () => {
     rootInitStartSpy.should.have.been.calledOnce
     rootInitFinishSpy.should.have.been.calledOnce
     rootInitMountSpy.should.have.been.calledOnce
-    // TODO: что делать с unmount ???
-    //rootInitUnmountSpy.should.have.been.calledOnce
     rootInitDestroySpy.should.have.been.calledOnce
 
     assert.isTrue(main.app.root.props.$super.isDestroyed)
