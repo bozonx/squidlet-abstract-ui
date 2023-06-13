@@ -115,15 +115,24 @@ export class AppRouter {
   }
 
   push(pathTo: string) {
-    const route = this.resolveRouteByPath(pathTo)
+    const storedRoute = this.resolveRouteByPath(pathTo)
 
-    if (!route) {
+    if (!storedRoute) {
       // TODO: to screen 404
 
       return
     }
 
-    this.currentRoute = route
+    const foundScreen = this.screensDefinitions.find((el) => {
+      return el.name === storedRoute.screen
+    })
+
+    if (!foundScreen) throw new Error(`Can't find screen`)
+
+    this.currentRoute = {
+      ...storedRoute,
+      screen: this.instantiateScreen(foundScreen)
+    }
 
     // TODO: при извлечении параметров очистить путь
     const clearPath = pathTo
@@ -159,7 +168,7 @@ export class AppRouter {
       })
   }
 
-  private resolveRouteByPath(pathTo: string): Route | undefined {
+  private resolveRouteByPath(pathTo: string): StoredRoute | undefined {
     return this.routes.find((el) => {
 
       // TODO: make smarter comparison
@@ -168,29 +177,12 @@ export class AppRouter {
     })
   }
 
-  // private resolveScreen(
-  //   defScreen: string | ScreenDefinition,
-  //   screens: ScreenComponent[]
-  // ): ScreenDefinition {
-  //   if (typeof defScreen === 'string') {
-  //     const foundScreen = screens.find((scr) => {
-  //       return scr.name === defScreen
-  //     })
-  //
-  //     if (!foundScreen) throw new Error(`Can't find screen "${defScreen}"`)
-  //     // return screen which was found
-  //     return foundScreen
-  //   }
-  //
-  //   return this.instantiateScreen(defScreen)
-  // }
-
   private instantiateScreen(scrDef: ScreenDefinition): ScreenComponent {
     return new ScreenComponent(
       this.app,
       // TODO: на самом деле взять Route компонент, но как ???
       this.app.root,
-      defScreen,
+      scrDef,
       // TODO: слота не должно быть
       {}
     )
