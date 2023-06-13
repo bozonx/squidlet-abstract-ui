@@ -7,9 +7,12 @@
 
 
 
-export const Document: string = `
-name: Document
-`
+import {ComponentDefinition} from '../types/ComponentDefinition.js';
+
+export const Document: ComponentDefinition = {
+  name: 'Document',
+}
+
 
 /*
 tmpl:

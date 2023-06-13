@@ -1,3 +1,6 @@
-export const Div: string = `
-name: Div
-`
+import {ComponentDefinition} from '../types/ComponentDefinition.js';
+
+
+export const Div: ComponentDefinition = {
+  name: 'Div',
+}

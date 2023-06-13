@@ -1,6 +1,10 @@
-export const Router = `
-name: Router
-`
+import {ComponentDefinition} from '../types/ComponentDefinition.js';
+
+
+export const Router: ComponentDefinition = {
+  name: 'Router',
+}
+
 
 /*
 props:
