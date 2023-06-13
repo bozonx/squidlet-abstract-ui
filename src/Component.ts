@@ -178,7 +178,7 @@ export class Component {
    * It will not rise unmount. You have to listen destroying component to totaly
    * remove it. And umount means that component doesn't remove from memory.
    */
-  async destroy() {
+  async destroy(allowRender: boolean = true) {
     this.events.emit(COMPONENT_EVENTS.destroy)
 
     this.events.destroy()
@@ -188,14 +188,16 @@ export class Component {
 
     this.app.incomeEvents.removeListener(this.incomeEventListenerIndex)
     // destroy all the children
-    for (const component of this.children) await component.destroy()
+    for (const component of this.children) await component.destroy(false)
 
     await this.slots.destroy()
     this.scope.$super.destroy()
     this.children.$super.destroy()
     // props and state are destroyed as scope children
     // emit component destroy event
-    this.app.$$render(OutcomeEvents.destroy, renderComponentBase(this))
+    if (allowRender) {
+      this.app.$$render(OutcomeEvents.destroy, renderComponentBase(this))
+    }
   }
 
 
@@ -217,6 +219,8 @@ export class Component {
       this.app.$$render(OutcomeEvents.mount, this.render())
     }
 
+    // TODO: переименовать silent в allowRender
+
     for (const child of this.children) {
       // mount child always silent
       await child.mount(true)
@@ -237,6 +241,8 @@ export class Component {
       // unmount child always silent
       await child.unmount(true)
     }
+
+    // TODO: переименовать silent в allowRender
 
     if (!silent) {
       this.app.$$render(OutcomeEvents.unMount, renderComponentBase(this))

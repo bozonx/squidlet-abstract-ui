@@ -6,7 +6,6 @@ import {APP_EVENTS} from "../../src/AppSingleton.js";
 
 describe(`app`, () => {
   it(`Init and destroy`, async () => {
-
     const config = {}
     const main = new Main(config)
     const sysInitSpy = sinon.spy()
@@ -39,7 +38,8 @@ describe(`app`, () => {
 
       app.events.addListener(APP_EVENTS.render, (event, el) => {
         renderSpy(event, {
-          ...omitObj(el, 'componentId'),
+          //...omitObj(el, 'componentId'),
+          ...el,
           children: el.children && [
             {
               ...omitObj(el.children[0], 'componentId')
@@ -63,6 +63,7 @@ describe(`app`, () => {
     renderSpy.should.have.been.calledOnce
     renderSpy.should.have.been.calledWith(OutcomeEvents.mount, {
       name: 'Root',
+      componentId: 'root',
       parentId: '',
       parentChildPosition: -1,
       children: [
@@ -80,17 +81,12 @@ describe(`app`, () => {
     sysInitFinishSpy.should.have.been.calledOnce
     sysDestroySpy.should.have.been.calledOnce
 
-    renderSpy.should.have.been.calledThrice
+    renderSpy.should.have.been.calledTwice
     renderSpy.should.have.been.calledWith(OutcomeEvents.destroy, {
       name: 'Root',
+      componentId: 'root',
       parentId: '',
       parentChildPosition: -1,
-      children: undefined
-    })
-    renderSpy.should.have.been.calledWith(OutcomeEvents.destroy, {
-      name: 'Div',
-      parentId: 'root',
-      parentChildPosition: 0,
       children: undefined
     })
 
