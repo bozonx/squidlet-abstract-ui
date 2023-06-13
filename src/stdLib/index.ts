@@ -3,6 +3,7 @@ import {ForEach} from './ForEach.js';
 import {RenderComponent} from './RenderComponent.js';
 import {Router} from './Router.js';
 import {Div} from './Div.js';
+import {Text} from './Text.js';
 
 
 export const STD_COMPONENTS: string[] = [
@@ -11,4 +12,5 @@ export const STD_COMPONENTS: string[] = [
   ForEach,
   RenderComponent,
   Router,
+  Text,
 ]

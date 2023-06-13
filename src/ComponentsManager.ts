@@ -1,10 +1,10 @@
 import {omitObj} from 'squidlet-lib';
 import yaml from 'yaml';
 import {Main} from './Main.js';
-import {ComponentDefinition} from './Component.js';
 import {STD_COMPONENTS} from './stdLib/index.js';
 import {validateComponentDefinition} from './helpers/componentHelper.js';
 import {AppDefinition} from './types/AppDefinition.js';
+import {ComponentDefinition} from './types/ComponentDefinition.js';
 
 
 export class ComponentsManager {

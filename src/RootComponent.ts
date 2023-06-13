@@ -1,7 +1,8 @@
 import {SuperItemDefinition} from 'squidlet-sprog';
-import {Component, ComponentDefinition} from './Component.js';
+import {Component} from './Component.js';
 import {AppSingleton} from './AppSingleton.js';
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js';
+import {ComponentDefinition} from './types/ComponentDefinition.js';
 
 
 export const ROOT_COMPONENT_ID = 'root'

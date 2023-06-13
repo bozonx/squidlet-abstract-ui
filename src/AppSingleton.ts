@@ -3,8 +3,8 @@ import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
 import {IncomeEvents, RenderEvents} from './types/DomEvents.js';
 import {RenderedElement} from './types/RenderedElement.js';
-import {ComponentDefinition} from './Component.js';
 import {AppRouter} from './routerBase/AppRouter.js';
+import {ComponentDefinition} from './types/ComponentDefinition.js';
 
 
 export const COMPONENT_EVENT_PREFIX = 'C|'

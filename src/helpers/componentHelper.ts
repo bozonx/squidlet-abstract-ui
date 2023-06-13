@@ -5,9 +5,10 @@ import {
 import {omitObj} from 'squidlet-lib'
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
 import {SlotsDefinition} from '../ComponentSlotsManager.js';
-import {Component, ComponentDefinition} from '../Component.js';
+import {Component} from '../Component.js';
 import {AppSingleton} from '../AppSingleton.js';
 import {RenderedElement} from '../types/RenderedElement.js';
+import {ComponentDefinition} from '../types/ComponentDefinition.js';
 
 
 export function parseCmpInstanceDefinition(

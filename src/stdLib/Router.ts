@@ -1,6 +1,8 @@
-
 export const Router = `
 name: Router
+`
+
+/*
 props:
   root:
     type: string
@@ -8,4 +10,4 @@ props:
   routes:
     type: array
 
-`
+ */

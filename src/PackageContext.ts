@@ -1,7 +1,7 @@
 import {Logger, IndexedEventEmitter} from 'squidlet-lib'
 import {Main, SYSTEM_EVENTS} from './Main.js';
 import {AppSingleton} from './AppSingleton.js';
-import {ComponentDefinition} from './Component.js';
+import {ComponentDefinition} from './types/ComponentDefinition.js';
 
 
 export class PackageContext {

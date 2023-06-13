@@ -1,6 +1,6 @@
-import {ComponentDefinition} from '../Component.js';
 import {ScreenDefinition} from '../Screen.js';
 import {Route} from './Route.js';
+import {ComponentDefinition} from './ComponentDefinition.js';
 
 
 export interface AppDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state'> {
