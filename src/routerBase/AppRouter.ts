@@ -76,30 +76,16 @@ export class AppRouter {
     this.screensDefinitions = [ ...screensDefinitions || [] ]
 
     for (const routeDef of routes) {
-      let screenName: string | undefined
+      const [storeRoute, screenDef] = this.makeStoreRoute(routeDef)
 
-      if (typeof routeDef.screen === 'object') {
-        // found definition. Save it to collection
-        this.screensDefinitions.push(routeDef.screen)
+      if (screenDef) this.screensDefinitions.push(screenDef)
 
-        screenName = routeDef.screen.name
-      }
-      else {
-        screenName = routeDef.screen
-      }
-
-      if (typeof screenName !== 'string') {
-        throw new Error(`Can't resolve screen name`)
-      }
-
-      this.routes.push({
-        path: routeDef.path,
-        screen: screenName,
-        params: routeDef.params,
-      })
+      this.routes.push(storeRoute)
     }
 
+    // TODO: review
     this.breadCrumbs.pathChangeEvent.addListener(this.onPathChanged)
+    // TODO: review
     this.push(initialPath)
   }
 
@@ -116,14 +102,14 @@ export class AppRouter {
    * Add some new routes to the top of routes array
    * @param routes
    */
-  addRoutes(routes: Route[]) {
+  addRoutes(routes: RouteDefinition[]) {
+    for (const routeDef of routes) {
+      const [storeRoute, screenDef] = this.makeStoreRoute(routeDef)
 
-    // TODO: нормально зарезовлить как в init
+      if (screenDef) this.screensDefinitions.push(screenDef)
 
-    this.routes = [
-      ...this.routes,
-      ...routes,
-    ]
+      this.routes.push(storeRoute)
+    }
 
     this.events.emit(APP_ROUTER_EVENTS.routesAdded)
   }
@@ -208,6 +194,32 @@ export class AppRouter {
       // TODO: слота не должно быть
       {}
     )
+  }
+
+  private makeStoreRoute(routeDef: RouteDefinition): [StoredRoute, ScreenDefinition | undefined] {
+    let screenName: string | undefined
+    let screenDef: ScreenDefinition | undefined
+
+    if (typeof routeDef.screen === 'object') {
+      screenDef = routeDef.screen
+      screenName = routeDef.screen.name
+    }
+    else {
+      screenName = routeDef.screen
+    }
+
+    if (typeof screenName !== 'string') {
+      throw new Error(`Can't resolve screen name`)
+    }
+
+    return [
+      {
+        path: routeDef.path,
+        screen: screenName,
+        params: routeDef.params,
+      },
+      screenDef
+    ]
   }
 
 }
