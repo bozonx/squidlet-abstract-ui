@@ -13,7 +13,7 @@ export enum APP_ROUTER_EVENTS {
 
 
 export class AppRouter {
-  breadCrumbs = new BreadCrumbs()
+  readonly breadCrumbs = new BreadCrumbs()
   readonly events = new IndexedEventEmitter()
   private routes: Route[] = []
   private currentScreenInstance!: Screen

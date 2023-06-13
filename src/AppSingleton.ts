@@ -28,7 +28,6 @@ export enum APP_EVENTS {
  * or server side renderer.
  */
 export class AppSingleton {
-  //readonly incomeEvents = new IndexedEventEmitter()
   readonly events = new IndexedEventEmitter()
   readonly root: RootComponent
   readonly router = new AppRouter()

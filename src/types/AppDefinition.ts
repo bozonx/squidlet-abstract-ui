@@ -7,8 +7,8 @@ export interface AppDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state
   // TODO: сюда пользователь может вставлять либы компонентов
   // it is just app's components lib
   components?: ComponentDefinition[]
-  // it is just app's screens lib
-  //screens?: ScreenDefinition[]
+  // these screens you can several times in routes
+  screens?: ScreenDefinition[]
 
   routes?: Route[]
 
