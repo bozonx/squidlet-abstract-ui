@@ -6,8 +6,7 @@ import {APP_EVENTS} from "../../src/AppSingleton.js";
 
 describe(`main and app`, () => {
   it(`Init and destroy`, async () => {
-    const config = {}
-    const main = new Main(config)
+    const main = new Main()
     const sysInitSpy = sinon.spy()
     const sysInitFinishSpy = sinon.spy()
     const sysDestroySpy = sinon.spy()

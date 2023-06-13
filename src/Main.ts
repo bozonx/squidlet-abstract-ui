@@ -30,7 +30,7 @@ export class Main {
   private readonly packageManager = new PackageManager(this)
 
 
-  constructor(config: Partial<MainConfig>) {
+  constructor(config: Partial<MainConfig> = {}) {
     this.config = {
       ...MAIN_CONFIG_DEFAULTS,
       ...config,
