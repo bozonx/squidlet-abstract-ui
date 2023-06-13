@@ -78,6 +78,13 @@ export class AppSingleton {
    * @param el
    */
   $$render(event: OutcomeEvents, el: RenderedElement) {
+
+    // TODO: отсеивать события потомков
+    //       если дестроится root то не поднимать события на его потомках
+    //       тоже если unmount
+    //       тоже для mount так как там вся структура будет в children
+    //       ??? может даже update
+
     this.events.emit(APP_EVENTS.render, event, el)
   }
 
