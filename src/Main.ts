@@ -12,7 +12,6 @@ export enum SYSTEM_EVENTS {
   initFinished,
   destroyStarted,
   newApp,
-  appStarted,
 }
 
 
@@ -48,8 +47,6 @@ export class Main {
     this.systemEvents.emit(SYSTEM_EVENTS.newApp, this.app)
 
     await this.app.init()
-
-    this.systemEvents.emit(SYSTEM_EVENTS.appStarted, this.app)
 
     this.systemEvents.emit(SYSTEM_EVENTS.initFinished)
   }

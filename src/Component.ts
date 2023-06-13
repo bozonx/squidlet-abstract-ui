@@ -7,7 +7,7 @@ import {
   ProxyfiedStruct,
   ProxyfiedArray
 } from 'squidlet-sprog'
-import {omitUndefined, makeUniqId} from 'squidlet-lib'
+import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
 import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js'
 import {RenderedElement} from './types/RenderedElement.js'
@@ -27,6 +27,16 @@ import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} 
 
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
 
+export enum COMPONENT_EVENTS {
+  initStart,
+  initFinished,
+  mounted,
+  unmounted,
+  // any changes of component's props of state or children array
+  update,
+  // starting of destroy
+  destroy,
+}
 
 // It is definition of component class
 export interface ComponentDefinition {
@@ -69,6 +79,7 @@ export class Component {
   readonly isRoot: boolean = false
   // componentId
   readonly id: string
+  readonly events = new IndexedEventEmitter()
   // ordered children in super array. Add, remove or reorder children will
   // emit an array's change event
   readonly children: ProxyfiedArray<Component>
@@ -141,6 +152,7 @@ export class Component {
 
 
   async init() {
+    this.events.emit(COMPONENT_EVENTS.initStart)
     // TODO: поставить initial values
     this.$$propsSetter = this.props.$super.init()
     // TODO: поставить initial values из свойства data шаблона
@@ -157,24 +169,24 @@ export class Component {
       // child is component
       await this.children[childIndex].init()
     }
+
+    this.events.emit(COMPONENT_EVENTS.initFinished)
   }
 
   async destroy() {
-
+    this.events.emit(COMPONENT_EVENTS.destroy)
     // TODO: означает ли это unmount тоже???
-    // TODO: нужно сообщить родителю
+    // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
+    //       и удалить его у себя
 
     this.app.incomeEvents.removeListener(this.incomeEventListenerIndex)
     // destroy all the children
     for (const component of this.children) await component.destroy()
 
-    this.children.$super.destroy()
     await this.slots.destroy()
-    this.props.$super.destroy()
-    this.state.$super.destroy()
-
-    // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
-    //       и удалить его у себя
+    this.scope.$super.destroy()
+    this.children.$super.destroy()
+    // props and state are destroyed as scope children
   }
 
 
@@ -200,6 +212,8 @@ export class Component {
       // mount child always silent
       await child.mount(true)
     }
+
+    this.events.emit(COMPONENT_EVENTS.mounted)
   }
 
   /**
@@ -218,6 +232,8 @@ export class Component {
     if (!silent) {
       this.app.outcomeEvents.emit(OutcomeEvents.unMount, renderComponentBase(this))
     }
+
+    this.events.emit(COMPONENT_EVENTS.unmounted)
   }
 
   /**

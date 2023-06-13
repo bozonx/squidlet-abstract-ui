@@ -30,12 +30,12 @@ export class PackageContext {
     this.main.componentsManager.registerComponents(components)
   }
 
-  /**
-   * Listen each app started and manipulate it - listen its events
-   * and call emitIncomeEvent
-   */
-  onAppStarted(handler: (app: AppSingleton) => void): number {
-    return this.main.systemEvents.addListener(SYSTEM_EVENTS.appStarted, handler)
-  }
+  // /**
+  //  * Listen each app started and manipulate it - listen its events
+  //  * and call emitIncomeEvent
+  //  */
+  // onAppStarted(handler: (app: AppSingleton) => void): number {
+  //   return this.main.systemEvents.addListener(SYSTEM_EVENTS.appStarted, handler)
+  // }
 
 }

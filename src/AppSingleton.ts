@@ -12,6 +12,13 @@ type OutcomeEventHandler = (event: OutcomeEvents, el: RenderedElement) => void
 
 export const COMPONENT_EVENT_PREFIX = 'C|'
 
+export enum APP_EVENTS {
+  initStarted,
+  initFinished,
+  // destroy started
+  destroy,
+}
+
 
 /**
  * It is a context for components and whole app structure.
@@ -47,9 +54,13 @@ export class AppSingleton {
     await this.root.init()
     // render root component
     await this.root.mount()
+
+    // TODO: поднять событие started
   }
 
   async destroy() {
+    // TODO: поднять событие destroy
+
     this.outcomeEvents.destroy()
     this.incomeEvents.destroy()
     // tell the ui to unmount root

@@ -12,15 +12,15 @@ import {ExternalLink} from './ExternalLink.js';
 
 
 export const GOOD_UI: Record<string, string> = {
-  Button,
-  ButtonGroup,
-  Nav,
-  NestedMenu,
   Text,
-  VerticalMenu,
-  ExternalLink,
-  Container,
-  Link,
-  MainSection,
-  SideMenu,
+  // Button,
+  // ButtonGroup,
+  // Nav,
+  // NestedMenu,
+  // VerticalMenu,
+  // ExternalLink,
+  // Container,
+  // Link,
+  // MainSection,
+  // SideMenu,
 }
