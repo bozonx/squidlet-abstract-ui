@@ -8,7 +8,10 @@ import {Route} from './types/Route.js';
 
 
 export interface ScreenDefinition extends ComponentDefinition {
-  context?: Record<string, SuperItemInitDefinition>
+  /**
+   * This is storage of screen which can be accessed by any deep child
+   */
+  storage?: Record<string, SuperItemInitDefinition>
 }
 
 
@@ -18,7 +21,7 @@ export interface ScreenDefinition extends ComponentDefinition {
 
 export class Screen extends Component {
   readonly isScreen: boolean = true
-  readonly context: ProxyfiedData
+  readonly storage: ProxyfiedData
 
   get route(): Route {
     return this.props.route
@@ -33,9 +36,9 @@ export class Screen extends Component {
     // slots of component which get from parent component template
     slotsDefinition: SlotsDefinition,
   ) {
-    super(app, parent, omitObj(screenDefinition, 'context') as ComponentDefinition, slotsDefinition)
+    super(app, parent, omitObj(screenDefinition, 'storage') as ComponentDefinition, slotsDefinition)
 
-    this.context = (new SuperData(screenDefinition.context || {})).getProxy()
+    this.storage = (new SuperData(screenDefinition.storage || {})).getProxy()
   }
 
 }
