@@ -5,6 +5,8 @@ export enum OutcomeEvents {
   unMount,
   // update only UI element params or children add/remove/move
   update,
+  // renderer has to totally destroy component and umount it to
+  destroy,
 }
 
 export enum IncomeEvents {

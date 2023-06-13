@@ -1,5 +1,5 @@
 import {omitObj} from "squidlet-lib";
-import {Main, SYSTEM_EVENTS} from "../../src/index.js";
+import {Main, OutcomeEvents, SYSTEM_EVENTS} from "../../src/index.js";
 import {COMPONENT_EVENTS} from "../../src/Component.js";
 import {APP_EVENTS} from "../../src/AppSingleton.js";
 
@@ -12,7 +12,7 @@ describe(`app`, () => {
     const sysInitSpy = sinon.spy()
     const sysInitFinishSpy = sinon.spy()
     const sysDestroySpy = sinon.spy()
-    const appSpy = sinon.spy()
+    const renderSpy = sinon.spy()
     const rootInitStartSpy = sinon.spy()
     const rootInitFinishSpy = sinon.spy()
     const rootInitMountSpy = sinon.spy()
@@ -38,9 +38,9 @@ describe(`app`, () => {
       app.root.events.addListener(COMPONENT_EVENTS.destroy, rootInitDestroySpy)
 
       app.events.addListener(APP_EVENTS.render, (event, el) => {
-        appSpy(event, {
-          ...el,
-          children: [
+        renderSpy(event, {
+          ...omitObj(el, 'componentId'),
+          children: el.children && [
             {
               ...omitObj(el.children[0], 'componentId')
             }
@@ -60,11 +60,9 @@ describe(`app`, () => {
     rootInitMountSpy.should.have.been.calledOnce
     rootInitDestroySpy.should.have.not.been.called
 
-    appSpy.should.have.been.calledOnce
-
-    appSpy.should.have.been.calledWith(0, {
-      name: 'root',
-      componentId: 'root',
+    renderSpy.should.have.been.calledOnce
+    renderSpy.should.have.been.calledWith(OutcomeEvents.mount, {
+      name: 'Root',
       parentId: '',
       parentChildPosition: -1,
       children: [
@@ -82,7 +80,19 @@ describe(`app`, () => {
     sysInitFinishSpy.should.have.been.calledOnce
     sysDestroySpy.should.have.been.calledOnce
 
-    appSpy.should.have.been.calledOnce
+    renderSpy.should.have.been.calledThrice
+    renderSpy.should.have.been.calledWith(OutcomeEvents.destroy, {
+      name: 'Root',
+      parentId: '',
+      parentChildPosition: -1,
+      children: undefined
+    })
+    renderSpy.should.have.been.calledWith(OutcomeEvents.destroy, {
+      name: 'Div',
+      parentId: 'root',
+      parentChildPosition: 0,
+      children: undefined
+    })
 
     rootInitStartSpy.should.have.been.calledOnce
     rootInitFinishSpy.should.have.been.calledOnce

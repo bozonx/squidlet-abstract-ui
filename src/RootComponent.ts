@@ -5,7 +5,7 @@ import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js';
 
 
 export const ROOT_COMPONENT_ID = 'root'
-export const ROOT_COMPONENT_NAME = 'root'
+export const ROOT_COMPONENT_NAME = 'Root'
 
 
 export class RootComponent extends Component {

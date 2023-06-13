@@ -34,7 +34,7 @@ export enum COMPONENT_EVENTS {
   unmounted,
   // any changes of component's props of state or children array
   update,
-  // starting of destroy. It will not emit unmount!
+  // start destroying of component. It will not emit unmount because it means unmount too.
   destroy,
 }
 
@@ -194,6 +194,8 @@ export class Component {
     this.scope.$super.destroy()
     this.children.$super.destroy()
     // props and state are destroyed as scope children
+    // emit component destroy event
+    this.app.$$render(OutcomeEvents.destroy, renderComponentBase(this))
   }
 
 
