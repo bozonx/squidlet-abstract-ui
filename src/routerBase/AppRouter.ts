@@ -1,7 +1,7 @@
 import {IndexedEventEmitter} from 'squidlet-lib';
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
 import {Route, RouteDefinition} from '../types/Route.js';
-import {Screen} from '../Screen.js';
+import {ScreenComponent, ScreenDefinition} from '../ScreenComponent.js';
 
 
 export enum APP_ROUTER_EVENTS {
@@ -16,13 +16,16 @@ export class AppRouter {
   readonly breadCrumbs = new BreadCrumbs()
   readonly events = new IndexedEventEmitter()
   private routes: Route[] = []
-  private currentScreenInstance!: Screen
   private currentRoute!: Route
-  private currentPath?: string
+  private screensDefinition: ScreenDefinition[] = []
 
 
-  get screen(): Screen {
-    return this.currentScreenInstance
+  get isDestroyed(): boolean {
+    return this.events.isDestroyed
+  }
+
+  get screen(): ScreenComponent {
+    return this.currentRoute.screen
   }
 
   get route(): Route {
@@ -45,28 +48,44 @@ export class AppRouter {
   }
 
   get routeParams(): Record<string, any> {
+    // TODO: зачем это??? есть же параметры route
     return this.breadCrumbs.getCurrentStep().params
   }
-
-  // get routeState(): UiState {
-  //   return this.breadCrumbs.getCurrentStep().state
-  // }
 
 
   constructor() {
   }
 
-  init(routes?: RouteDefinition[], initialPath: string = BREADCRUMBS_DELIMITER) {
+  init(
+    routes?: RouteDefinition[],
+    screensDefinitions?: ScreenDefinition[],
+    initialPath: string = BREADCRUMBS_DELIMITER
+  ) {
 
-    // TODO: сделать из RouteDefinition - Route
+    // TODO: запретить инициализировать повторно
+    // TODO: scrrens надо хранить так как если потом добавляешь роуты то можно их использовать
+    // TODO: надо хрнить definiton скринов так как они будут создаваться при переходах
 
-    if (routes) this.routes = routes
+    this.screensDefinition = [ ...screensDefinitions || [] ]
+
+    if (routes) {
+      for (const routeDef of routes) {
+        const route: Route = {
+          path: routeDef.path,
+          screen: this.resolveScreen(routeDef.screen, screens),
+          params: routeDef.params,
+        }
+
+        this.routes.push(route)
+      }
+    }
 
     this.breadCrumbs.pathChangeEvent.addListener(this.onPathChanged)
     this.push(initialPath)
   }
 
   destroy() {
+    // TODO: задестроить все Screen
     this.routes = []
 
     this.breadCrumbs.destroy()
@@ -79,6 +98,9 @@ export class AppRouter {
    * @param routes
    */
   addRoutes(routes: Route[]) {
+
+    // TODO: нормально зарезовлить как в init
+
     this.routes = [
       ...this.routes,
       ...routes,
@@ -97,7 +119,6 @@ export class AppRouter {
     }
 
     this.currentRoute = route
-    this.currentPath = pathTo
 
     // TODO: при извлечении параметров очистить путь
     const clearPath = pathTo
@@ -116,13 +137,13 @@ export class AppRouter {
 
   private onPathChanged = () => {
     (async () => {
-      if (this.currentScreenInstance) {
-        await this.currentScreenInstance.destroy()
+      if (this.currentRoute?.screen) {
+        await this.currentRoute?.screen.destroy()
       }
 
       // // TODO: нужно же брать уже готовый инстанс
       // // TODO: что ещё ему передать??
-      // this.currentScreenInstance = new Screen(this.window)
+      // this.currentScreenInstance = new ScreenComponent(this.window)
       //
       // await this.currentScreenInstance.init()
     })()
@@ -140,6 +161,27 @@ export class AppRouter {
 
       if (el.path === pathTo) return true
     })
+  }
+
+  private resolveScreen(
+    defScreen: string | ScreenDefinition,
+    screens: ScreenComponent[]
+  ): ScreenComponent {
+    if (typeof defScreen === 'string') {
+      const foundScreen = screens.find((scr) => {
+        return scr.name === defScreen
+      })
+
+      if (!foundScreen) throw new Error(`Can't find screen "${defScreen}"`)
+      // return screen which was found
+      return foundScreen
+    }
+
+    return this.instantiateScreen(defScreen)
+  }
+
+  private instantiateScreen(scrDef: ScreenDefinition): ScreenComponent {
+    return new Screen(defScreen)
   }
 
 }

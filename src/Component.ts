@@ -18,7 +18,7 @@ import {AppSingleton} from './AppSingleton.js'
 import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} from './helpers/componentHelper.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 import {AppContext} from './AppContext.js';
-import {Screen} from './Screen.js';
+import {ScreenComponent} from './ScreenComponent.js';
 
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
@@ -48,12 +48,14 @@ export enum COMPONENT_EVENTS {
 }
 
 
+// TODO: разрешить добавлять свои параметры в scope для всех компонентов
+
 /**
  * Scope for executing sprog
  */
 export interface ComponentScope {
   app: AppContext
-  screen?: Screen
+  screen?: ScreenComponent
   // own props
   props: ProxyfiedStruct
   // own state

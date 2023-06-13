@@ -54,7 +54,11 @@ export class AppSingleton {
   async init(initialPath?: string) {
     this.events.emit(APP_EVENTS.initStarted)
 
-    this.router.init(this.main.componentsManager.appDefinition.routes, initialPath)
+    this.router.init(
+      this.main.componentsManager.appDefinition.routes,
+      this.main.componentsManager.appDefinition.screens,
+      initialPath
+    )
     await this.root.init()
     // render root component
     await this.root.mount()

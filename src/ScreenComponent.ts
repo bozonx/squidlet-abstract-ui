@@ -22,7 +22,7 @@ export interface ScreenDefinition extends ComponentDefinition {
 //       компонента свойства - app и screen
 
 
-export class Screen extends Component {
+export class ScreenComponent extends Component {
   readonly isScreen: boolean = true
   readonly storage: ProxyfiedData
 

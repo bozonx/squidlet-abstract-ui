@@ -1,4 +1,4 @@
-import {ScreenDefinition} from '../Screen.js';
+import {ScreenComponent, ScreenDefinition} from '../ScreenComponent.js';
 
 
 // this is definition of route in App config
@@ -13,6 +13,6 @@ export interface RouteDefinition {
 // this is runtime route
 export interface Route {
   path: string
-  screen: Screen
+  screen: ScreenComponent
   params?: Record<string, any>
 }

@@ -1,4 +1,4 @@
-import {ScreenDefinition} from '../Screen.js';
+import {ScreenDefinition} from '../ScreenComponent.js';
 import {RouteDefinition} from './Route.js';
 import {ComponentDefinition} from './ComponentDefinition.js';
 
