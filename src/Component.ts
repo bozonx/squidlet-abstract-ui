@@ -9,7 +9,7 @@ import {
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
-import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js'
+import {IncomeEvents, RenderEvents} from './types/DomEvents.js'
 import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
@@ -196,7 +196,7 @@ export class Component {
     // props and state are destroyed as scope children
     // emit component destroy event
     if (allowRender) {
-      this.app.$$render(OutcomeEvents.destroy, renderComponentBase(this))
+      this.app.$$render(RenderEvents.destroy, renderComponentBase(this))
     }
   }
 
@@ -216,7 +216,7 @@ export class Component {
     )
 
     if (!silent) {
-      this.app.$$render(OutcomeEvents.mount, this.render())
+      this.app.$$render(RenderEvents.mount, this.render())
     }
 
     // TODO: переименовать silent в allowRender
@@ -245,7 +245,7 @@ export class Component {
     // TODO: переименовать silent в allowRender
 
     if (!silent) {
-      this.app.$$render(OutcomeEvents.unMount, renderComponentBase(this))
+      this.app.$$render(RenderEvents.unMount, renderComponentBase(this))
     }
 
     this.events.emit(COMPONENT_EVENTS.unmounted)

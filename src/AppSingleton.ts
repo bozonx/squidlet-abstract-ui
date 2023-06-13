@@ -1,7 +1,7 @@
 import {IndexedEventEmitter, Logger} from 'squidlet-lib'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
-import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js';
+import {IncomeEvents, RenderEvents} from './types/DomEvents.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {ComponentDefinition} from './Component.js';
 import {AppRouter} from './routerBase/AppRouter.js';
@@ -62,10 +62,6 @@ export class AppSingleton {
 
   async destroy() {
     this.events.emit(APP_EVENTS.destroy)
-
-    // tell the ui to unmount root
-    // TODO: а нужно ли это? может destroy автоматом значит и unmount?
-    //await this.root.unmount()
     await this.root.destroy()
     this.router.destroy()
     this.events.destroy()
@@ -77,7 +73,7 @@ export class AppSingleton {
    * @param event
    * @param el
    */
-  $$render(event: OutcomeEvents, el: RenderedElement) {
+  $$render(event: RenderEvents, el: RenderedElement) {
     this.events.emit(APP_EVENTS.render, event, el)
   }
 

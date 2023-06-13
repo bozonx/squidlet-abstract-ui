@@ -22,9 +22,6 @@ export class ComponentsManager {
 
 
   getComponentDefinition(componentName: string): ComponentDefinition {
-
-    //console.log('requested cmp - ', pathOrStdComponentName)
-
     if (!this.components[componentName]) {
       throw new Error(`Can't find component "${componentName}"`)
     }

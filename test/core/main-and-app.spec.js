@@ -1,10 +1,10 @@
 import {omitObj} from "squidlet-lib";
-import {Main, OutcomeEvents, SYSTEM_EVENTS} from "../../src/index.js";
+import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js";
 import {COMPONENT_EVENTS} from "../../src/Component.js";
 import {APP_EVENTS} from "../../src/AppSingleton.js";
 
 
-describe(`app`, () => {
+describe(`main and app`, () => {
   it(`Init and destroy`, async () => {
     const config = {}
     const main = new Main(config)
@@ -61,7 +61,7 @@ describe(`app`, () => {
     rootInitDestroySpy.should.have.not.been.called
 
     renderSpy.should.have.been.calledOnce
-    renderSpy.should.have.been.calledWith(OutcomeEvents.mount, {
+    renderSpy.should.have.been.calledWith(RenderEvents.mount, {
       name: 'Root',
       componentId: 'root',
       parentId: '',
@@ -82,7 +82,7 @@ describe(`app`, () => {
     sysDestroySpy.should.have.been.calledOnce
 
     renderSpy.should.have.been.calledTwice
-    renderSpy.should.have.been.calledWith(OutcomeEvents.destroy, {
+    renderSpy.should.have.been.calledWith(RenderEvents.destroy, {
       name: 'Root',
       componentId: 'root',
       parentId: '',

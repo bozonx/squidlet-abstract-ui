@@ -1,4 +1,4 @@
-export enum OutcomeEvents {
+export enum RenderEvents {
   // mount UI element and it's children
   mount,
   // unmount UI element and it's children
