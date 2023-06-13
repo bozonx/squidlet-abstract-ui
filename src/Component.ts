@@ -175,6 +175,9 @@ export class Component {
 
   async destroy() {
     this.events.emit(COMPONENT_EVENTS.destroy)
+
+    this.events.destroy()
+
     // TODO: означает ли это unmount тоже???
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя

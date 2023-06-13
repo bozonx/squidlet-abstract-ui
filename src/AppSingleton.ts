@@ -14,7 +14,7 @@ export enum APP_EVENTS {
   initFinished,
   // destroy started
   destroy,
-  // outcome event which has to handle renderer
+  // outcome event which has to be handled by external renderer
   render,
 }
 
@@ -26,7 +26,7 @@ export enum APP_EVENTS {
  * or server side renderer.
  */
 export class AppSingleton {
-  //readonly outcomeEvents = new IndexedEvents<OutcomeEventHandler>()
+  // TODO: переместить в events
   readonly incomeEvents = new IndexedEventEmitter()
   readonly events = new IndexedEventEmitter()
   readonly root: RootComponent
