@@ -31,7 +31,7 @@ export enum APP_EVENTS {
 export class AppSingleton {
   readonly events = new IndexedEventEmitter()
   readonly root: RootComponent
-  readonly router = new AppRouter()
+  readonly router = new AppRouter(this)
   readonly context = new AppContext(this)
   private readonly main: Main
 

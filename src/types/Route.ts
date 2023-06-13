@@ -1,18 +1,19 @@
 import {ScreenComponent, ScreenDefinition} from '../ScreenComponent.js';
 
 
-// this is definition of route in App config
-export interface RouteDefinition {
+export interface RouteBase {
   path: string
-  // it is screen name which will be get from AppDefinition.screens
-  // of complete screen definition
-  screen: string | ScreenDefinition
   params?: Record<string, any>
 }
 
+// this is definition of route in App config
+export interface RouteDefinition extends RouteBase {
+  // it is screen name which will be get from AppDefinition.screens
+  // of complete screen definition
+  screen: string | ScreenDefinition
+}
+
 // this is runtime route
-export interface Route {
-  path: string
+export interface Route extends RouteBase {
   screen: ScreenComponent
-  params?: Record<string, any>
 }

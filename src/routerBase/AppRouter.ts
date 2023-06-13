@@ -1,7 +1,8 @@
 import {IndexedEventEmitter} from 'squidlet-lib';
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
-import {Route, RouteDefinition} from '../types/Route.js';
+import {Route, RouteBase, RouteDefinition} from '../types/Route.js';
 import {ScreenComponent, ScreenDefinition} from '../ScreenComponent.js';
+import {AppSingleton} from '../AppSingleton.js';
 
 
 export enum APP_ROUTER_EVENTS {
@@ -11,13 +12,18 @@ export enum APP_ROUTER_EVENTS {
   routesAdded,
 }
 
+interface StoredRoute extends RouteBase {
+  screen: string
+}
+
 
 export class AppRouter {
   readonly breadCrumbs = new BreadCrumbs()
   readonly events = new IndexedEventEmitter()
-  private routes: Route[] = []
+  private routes: StoredRoute[] = []
   private currentRoute!: Route
-  private screensDefinition: ScreenDefinition[] = []
+  private screensDefinitions: ScreenDefinition[] = []
+  private readonly app: AppSingleton
 
 
   get isDestroyed(): boolean {
@@ -53,7 +59,8 @@ export class AppRouter {
   }
 
 
-  constructor() {
+  constructor(app: AppSingleton) {
+    this.app = app
   }
 
   init(
@@ -63,21 +70,33 @@ export class AppRouter {
   ) {
 
     // TODO: запретить инициализировать повторно
-    // TODO: scrrens надо хранить так как если потом добавляешь роуты то можно их использовать
-    // TODO: надо хрнить definiton скринов так как они будут создаваться при переходах
 
-    this.screensDefinition = [ ...screensDefinitions || [] ]
+    if (!routes || !routes.length) return
 
-    if (routes) {
-      for (const routeDef of routes) {
-        const route: Route = {
-          path: routeDef.path,
-          screen: this.resolveScreen(routeDef.screen, screens),
-          params: routeDef.params,
-        }
+    this.screensDefinitions = [ ...screensDefinitions || [] ]
 
-        this.routes.push(route)
+    for (const routeDef of routes) {
+      let screenName: string | undefined
+
+      if (typeof routeDef.screen === 'object') {
+        // found definition. Save it to collection
+        this.screensDefinitions.push(routeDef.screen)
+
+        screenName = routeDef.screen.name
       }
+      else {
+        screenName = routeDef.screen
+      }
+
+      if (typeof screenName !== 'string') {
+        throw new Error(`Can't resolve screen name`)
+      }
+
+      this.routes.push({
+        path: routeDef.path,
+        screen: screenName,
+        params: routeDef.params,
+      })
     }
 
     this.breadCrumbs.pathChangeEvent.addListener(this.onPathChanged)
@@ -85,7 +104,7 @@ export class AppRouter {
   }
 
   destroy() {
-    // TODO: задестроить все Screen
+    // TODO: задестроить current screen
     this.routes = []
 
     this.breadCrumbs.destroy()
@@ -163,25 +182,32 @@ export class AppRouter {
     })
   }
 
-  private resolveScreen(
-    defScreen: string | ScreenDefinition,
-    screens: ScreenComponent[]
-  ): ScreenComponent {
-    if (typeof defScreen === 'string') {
-      const foundScreen = screens.find((scr) => {
-        return scr.name === defScreen
-      })
-
-      if (!foundScreen) throw new Error(`Can't find screen "${defScreen}"`)
-      // return screen which was found
-      return foundScreen
-    }
-
-    return this.instantiateScreen(defScreen)
-  }
+  // private resolveScreen(
+  //   defScreen: string | ScreenDefinition,
+  //   screens: ScreenComponent[]
+  // ): ScreenDefinition {
+  //   if (typeof defScreen === 'string') {
+  //     const foundScreen = screens.find((scr) => {
+  //       return scr.name === defScreen
+  //     })
+  //
+  //     if (!foundScreen) throw new Error(`Can't find screen "${defScreen}"`)
+  //     // return screen which was found
+  //     return foundScreen
+  //   }
+  //
+  //   return this.instantiateScreen(defScreen)
+  // }
 
   private instantiateScreen(scrDef: ScreenDefinition): ScreenComponent {
-    return new Screen(defScreen)
+    return new ScreenComponent(
+      this.app,
+      // TODO: на самом деле взять Route компонент, но как ???
+      this.app.root,
+      defScreen,
+      // TODO: слота не должно быть
+      {}
+    )
   }
 
 }

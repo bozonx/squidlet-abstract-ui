@@ -113,6 +113,7 @@ export class Component {
     parent: Component,
     // definition component itself
     componentDefinition: ComponentDefinition,
+    // TODO: почему он обязательный ???
     // slots of component which get from parent component template
     slotsDefinition: SlotsDefinition,
 
