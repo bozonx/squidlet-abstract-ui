@@ -205,7 +205,7 @@ export class Component {
     )
 
     if (!silent) {
-      this.app.outcomeEvents.emit(OutcomeEvents.mount, this.render())
+      this.app.$$render(OutcomeEvents.mount, this.render())
     }
 
     for (const child of this.children) {
@@ -230,7 +230,7 @@ export class Component {
     }
 
     if (!silent) {
-      this.app.outcomeEvents.emit(OutcomeEvents.unMount, renderComponentBase(this))
+      this.app.$$render(OutcomeEvents.unMount, renderComponentBase(this))
     }
 
     this.events.emit(COMPONENT_EVENTS.unmounted)

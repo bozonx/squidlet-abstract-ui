@@ -1,13 +1,10 @@
-import {IndexedEventEmitter, IndexedEvents, Logger} from 'squidlet-lib'
+import {IndexedEventEmitter, Logger} from 'squidlet-lib'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
 import {IncomeEvents, OutcomeEvents} from './types/DomEvents.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {ComponentDefinition} from './Component.js';
 import {AppRouter} from './routerBase/AppRouter.js';
-
-
-type OutcomeEventHandler = (event: OutcomeEvents, el: RenderedElement) => void
 
 
 export const COMPONENT_EVENT_PREFIX = 'C|'
@@ -17,6 +14,8 @@ export enum APP_EVENTS {
   initFinished,
   // destroy started
   destroy,
+  // outcome event which has to handle renderer
+  render,
 }
 
 
@@ -27,8 +26,9 @@ export enum APP_EVENTS {
  * or server side renderer.
  */
 export class AppSingleton {
-  readonly outcomeEvents = new IndexedEvents<OutcomeEventHandler>()
+  //readonly outcomeEvents = new IndexedEvents<OutcomeEventHandler>()
   readonly incomeEvents = new IndexedEventEmitter()
+  readonly events = new IndexedEventEmitter()
   readonly root: RootComponent
   readonly router = new AppRouter()
   private readonly main: Main
@@ -50,24 +50,35 @@ export class AppSingleton {
 
 
   async init() {
+    this.events.emit(APP_EVENTS.initStarted)
+
     this.router.init(this.main.componentsManager.appDefinition.routes)
     await this.root.init()
     // render root component
     await this.root.mount()
 
-    // TODO: поднять событие started
+    this.events.emit(APP_EVENTS.initFinished)
   }
 
   async destroy() {
-    // TODO: поднять событие destroy
+    this.events.emit(APP_EVENTS.destroy)
 
-    this.outcomeEvents.destroy()
+    this.events.destroy()
     this.incomeEvents.destroy()
     // tell the ui to unmount root
     // TODO: а нужно ли это? может destroy автоматом значит и unmount?
     //await this.root.unmount()
     await this.root.destroy()
     this.router.destroy()
+  }
+
+  /**
+   * It is called from component to render an element
+   * @param event
+   * @param el
+   */
+  $$render(event: OutcomeEvents, el: RenderedElement) {
+    this.events.emit(APP_EVENTS.render, event, el)
   }
 
 
