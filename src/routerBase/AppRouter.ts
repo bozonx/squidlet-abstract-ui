@@ -54,6 +54,9 @@ export class AppRouter {
 
 
   constructor() {
+
+    // TODO: сделать из RouteDefinition - Route
+
   }
 
   init(routes?: Route[], initialPath: string = BREADCRUMBS_DELIMITER) {

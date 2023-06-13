@@ -1,5 +1,5 @@
 import {ScreenDefinition} from '../Screen.js';
-import {Route} from './Route.js';
+import {RouteDefinition} from './Route.js';
 import {ComponentDefinition} from './ComponentDefinition.js';
 
 
@@ -10,7 +10,7 @@ export interface AppDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state
   // these screens you can several times in routes
   screens?: ScreenDefinition[]
 
-  routes?: Route[]
+  routes?: RouteDefinition[]
 
   // TODO: пользовательские настройки для приложения
 }
