@@ -5,6 +5,7 @@ import {IncomeEvents, RenderEvents} from './types/DomEvents.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {AppRouter} from './routerBase/AppRouter.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
+import {AppContext} from './AppContext.js';
 
 
 const COMPONENT_EVENT_PREFIX = '|C|'
@@ -31,6 +32,7 @@ export class AppSingleton {
   readonly events = new IndexedEventEmitter()
   readonly root: RootComponent
   readonly router = new AppRouter()
+  readonly context = new AppContext(this)
   private readonly main: Main
 
 
@@ -49,10 +51,10 @@ export class AppSingleton {
   }
 
 
-  async init() {
+  async init(initialPath?: string) {
     this.events.emit(APP_EVENTS.initStarted)
 
-    this.router.init(this.main.componentsManager.appDefinition.routes)
+    this.router.init(this.main.componentsManager.appDefinition.routes, initialPath)
     await this.root.init()
     // render root component
     await this.root.mount()

@@ -17,6 +17,8 @@ import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
 import {AppSingleton} from './AppSingleton.js'
 import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} from './helpers/componentHelper.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
+import {AppContext} from './AppContext.js';
+import {Screen} from './Screen.js';
 
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
@@ -28,6 +30,11 @@ import {ComponentDefinition} from './types/ComponentDefinition.js';
 // TODO: call onUnmount component's callback of component definition
 
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
+
+// TODO: у компонентов сделать публичное свойство screen - указывает на его скрин
+// TODO: у компонентов сделать публичное свойство app - указывает на AppContext
+
+
 
 export enum COMPONENT_EVENTS {
   initStart,
@@ -45,13 +52,12 @@ export enum COMPONENT_EVENTS {
  * Scope for executing sprog
  */
 export interface ComponentScope {
-  app: AppSingleton
+  app: AppContext
+  screen?: Screen
+  // own props
   props: ProxyfiedStruct
+  // own state
   state: ProxyfiedData
-
-  // TODO: чо за нах? Нужен контекст от screen
-  // local vars and context of functions execution
-  //context: Record<any, any>
 }
 
 
@@ -122,7 +128,7 @@ export class Component {
     this.state = (new SuperData(componentDefinition.state || {})).getProxy()
     // TODO: наследовать от родиьельского scope
     this.scope = newScope<ComponentScope>({
-      app: this.app,
+      app: this.app.context,
       props: this.props,
       state: this.state,
       // TODO: добавить slots

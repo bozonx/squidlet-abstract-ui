@@ -17,6 +17,9 @@ export interface ScreenDefinition extends ComponentDefinition {
 
 // TODO: получить роуте можно через props
 // TODO: screen появляется в scope всех дочерних компонентов
+// TODO: scope у компонентов накладывается только на root scope и на screen scope
+//       и то даже можно делать не через наложение а просто подставлять в scope
+//       компонента свойства - app и screen
 
 
 export class Screen extends Component {

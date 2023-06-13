@@ -46,6 +46,7 @@ export class Main {
 
     this.systemEvents.emit(SYSTEM_EVENTS.newApp, this.app)
 
+    // TODO: поддержка initialPath
     await this.app.init()
 
     this.systemEvents.emit(SYSTEM_EVENTS.initFinished)

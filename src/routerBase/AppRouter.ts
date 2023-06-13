@@ -1,6 +1,6 @@
 import {IndexedEventEmitter} from 'squidlet-lib';
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
-import {Route} from '../types/Route.js';
+import {Route, RouteDefinition} from '../types/Route.js';
 import {Screen} from '../Screen.js';
 
 
@@ -54,12 +54,12 @@ export class AppRouter {
 
 
   constructor() {
+  }
+
+  init(routes?: RouteDefinition[], initialPath: string = BREADCRUMBS_DELIMITER) {
 
     // TODO: сделать из RouteDefinition - Route
 
-  }
-
-  init(routes?: Route[], initialPath: string = BREADCRUMBS_DELIMITER) {
     if (routes) this.routes = routes
 
     this.breadCrumbs.pathChangeEvent.addListener(this.onPathChanged)
