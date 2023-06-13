@@ -7,7 +7,7 @@ import {AppRouter} from './routerBase/AppRouter.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 
 
-export const COMPONENT_EVENT_PREFIX = 'C|'
+const COMPONENT_EVENT_PREFIX = '|C|'
 
 export enum APP_EVENTS {
   initStarted,
@@ -16,6 +16,8 @@ export enum APP_EVENTS {
   destroy,
   // outcome event which has to be handled by external renderer
   render,
+  // ordinary income event
+  income,
 }
 
 
@@ -26,8 +28,7 @@ export enum APP_EVENTS {
  * or server side renderer.
  */
 export class AppSingleton {
-  // TODO: переместить в events
-  readonly incomeEvents = new IndexedEventEmitter()
+  //readonly incomeEvents = new IndexedEventEmitter()
   readonly events = new IndexedEventEmitter()
   readonly root: RootComponent
   readonly router = new AppRouter()
@@ -65,7 +66,6 @@ export class AppSingleton {
     await this.root.destroy()
     this.router.destroy()
     this.events.destroy()
-    this.incomeEvents.destroy()
   }
 
   /**
@@ -83,13 +83,17 @@ export class AppSingleton {
    */
   emitIncomeEvent(event: IncomeEvents, componentId: string, ...data: any[]) {
     // emit ordinary event
-    this.incomeEvents.emit(event, componentId, ...data)
+    this.events.emit(APP_EVENTS.income, event, componentId, ...data)
     // emit component specific event
-    this.incomeEvents.emit(COMPONENT_EVENT_PREFIX + componentId, event, ...data)
+    this.events.emit(this.makeIncomeEventName(componentId), event, ...data)
   }
 
   getComponentDefinition = (componentName: string): ComponentDefinition => {
     return this.main.componentsManager.getComponentDefinition(componentName)
+  }
+
+  makeIncomeEventName(componentId: string): string {
+    return APP_EVENTS.income + COMPONENT_EVENT_PREFIX + componentId
   }
 
 }

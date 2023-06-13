@@ -14,7 +14,7 @@ import {IncomeEvents, RenderEvents} from './types/DomEvents.js'
 import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
-import {AppSingleton, COMPONENT_EVENT_PREFIX} from './AppSingleton.js'
+import {AppSingleton} from './AppSingleton.js'
 import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} from './helpers/componentHelper.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 
@@ -171,7 +171,7 @@ export class Component {
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя
 
-    this.app.incomeEvents.removeListener(this.incomeEventListenerIndex)
+    this.app.events.removeListener(this.incomeEventListenerIndex, this.app.makeIncomeEventName(this.id))
     // destroy all the children
     for (const component of this.children) await component.destroy(false)
 
@@ -195,8 +195,8 @@ export class Component {
    */
   async mount(silent: boolean = false) {
     // start listening income events
-    this.incomeEventListenerIndex = this.app.incomeEvents.addListener(
-      COMPONENT_EVENT_PREFIX + this.id,
+    this.incomeEventListenerIndex = this.app.events.addListener(
+      this.app.makeIncomeEventName(this.id),
       this.handleIncomeEvent
     )
 
@@ -220,7 +220,7 @@ export class Component {
    */
   async unmount(silent: boolean = false) {
     // stop listening income events
-    this.app.incomeEvents.removeListener(this.incomeEventListenerIndex)
+    this.app.events.removeListener(this.incomeEventListenerIndex, this.app.makeIncomeEventName(this.id))
 
     for (const child of this.children) {
       // unmount child always silent
