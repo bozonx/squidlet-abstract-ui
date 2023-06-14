@@ -2,11 +2,12 @@ import {IndexedEventEmitter, Logger} from 'squidlet-lib'
 import {ProxyfiedData, SuperData} from 'squidlet-sprog'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
-import {INCOME_EVENTS, RenderEvents} from './types/DomEvents.js';
+import {INCOME_EVENTS} from './types/DomEvents.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {AppRouter} from './routerBase/AppRouter.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 import {AppContext} from './AppContext.js';
+import {RenderEvents} from './types/RenderEvents.js';
 
 
 const COMPONENT_EVENT_PREFIX = '|C|'
