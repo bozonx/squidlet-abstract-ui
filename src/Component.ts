@@ -28,6 +28,8 @@ import {ScreenComponent} from './ScreenComponent.js';
 // TODO: продумать связь props с потомками компонента
 // TODO: дети поднимают события наверх, на которые явно подписались в шаблоне
 //       хотя можно явно вызывать у родителя, а он уже будет отсеивать
+// TODO: если компонент отмонтирован то он должен перестать генерировать события вверх
+//       и перестать слушать props все другие события
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
@@ -102,7 +104,7 @@ export class Component {
   }
 
   get mounted(): boolean {
-    return typeof this.incomeEventListenerIndex === 'undefined'
+    return typeof this.incomeEventListenerIndex !== 'undefined'
   }
 
   get screen(): ScreenComponent | undefined {
@@ -180,6 +182,8 @@ export class Component {
     for (const childIndex of this.children.$super.allKeys) {
       // child is component
       await this.children[childIndex].init()
+
+      // TODO: надо начать слушать события детей которые они поднимают наверх
     }
 
     this.events.emit(COMPONENT_EVENTS.initFinished)
@@ -230,15 +234,10 @@ export class Component {
       this.app.makeIncomeEventName(this.id),
       this.handleIncomeEvent
     )
+    // mount child always silent
+    for (const child of this.children) await child.mount(false)
 
     if (allowRender) this.app.$$render(RenderEvents.mount, this.render())
-
-    for (const child of this.children) {
-      // mount child always silent
-      await child.mount(false)
-
-      // TODO: надо начать слушать события детей которые они поднимают наверх
-    }
 
     this.events.emit(COMPONENT_EVENTS.mounted)
   }
@@ -254,14 +253,10 @@ export class Component {
 
     this.stopListenIncomeEvents()
 
-    for (const child of this.children) {
-      // unmount child always silent
-      await child.unmount(false)
-    }
+    // unmount child always silent
+    for (const child of this.children) await child.unmount(false)
 
-    if (allowRender) {
-      this.app.$$render(RenderEvents.unMount, renderComponentBase(this))
-    }
+    if (allowRender) this.app.$$render(RenderEvents.unMount, renderComponentBase(this))
 
     this.events.emit(COMPONENT_EVENTS.unmounted)
   }
