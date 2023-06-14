@@ -1,4 +1,4 @@
-import {SuperItemInitDefinition, SprogDefinition} from 'squidlet-sprog'
+import {SuperItemInitDefinition, SprogDefinition, OrderedFuncDefinition} from 'squidlet-sprog'
 import {CmpInstanceDefinition} from './CmpInstanceDefinition.js';
 
 
@@ -15,8 +15,10 @@ export interface ComponentDefinition {
   // deep param path is supported
   uiParams?: (string | [string, () => any])[]
   // handlers of income ui events. Like {click: $expDefinition}
-  // TODO: добавить SuperFunc и для обычной прописать аргементы
-  handlers?: Record<string, () => void>
+  // These handlers will be called in component scope
+  // with additional vars: args
+  // TODO: все definition известны заранее
+  handlers?: Record<string, OrderedFuncDefinition>
   tmpl?: CmpInstanceDefinition[]
 
   // Life cycle callbacks. They are just sprog line which will be called

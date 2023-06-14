@@ -2,7 +2,7 @@ import {IndexedEventEmitter, Logger} from 'squidlet-lib'
 import {ProxyfiedData, SuperData} from 'squidlet-sprog'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
-import {IncomeEvents, RenderEvents} from './types/DomEvents.js';
+import {INCOME_EVENTS, RenderEvents} from './types/DomEvents.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {AppRouter} from './routerBase/AppRouter.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
@@ -94,7 +94,7 @@ export class AppSingleton {
   /**
    * Call it from outside code
    */
-  emitIncomeEvent(event: IncomeEvents, componentId: string, ...data: any[]) {
+  emitIncomeEvent(event: keyof typeof INCOME_EVENTS, componentId: string, ...data: any[]) {
     // emit ordinary event
     this.events.emit(APP_EVENTS.income, event, componentId, ...data)
     // emit component specific event

@@ -13,7 +13,7 @@ import {
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
-import {IncomeEvents, RenderEvents} from './types/DomEvents.js'
+import {INCOME_EVENTS, RenderEvents} from './types/DomEvents.js'
 import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
@@ -295,29 +295,28 @@ export class Component {
   }
 
 
-  // TODO: review
   /**
-   * Handle event which is income from frontend.
+   * Handle event which income from frontend.
    * It will call corresponding event handler.
    * @param event
    * @param args
    */
-  private handleIncomeEvent = (event: IncomeEvents, ...args: any[]) => {
+  private handleIncomeEvent = (eventName: keyof typeof INCOME_EVENTS, ...args: any[]) => {
     (async () => {
-      switch (event) {
-        case IncomeEvents.click:
-          if (this.componentDefinition?.handlers?.click) {
-            const scope = newScope({
-              context: {
-                args
-              }
-            }, this.scope)
 
-            await scope.run(this.componentDefinition.handlers.click)
-          }
+      // TODO: если так посмотреть то мы изначально знаем и имена параметров и из
+      //       definition, так как на каждое событие определенный вызов ф-и
+      //       получается надо просто дать возможность переименовать параметры
+      //       и установить значения по умолчанию
 
-          break
-      }
+      const funcDefinition = this.componentDefinition
+        ?.handlers?.[eventName]
+
+      if (!funcDefinition) return
+
+      // TODO: надо вызвать OrderedFunc, можно через scope.run
+
+      //await scope.run(this.componentDefinition.handlers.click)
     })()
       .catch(this.app.log.error)
   }
