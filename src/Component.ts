@@ -110,14 +110,8 @@ export class Component {
     parent: Component,
     // definition component itself
     componentDefinition: ComponentDefinition,
-    // TODO: почему он обязательный ???
     // slots of component which get from parent component template
-    slotsDefinition: SlotsDefinition,
-
-    // TODO: может просто родитель сам устанавливать значений в одностороннем порядке
-    //       или будет делать Link к себе
-    // props which parent give
-    //incomeProps: ProxyfiedStruct
+    slotsDefinition?: SlotsDefinition,
   ) {
     this.app = app
     this.parent = parent

@@ -11,7 +11,7 @@ export class ComponentSlotsManager {
   private slotsDefinition: SlotsDefinition
 
 
-  constructor(slotsDefinition: SlotsDefinition) {
+  constructor(slotsDefinition: SlotsDefinition = {}) {
     this.slotsDefinition = slotsDefinition
   }
 
