@@ -21,18 +21,16 @@ import {AppContext} from './AppContext.js';
 import {ScreenComponent} from './ScreenComponent.js';
 
 
-// TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: внимательно продумать unmount и destroy
 // TODO: продумать связь props с потомками компонента
 
 // TODO: run onUpdate callback of component definition
 // TODO: call onMount component's callback of component definition
 // TODO: call onUnmount component's callback of component definition
+// ------
 
+// TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
-
-// TODO: у компонентов сделать публичное свойство screen - указывает на его скрин
-// TODO: у компонентов сделать публичное свойство app - указывает на AppContext
 
 
 
@@ -48,18 +46,20 @@ export enum COMPONENT_EVENTS {
 }
 
 
-// TODO: разрешить добавлять свои параметры в scope для всех компонентов
-
 /**
  * Scope for executing sprog
  */
 export interface ComponentScope {
   app: AppContext
+  // screen which is rendered by router
   screen?: ScreenComponent
   // own props
   props: ProxyfiedStruct
   // own state
   state: ProxyfiedData
+  component: Component
+  // any other variables
+  [index: string]: any
 }
 
 
@@ -83,21 +83,14 @@ export class Component {
   readonly slots: ComponentSlotsManager
   // it uses only by parent to set props. Don't use it by yourself
   $$propsSetter!: (name: string, value: any) => void
-
   protected readonly app: AppSingleton
   // component's class definition
   protected readonly componentDefinition: ComponentDefinition
-
-  // TODO: наверное это геттер из scope
   // local state of component instance
   protected readonly state: ProxyfiedData
-  // TODO: наверное это геттер из scope
   // It is scope for template runtime
   protected readonly scope: ComponentScope & SuperScope
   private incomeEventListenerIndex?: number
-
-  // Runtime position of children components. Like [componentId, ...]
-  //protected childrenPosition: string[] = []
 
 
   /**
@@ -105,6 +98,10 @@ export class Component {
    */
   get name(): string {
     return this.componentDefinition.name
+  }
+
+  get screen(): ScreenComponent | undefined {
+    return this.parent && this.parent.screen
   }
 
 
@@ -129,12 +126,21 @@ export class Component {
     this.slots = new ComponentSlotsManager(slotsDefinition)
     this.props = (new SuperStruct(componentDefinition.props || {}, true)).getProxy()
     this.state = (new SuperData(componentDefinition.state || {})).getProxy()
-    // TODO: наследовать от родиьельского scope
     this.scope = newScope<ComponentScope>({
-      app: this.app.context,
-      props: this.props,
-      state: this.state,
-      // TODO: добавить slots
+      get app() {
+        return this.app.context
+      },
+      get props() {
+        return this.props
+      },
+      get state() {
+        return this.state
+      },
+      get slots() {
+        return this.slots
+      },
+      screen: this.screen,
+      component: this,
     })
     this.children = (new SuperArray({
       // TODO: а тип какой ????

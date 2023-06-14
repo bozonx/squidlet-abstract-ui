@@ -30,6 +30,10 @@ export class ScreenComponent extends Component {
     return this.props.route
   }
 
+  get screen(): ScreenComponent | undefined {
+    return this
+  }
+
 
   constructor(
     app: AppSingleton,
