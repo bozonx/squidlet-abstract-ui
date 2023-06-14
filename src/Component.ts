@@ -131,18 +131,22 @@ export class Component {
     this.props = (new SuperStruct(componentDefinition.props || {}, true)).getProxy()
     this.state = (new SuperData(componentDefinition.state)).getProxy()
     this.scope = newScope<ComponentScope>({
-      get props() {
-        return this.props
-      },
-      get state() {
-        return this.state
-      },
-      get slots() {
-        return this.slots
-      },
-      get app() {
-        return this.app.context
-      },
+      props: this.props,
+      state: this.state,
+      slots: this.slots,
+      app: this.app.context,
+      // get props() {
+      //   return this.props
+      // },
+      // get state() {
+      //   return this.state
+      // },
+      // get slots() {
+      //   return this.slots
+      // },
+      // get app() {
+      //   return this.app.context
+      // },
       screen: this.screen,
       component: this,
     })
