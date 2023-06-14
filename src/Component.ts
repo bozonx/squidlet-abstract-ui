@@ -26,6 +26,8 @@ import {ScreenComponent} from './ScreenComponent.js';
 
 // TODO: внимательно продумать unmount и destroy
 // TODO: продумать связь props с потомками компонента
+// TODO: дети поднимают события наверх, на которые явно подписались в шаблоне
+//       хотя можно явно вызывать у родителя, а он уже будет отсеивать
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
@@ -99,6 +101,10 @@ export class Component {
     return this.componentDefinition.name
   }
 
+  get mounted(): boolean {
+    return typeof this.incomeEventListenerIndex === 'undefined'
+  }
+
   get screen(): ScreenComponent | undefined {
     return this.parent && this.parent.screen
   }
@@ -161,6 +167,9 @@ export class Component {
       // TODO: слушать изменения children
     })
 
+    // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
+    //       и удалить его у себя
+
     // TODO: а если там указанны super значения, а в definition простые?
     this.$$propsSetter = this.props.$super.init(this.initialProps)
 
@@ -192,17 +201,14 @@ export class Component {
 
     this.events.emit(COMPONENT_EVENTS.destroy)
     this.events.destroy()
+    this.stopListenIncomeEvents()
 
-    // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
-    //       и удалить его у себя
-
-    this.app.events.removeListener(this.incomeEventListenerIndex, this.app.makeIncomeEventName(this.id))
-    // destroy all the children
+    // destroy all the children without emitting render events
     for (const component of this.children) await component.destroy(false)
 
     await this.slots.destroy()
-    this.scope.$super.destroy()
     this.children.$super.destroy()
+    this.scope.$super.destroy()
     // props and state are destroyed as scope children
     // emit component destroy event
     if (allowRender) {
@@ -214,30 +220,24 @@ export class Component {
   /**
    * Mount this component's element.
    * Actually means emit mount event and listen element's income events.
-   * @param silent - means do not emit render event.
-   *   It is used only if parent has already rendered. Buy this component need to
-   *   listen ui events
    */
-  async mount(silent: boolean = false) {
+  async mount(allowRender: boolean = true) {
     if (this.componentDefinition.onMount) {
       await this.runSprogCallback(this.componentDefinition.onMount)
     }
-
     // start listening income events
     this.incomeEventListenerIndex = this.app.events.addListener(
       this.app.makeIncomeEventName(this.id),
       this.handleIncomeEvent
     )
 
-    if (!silent) {
-      this.app.$$render(RenderEvents.mount, this.render())
-    }
-
-    // TODO: переименовать silent в allowRender
+    if (allowRender) this.app.$$render(RenderEvents.mount, this.render())
 
     for (const child of this.children) {
       // mount child always silent
-      await child.mount(true)
+      await child.mount(false)
+
+      // TODO: надо начать слушать события детей которые они поднимают наверх
     }
 
     this.events.emit(COMPONENT_EVENTS.mounted)
@@ -247,22 +247,19 @@ export class Component {
    * Unmount this component's element.
    * Means stop listenint ui change events and But the component won't be destroyed
    */
-  async unmount(silent: boolean = false) {
+  async unmount(allowRender: boolean = true) {
     if (this.componentDefinition.onUnmount) {
       await this.runSprogCallback(this.componentDefinition.onUnmount)
     }
 
-    // stop listening income events
-    this.app.events.removeListener(this.incomeEventListenerIndex, this.app.makeIncomeEventName(this.id))
+    this.stopListenIncomeEvents()
 
     for (const child of this.children) {
       // unmount child always silent
-      await child.unmount(true)
+      await child.unmount(false)
     }
 
-    // TODO: переименовать silent в allowRender
-
-    if (!silent) {
+    if (allowRender) {
       this.app.$$render(RenderEvents.unMount, renderComponentBase(this))
     }
 
@@ -381,6 +378,15 @@ export class Component {
     const superFunc = new SuperFunc(this.scope, {}, lines)
 
     await superFunc.exec()
+  }
+
+  private stopListenIncomeEvents() {
+    this.app.events.removeListener(
+      this.incomeEventListenerIndex,
+      this.app.makeIncomeEventName(this.id)
+    )
+
+    delete this.incomeEventListenerIndex
   }
 
 }

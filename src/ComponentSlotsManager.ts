@@ -15,12 +15,12 @@ export class ComponentSlotsManager {
     this.slotsDefinition = slotsDefinition
   }
 
-  async init(scope: Record<any, any>) {
-
-  }
+  // async init(scope: Record<any, any>) {
+  //
+  // }
 
   async destroy() {
-
+    // TODO: ???
   }
 
 
