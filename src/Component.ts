@@ -262,11 +262,11 @@ export class Component {
   }
 
   /**
-   * Get position of child by its UI el id.
+   * Get position of child by its component id.
    * -1 means - can't find child
    */
-  getIndexOfChild(childId: string): number | undefined {
-    return this.children.findIndex((el) => el.id === childId)
+  getIndexOfChild(childComponentId: string): number {
+    return this.children.findIndex((el) => el.id === childComponentId)
   }
 
   /**

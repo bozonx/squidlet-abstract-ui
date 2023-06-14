@@ -12,6 +12,9 @@ import {RenderedElement} from '../types/RenderedElement.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 
 
+// TODO: review
+
+
 export function parseCmpInstanceDefinition(
   app: AppSingleton,
   instanceDefinition: CmpInstanceDefinition
@@ -81,7 +84,7 @@ export function renderComponentBase(cmp: Component): RenderedElement {
 
     const parentChildPosition = cmp.parent.getIndexOfChild(cmp.id)
 
-    if (typeof parentChildPosition === 'undefined') {
+    if (parentChildPosition === -1) {
       throw new Error(`Can't find my "${cmp.id}" position of parent ${cmp.parent.id}`)
     }
 
