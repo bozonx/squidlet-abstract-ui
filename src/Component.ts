@@ -296,6 +296,12 @@ export class Component {
 
 
   // TODO: review
+  /**
+   * Handle event which is income from frontend.
+   * It will call corresponding event handler.
+   * @param event
+   * @param args
+   */
   private handleIncomeEvent = (event: IncomeEvents, ...args: any[]) => {
     (async () => {
       switch (event) {

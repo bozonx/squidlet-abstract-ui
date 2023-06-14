@@ -50,6 +50,16 @@ export class ScreenComponent extends Component {
   }
 
 
-  // TODO: destroy storage
+  async init() {
+    this.storage.$super.init()
+
+    await super.init()
+  }
+
+  async destroy(allowRender: boolean = true) {
+    this.storage.$super.destroy()
+
+    await super.destroy(allowRender)
+  }
 
 }
