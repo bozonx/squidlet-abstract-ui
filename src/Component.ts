@@ -21,7 +21,7 @@ import {AppSingleton} from './AppSingleton.js'
 import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} from './helpers/componentHelper.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 import {AppContext} from './AppContext.js';
-import {ScreenComponent} from './ScreenComponent.js';
+import {ScreenComponent} from './routerBase/ScreenComponent.js';
 
 
 // TODO: внимательно продумать unmount и destroy

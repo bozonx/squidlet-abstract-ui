@@ -1,4 +1,4 @@
-import {ScreenComponent, ScreenDefinition} from '../ScreenComponent.js';
+import {ScreenComponent, ScreenDefinition} from '../routerBase/ScreenComponent.js';
 
 
 export interface RouteBase {

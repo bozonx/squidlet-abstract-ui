@@ -1,7 +1,7 @@
 import {IndexedEventEmitter} from 'squidlet-lib';
 import BreadCrumbs, {BREADCRUMBS_DELIMITER} from './BreadCrumbs.js';
 import {Route, RouteBase, RouteDefinition} from '../types/Route.js';
-import {ScreenComponent, ScreenDefinition} from '../ScreenComponent.js';
+import {ScreenComponent, ScreenDefinition} from './ScreenComponent.js';
 import {AppSingleton} from '../AppSingleton.js';
 
 

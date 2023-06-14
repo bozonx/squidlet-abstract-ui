@@ -1,10 +1,10 @@
 import {omitObj} from 'squidlet-lib';
 import {SuperItemInitDefinition, ProxyfiedData, SuperData} from 'squidlet-sprog'
-import {Component} from './Component.js';
-import {ComponentDefinition} from './types/ComponentDefinition.js';
-import {AppSingleton} from './AppSingleton.js';
-import {SlotsDefinition} from './ComponentSlotsManager.js';
-import {Route} from './types/Route.js';
+import {Component} from '../Component.js';
+import {ComponentDefinition} from '../types/ComponentDefinition.js';
+import {AppSingleton} from '../AppSingleton.js';
+import {SlotsDefinition} from '../ComponentSlotsManager.js';
+import {Route} from '../types/Route.js';
 
 
 export interface ScreenDefinition extends ComponentDefinition {
