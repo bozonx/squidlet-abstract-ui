@@ -332,12 +332,11 @@ export class Component {
       .catch(this.app.log.error)
   }
 
-  // TODO: review
   private instantiateChildren(): Component[] {
     const res: Component[] = []
-
     // If component have tmpl then get child from it - it is default behaviour
     if (this.componentDefinition.tmpl) {
+      // every item in tmpl will be a separate Component
       for (const childInstanceDef of this.componentDefinition.tmpl) {
         res.push(this.instantiateChild(childInstanceDef))
       }
@@ -352,25 +351,39 @@ export class Component {
     return res
   }
 
-  // TODO: review
   private instantiateChild(childInstanceDefinition: CmpInstanceDefinition): Component {
     const {
-      componentDefinition,
+      componentName,
+      propsValues,
       slotDefinition,
-      props,
-      // TODO: а реально ли пропс потомка должен иметь scope родителя???
-      // TODO: или всётаки свой scope???
-      // TODO: propSetter надо сохранить себе чтобы потом устанавливать значения
-    } = parseCmpInstanceDefinition(this.app, childInstanceDefinition)
+    } = parseCmpInstanceDefinition(childInstanceDefinition)
 
-    //console.log(1111, childUiDefinition, componentDefinition, slotDefinition, props)
+    const componentDefinition = this.app.getComponentDefinition(
+      componentName
+    )
+
+    // props: ProxyfiedStruct
+    // propSetter: (pathTo: string, newValue: any) => void
+    // TODO: а реально ли пропс потомка должен иметь scope родителя???
+    // TODO: или всётаки свой scope???
+    // TODO: propSetter надо сохранить себе чтобы потом устанавливать значения
+
+    // create a new props which is have parent scope
+    // const props = (new SuperStruct(
+    //   // if no props then put just empty props
+    //   componentDefinition.props || {},
+    //   // props are readonly by default
+    //   true
+    // )).getProxy()
+    //const propSetter = props.$super.init(propsValues)
+
 
     return new Component(
       this.app,
       this,
       componentDefinition,
+      propsValues,
       slotDefinition,
-      //props
     )
   }
 

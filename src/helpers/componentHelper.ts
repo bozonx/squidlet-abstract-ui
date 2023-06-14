@@ -1,5 +1,4 @@
 import {
-  SuperStruct,
   ProxyfiedStruct,
   ProxyfiedData,
 } from 'squidlet-sprog'
@@ -7,24 +6,14 @@ import {omitObj} from 'squidlet-lib'
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
 import {SlotsDefinition} from '../ComponentSlotsManager.js';
 import {Component} from '../Component.js';
-import {AppSingleton} from '../AppSingleton.js';
 import {RenderedElement} from '../types/RenderedElement.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 
 
-// TODO: review
-
-
-export function parseCmpInstanceDefinition(
-  app: AppSingleton,
-  instanceDefinition: CmpInstanceDefinition
-): {
-  componentName: string
+export function parseCmpInstanceDefinition(instanceDefinition: CmpInstanceDefinition): {
+  componentName: string,
   propsValues: Record<string, any>
   slotDefinition: SlotsDefinition
-  componentDefinition: ComponentDefinition
-  props: ProxyfiedStruct
-  propSetter: (pathTo: string, newValue: any) => void
 } {
   const componentName: string = instanceDefinition.component
   // values of child props which are set in this (parent) component
@@ -33,15 +22,7 @@ export function parseCmpInstanceDefinition(
     'component',
     'slot'
   )
-  const componentDefinition = app.getComponentDefinition(componentName)
-  // create a new props which is have parent scope
-  const props = (new SuperStruct(
-    // if no props then put just empty props
-    componentDefinition.props || {},
-    // props are readonly by default
-    true
-  )).getProxy()
-  const propSetter = props.$super.init(propsValues)
+
   let slotDefinition: SlotsDefinition = {}
 
   if (Array.isArray(instanceDefinition.slot)) {
@@ -49,19 +30,16 @@ export function parseCmpInstanceDefinition(
       default: instanceDefinition.slot
     }
   }
-  else if (typeof instanceDefinition.slot === 'object') {
+  else if (instanceDefinition.slot && typeof instanceDefinition.slot === 'object') {
     slotDefinition = instanceDefinition.slot
   }
 
-  return {
-    componentName,
-    propsValues,
-    slotDefinition,
-    componentDefinition,
-    props,
-    propSetter,
-  }
+  return { componentName, propsValues, slotDefinition }
 }
+
+
+// TODO: review
+
 
 export function renderComponentBase(cmp: Component): RenderedElement {
   const baseParams = {
