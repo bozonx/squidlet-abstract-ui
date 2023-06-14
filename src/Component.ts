@@ -6,7 +6,10 @@ import {
   ProxyfiedStruct,
   ProxyfiedArray,
   SuperData,
-  ProxyfiedData
+  ProxyfiedData,
+  ProxifiedSuperValue,
+  SprogDefinition,
+  SuperFunc
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
@@ -23,11 +26,6 @@ import {ScreenComponent} from './ScreenComponent.js';
 
 // TODO: внимательно продумать unmount и destroy
 // TODO: продумать связь props с потомками компонента
-
-// TODO: run onUpdate callback of component definition
-// TODO: call onMount component's callback of component definition
-// TODO: call onUnmount component's callback of component definition
-// ------
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
@@ -91,6 +89,7 @@ export class Component {
   // It is scope for template runtime
   protected readonly scope: ComponentScope & SuperScope
   private incomeEventListenerIndex?: number
+  private initialProps: Record<string, any>
 
 
   /**
@@ -110,20 +109,19 @@ export class Component {
     parent: Component,
     // definition component itself
     componentDefinition: ComponentDefinition,
+    initialProps: Record<string, any>,
     // slots of component which get from parent component template
-    slotsDefinition?: SlotsDefinition,
+    slotsDefinition?: SlotsDefinition
   ) {
     this.app = app
     this.parent = parent
     this.componentDefinition = componentDefinition
+    this.initialProps = initialProps
     this.id = this.makeId()
     this.slots = new ComponentSlotsManager(slotsDefinition)
     this.props = (new SuperStruct(componentDefinition.props || {}, true)).getProxy()
-    this.state = (new SuperData(componentDefinition.state || {})).getProxy()
+    this.state = (new SuperData(componentDefinition.state)).getProxy()
     this.scope = newScope<ComponentScope>({
-      get app() {
-        return this.app.context
-      },
       get props() {
         return this.props
       },
@@ -133,12 +131,17 @@ export class Component {
       get slots() {
         return this.slots
       },
+      get app() {
+        return this.app.context
+      },
       screen: this.screen,
       component: this,
     })
+    // TODO: а изменения порядка children через него будет или через отдельные методы?
+    // TODO: если через него то надо слушать его события чтобы отрисовывать изменение порядка
     this.children = (new SuperArray({
-      // TODO: а тип какой ????
-      type: 'any',
+      // TODO: поидее надо тип Component
+      type: 'object',
       readonly: false,
       nullable: false,
     })).getProxy()
@@ -147,16 +150,22 @@ export class Component {
 
   async init() {
     this.events.emit(COMPONENT_EVENTS.initStart)
-    // TODO: поставить initial values
-    this.$$propsSetter = this.props.$super.init()
-    // TODO: поставить initial values из свойства data шаблона
+
+    this.props.subscribe((target: ProxifiedSuperValue, path?: string) => {
+      // TODO: слушать изменения props
+    })
+    this.state.subscribe((target: ProxifiedSuperValue, path?: string) => {
+      // TODO: слушать изменения state
+    })
+    this.children.subscribe((target: ProxifiedSuperValue, path?: string) => {
+      // TODO: слушать изменения children
+    })
+
+    // TODO: а если там указанны super значения, а в definition простые?
+    this.$$propsSetter = this.props.$super.init(this.initialProps)
+
     this.state.$super.init()
-
-    const childrenInitArr = this.instantiateChildren()
-
-    this.children.$super.init(childrenInitArr)
-
-    // TODO: run onInit callback - это будут линии sprog
+    this.children.$super.init(this.instantiateChildren())
 
     // init all the children components
     for (const childIndex of this.children.$super.allKeys) {
@@ -165,6 +174,10 @@ export class Component {
     }
 
     this.events.emit(COMPONENT_EVENTS.initFinished)
+
+    if (this.componentDefinition.onInit) {
+      await this.runSprogCallback(this.componentDefinition.onInit)
+    }
   }
 
   /**
@@ -173,8 +186,11 @@ export class Component {
    * remove it. And umount means that component doesn't remove from memory.
    */
   async destroy(allowRender: boolean = true) {
-    this.events.emit(COMPONENT_EVENTS.destroy)
+    if (this.componentDefinition.onDestroy) {
+      await this.runSprogCallback(this.componentDefinition.onDestroy)
+    }
 
+    this.events.emit(COMPONENT_EVENTS.destroy)
     this.events.destroy()
 
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
@@ -203,6 +219,10 @@ export class Component {
    *   listen ui events
    */
   async mount(silent: boolean = false) {
+    if (this.componentDefinition.onMount) {
+      await this.runSprogCallback(this.componentDefinition.onMount)
+    }
+
     // start listening income events
     this.incomeEventListenerIndex = this.app.events.addListener(
       this.app.makeIncomeEventName(this.id),
@@ -228,6 +248,10 @@ export class Component {
    * Means stop listenint ui change events and But the component won't be destroyed
    */
   async unmount(silent: boolean = false) {
+    if (this.componentDefinition.onUnmount) {
+      await this.runSprogCallback(this.componentDefinition.onUnmount)
+    }
+
     // stop listening income events
     this.app.events.removeListener(this.incomeEventListenerIndex, this.app.makeIncomeEventName(this.id))
 
@@ -351,6 +375,12 @@ export class Component {
     if (!res.length) return
 
     return res
+  }
+
+  private async runSprogCallback(lines: SprogDefinition[]) {
+    const superFunc = new SuperFunc(this.scope, {}, lines)
+
+    await superFunc.exec()
   }
 
 }

@@ -1,4 +1,4 @@
-import {SuperItemInitDefinition} from 'squidlet-sprog'
+import {SuperItemInitDefinition, SprogDefinition} from 'squidlet-sprog'
 import {CmpInstanceDefinition} from './CmpInstanceDefinition.js';
 
 
@@ -18,4 +18,15 @@ export interface ComponentDefinition {
   // TODO: добавить SuperFunc и для обычной прописать аргементы
   handlers?: Record<string, () => void>
   tmpl?: CmpInstanceDefinition[]
+
+  // Life cycle callbacks. They are just sprog line which will be called
+  // with component's scope
+  // it will be run after initialization
+  onInit?: SprogDefinition[]
+  // it will be run before mount
+  onMount?: SprogDefinition[]
+  // it will be run before umount
+  onUnmount?: SprogDefinition[]
+  // it will be run before destroy
+  onDestroy?: SprogDefinition[]
 }
