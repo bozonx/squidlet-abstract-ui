@@ -135,6 +135,7 @@ export class Component {
       state: this.state,
       slots: this.slots,
       app: this.app.context,
+      // TODO: получается так нельзя делать???
       // get props() {
       //   return this.props
       // },
@@ -165,13 +166,13 @@ export class Component {
     this.events.emit(COMPONENT_EVENTS.initStart)
 
     this.props.subscribe((target: ProxifiedSuperValue, path?: string) => {
-      // TODO: слушать изменения props
+      // Listen to changes in props
     })
     this.state.subscribe((target: ProxifiedSuperValue, path?: string) => {
-      // TODO: слушать изменения state
+      // Listen to changes in state
     })
     this.children.subscribe((target: ProxifiedSuperValue, path?: string) => {
-      // TODO: слушать изменения children
+      // Listen to changes in children
     })
 
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
