@@ -1,9 +1,14 @@
 export interface IncomeEvent {
-
+  name: keyof typeof INCOME_EVENTS
+  // you can modify this to prevent bubbling up the tree
+  preventBubbling: boolean
+  params: Record<string, any>
 }
 
 
+// TODO: указать тип defintion
 export const INCOME_EVENTS_DEFINITIONS = {
+  // click:
   sendText: {
 
   },

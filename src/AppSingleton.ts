@@ -2,7 +2,7 @@ import {IndexedEventEmitter, Logger} from 'squidlet-lib'
 import {ProxyfiedData, SuperData} from 'squidlet-sprog'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
-import {INCOME_EVENTS} from './types/IncomeEvent.js';
+import {INCOME_EVENTS, IncomeEvent} from './types/IncomeEvent.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {AppRouter} from './routerBase/AppRouter.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
@@ -95,11 +95,16 @@ export class AppSingleton {
   /**
    * Call it from outside code
    */
-  emitIncomeEvent(event: keyof typeof INCOME_EVENTS, componentId: string, ...data: any[]) {
+  emitIncomeEvent(event: IncomeEvent['name'], componentId: string, params: Record<string, any>) {
+    const incomeEvent: IncomeEvent = {
+      name: event,
+      preventBubbling: false,
+      params,
+    }
     // emit ordinary event
-    this.events.emit(APP_EVENTS.income, event, componentId, ...data)
+    this.events.emit(APP_EVENTS.income, componentId, incomeEvent)
     // emit component specific event
-    this.events.emit(this.makeIncomeEventName(componentId), event, ...data)
+    this.events.emit(this.makeIncomeEventName(componentId), incomeEvent)
   }
 
   getComponentDefinition = (componentName: string): ComponentDefinition => {
