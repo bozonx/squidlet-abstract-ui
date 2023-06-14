@@ -43,9 +43,13 @@ export class ScreenComponent extends Component {
     // slots of component which get from parent component template
     slotsDefinition: SlotsDefinition,
   ) {
+    // TODO: что с props
     super(app, parent, omitObj(screenDefinition, 'storage') as ComponentDefinition, slotsDefinition)
 
     this.storage = (new SuperData(screenDefinition.storage || {})).getProxy()
   }
+
+
+  // TODO: destroy storage
 
 }

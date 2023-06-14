@@ -1,4 +1,5 @@
 import {IndexedEventEmitter, Logger} from 'squidlet-lib'
+import {ProxyfiedData, SuperData} from 'squidlet-sprog'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
 import {IncomeEvents, RenderEvents} from './types/DomEvents.js';
@@ -33,6 +34,8 @@ export class AppSingleton {
   readonly root: RootComponent
   readonly router = new AppRouter(this)
   readonly context = new AppContext(this)
+  // global storage of application
+  storage!: ProxyfiedData
   private readonly main: Main
 
 
@@ -48,12 +51,17 @@ export class AppSingleton {
       this.main.componentsManager.appDefinition.tmpl,
       this.main.componentsManager.appDefinition.state,
     )
+
   }
 
 
   async init(initialPath?: string) {
     this.events.emit(APP_EVENTS.initStarted)
 
+    this.storage = (new SuperData(
+      this.main.componentsManager.appDefinition.storage
+    )).getProxy()
+    this.storage.$super.init()
     this.router.init(
       this.main.componentsManager.appDefinition.routes,
       this.main.componentsManager.appDefinition.screens,

@@ -1,4 +1,5 @@
 import {IndexedEventEmitter, Logger} from 'squidlet-lib'
+import {ProxyfiedData} from 'squidlet-sprog'
 import {AppSingleton} from './AppSingleton.js';
 import {AppRouter} from './routerBase/AppRouter.js';
 import {RootComponent} from './RootComponent.js';
@@ -21,6 +22,10 @@ export class AppContext {
 
   get root(): RootComponent {
     return this.app.root
+  }
+
+  get storage(): ProxyfiedData {
+    return this.app.storage
   }
 
 
