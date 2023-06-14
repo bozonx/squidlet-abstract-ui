@@ -13,7 +13,7 @@ import {
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
-import {INCOME_EVENTS} from './types/DomEvents.js'
+import {INCOME_EVENTS} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'

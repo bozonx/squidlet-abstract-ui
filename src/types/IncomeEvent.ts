@@ -1,3 +1,44 @@
+export interface IncomeEvent {
+
+}
+
+
+export const INCOME_EVENTS_DEFINITIONS = {
+  sendText: {
+
+  },
+  sendPhoto: {
+
+  },
+  sendVideo: {
+
+  },
+  sendAudio: {
+
+  },
+  sendPoll: {
+
+  },
+  keyPressed: {
+
+  },
+  keyDown: {
+
+  },
+  // focus
+  // blur
+  mouseMove: {
+
+  },
+  // mouseEnter
+  // mouseLeave
+  // middleClick
+  // rightClick
+  // backClick
+  swipe: {
+
+  },
+}
 
 export const INCOME_EVENTS = {
   click: 'click',
