@@ -362,22 +362,6 @@ export class Component {
       componentName
     )
 
-    // props: ProxyfiedStruct
-    // propSetter: (pathTo: string, newValue: any) => void
-    // TODO: а реально ли пропс потомка должен иметь scope родителя???
-    // TODO: или всётаки свой scope???
-    // TODO: propSetter надо сохранить себе чтобы потом устанавливать значения
-
-    // create a new props which is have parent scope
-    // const props = (new SuperStruct(
-    //   // if no props then put just empty props
-    //   componentDefinition.props || {},
-    //   // props are readonly by default
-    //   true
-    // )).getProxy()
-    //const propSetter = props.$super.init(propsValues)
-
-
     return new Component(
       this.app,
       this,

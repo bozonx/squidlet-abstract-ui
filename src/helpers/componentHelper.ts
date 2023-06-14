@@ -40,7 +40,6 @@ export function parseCmpInstanceDefinition(instanceDefinition: CmpInstanceDefini
 
 // TODO: review
 
-
 export function renderComponentBase(cmp: Component): RenderedElement {
   const baseParams = {
     name: cmp.name,
@@ -74,6 +73,7 @@ export function renderComponentBase(cmp: Component): RenderedElement {
   }
 }
 
+// TODO: review
 export function makeComponentUiParams(
   componentDefinition: ComponentDefinition,
   props: ProxyfiedStruct,
@@ -107,4 +107,3 @@ export function makeComponentUiParams(
 export function validateComponentDefinition(cmp: ComponentDefinition) {
   // TODO: validate component
 }
-
