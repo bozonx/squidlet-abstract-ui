@@ -13,7 +13,7 @@ import {
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
-import {INCOME_EVENTS, IncomeEvent} from './types/IncomeEvent.js'
+import {INCOME_EVENTS, INCOME_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
@@ -300,7 +300,6 @@ export class Component {
    * Handle event which income from frontend.
    * It will call corresponding event handler.
    * @param event
-   * @param args
    */
   private handleIncomeEvent = (event: IncomeEvent) => {
     (async () => {
@@ -312,10 +311,14 @@ export class Component {
 
       // TODO: сделать bubbling если нет preventBubbling
 
+
       const funcDefinition = this.componentDefinition
-        ?.handlers?.[eventName]
+        ?.handlers?.[event.name]
 
       if (!funcDefinition) return
+
+      // TODO: какой тип???
+      const paramsDefinition = INCOME_EVENTS_DEFINITIONS[event.name]
 
       // TODO: надо вызвать OrderedFunc, можно через scope.run
 

@@ -7,7 +7,7 @@ export interface IncomeEvent {
 
 
 // TODO: указать тип defintion
-export const INCOME_EVENTS_DEFINITIONS = {
+export const INCOME_EVENTS_DEFINITIONS: Record<string, any> = {
   // click:
   sendText: {
 
