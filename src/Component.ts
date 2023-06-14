@@ -275,7 +275,7 @@ export class Component {
   render(): RenderedElement {
     return omitUndefined({
       ...this.renderSelf(),
-      children: this.getChildrenUiEls(),
+      children: this.renderChildren(),
     } as RenderedElement) as RenderedElement
   }
 
@@ -337,7 +337,7 @@ export class Component {
   }
 
   // TODO: review
-  instantiateChild(childInstanceDefinition: CmpInstanceDefinition): Component {
+  private instantiateChild(childInstanceDefinition: CmpInstanceDefinition): Component {
     const {
       componentDefinition,
       slotDefinition,
@@ -358,15 +358,11 @@ export class Component {
     )
   }
 
-  // TODO: review
-  private getChildrenUiEls(): RenderedElement[] | undefined {
-    const res: RenderedElement[] = []
+  private renderChildren(): RenderedElement[] | undefined {
+    const res: RenderedElement[] = this.children
+      .map((child) => child.render())
 
-    for (const child of this.children) res.push(child.render())
-
-    if (!res.length) return
-
-    return res
+    return (res.length) ? res : undefined
   }
 
   private async runSprogCallback(lines: SprogDefinition[]) {
