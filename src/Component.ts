@@ -188,6 +188,10 @@ export class Component {
     // TODO: а если там указанны super значения, а в definition простые?
     this.$$propsSetter = this.props.$super.init(this.initialProps)
 
+    this.props.subscribe(() => this.handleAnyChange())
+    this.state.subscribe(() => this.handleAnyChange())
+    this.children.$super.onArrayChange(() => this.handleAnyChange())
+
     this.state.$super.init()
     this.children.$super.init(this.instantiateChildrenComponents())
 
@@ -348,12 +352,6 @@ export class Component {
       )
 
       await superFunc.exec({ event })
-
-      if (!event.preventBubbling) {
-        // TODO: сделать bubbling если нет preventBubbling
-        // TODO: а он должен делаться даже на кастомные эвенты или только на DOM ?
-        // TODO: и вообще оно нужно?
-      }
     })()
       .catch(this.app.log.error)
   }
@@ -386,6 +384,16 @@ export class Component {
     return makeUniqId(COMPONENT_ID_BYTES_NUM)
   }
 
+
+  /**
+   * This is called on any change of props, state or children array
+   * @private
+   */
+  private handleAnyChange() {
+    // TODO: call onChange cb
+    // TODO: сделать полный пересчёт темплейта потомков и slot
+    // TODO: при этом могут какие-то удалиться или добавиться
+  }
 
   private instantiateChildrenComponents(): Component[] {
     let cmpDefinitions: CmpInstanceDefinition[] = []
