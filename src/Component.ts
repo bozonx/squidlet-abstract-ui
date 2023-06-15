@@ -136,6 +136,7 @@ export class Component {
     this.parent = parent
     this.scopeComponent = scopeComponent
     this.componentDefinition = componentDefinition
+    // TODO: они должны быть очищены от sprog или всё вместе?
     this.initialProps = initialProps
     this.id = this.makeId()
     this.slots = new ComponentSlotsManager(slotsDefinition)
@@ -198,6 +199,9 @@ export class Component {
 
     this.state.$super.init()
     this.children.$super.init(this.instantiateChildrenComponents())
+
+    // TODO: надо сделать init() всем потомкам
+
 
     // init all the children components
     for (const childIndex of this.children.$super.allKeys) {
@@ -367,12 +371,11 @@ export class Component {
 
 
   private instantiateChildrenComponents(): Component[] {
-    // TODO: надо сделать init() компоненту
-
     const cmpDefinitions =
-      (this.componentDefinition.tmpl && !this.componentDefinition.tmpl.length)
+      (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length)
         ? this.componentDefinition.tmpl
-        : [{ component: 'Slot' }]
+        : []
+        //: [{ component: 'Slot' }]
 
     return cmpDefinitions.map((el) => this.instantiateChildComponent(el))
   }
@@ -381,7 +384,6 @@ export class Component {
     const {
       componentName,
       propsValues,
-      // TODO: сделать это ф-ией ???
       slotDefinition,
     } = parseCmpInstanceDefinition(childInstanceDefinition)
 
@@ -395,8 +397,8 @@ export class Component {
       componentDefinition,
       propsValues,
       slotDefinition,
-      // give my scope component or myself that means that new scope root
-      this.scopeComponent || this,
+      // all my direct children in my scope
+      this,
     )
   }
 
