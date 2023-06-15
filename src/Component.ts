@@ -9,11 +9,12 @@ import {
   ProxyfiedData,
   ProxifiedSuperValue,
   SprogDefinition,
-  SuperFunc
+  SuperFunc,
+  SuperItemInitDefinition
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
-import {INCOME_EVENTS, INCOME_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
+import {DOM_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
 import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
@@ -308,12 +309,6 @@ export class Component {
    */
   incomeEvent = (event: IncomeEvent) => {
     (async () => {
-
-      // TODO: если так посмотреть то мы изначально знаем и имена параметров и из
-      //       definition, так как на каждое событие определенный вызов ф-и
-      //       получается надо просто дать возможность переименовать параметры
-      //       и установить значения по умолчанию
-
       // TODO: сделать bubbling если нет preventBubbling
 
 
@@ -322,17 +317,13 @@ export class Component {
 
       if (!funcDefinition) return
 
-      // TODO: какой тип???
-      const paramsDefinition = INCOME_EVENTS_DEFINITIONS[event.name]
-
-      // TODO: надо вызвать OrderedFunc, можно через scope.run
-
-      //await scope.run(this.componentDefinition.handlers.click)
-
+      const paramsDefinition: Record<string, SuperItemInitDefinition> | undefined =
+        DOM_EVENTS_DEFINITIONS[event.name]
       const superFunc = new SuperFunc(
         this.scope,
-        funcDefinition.props,
-        funcDefinition.lines
+        paramsDefinition || {},
+        funcDefinition.lines,
+        funcDefinition.redefine
       )
 
       await superFunc.exec()

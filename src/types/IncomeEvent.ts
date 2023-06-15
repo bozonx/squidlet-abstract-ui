@@ -1,16 +1,21 @@
+import {SuperItemInitDefinition} from 'squidlet-sprog'
+
+
 export interface IncomeEvent {
-  name: keyof typeof INCOME_EVENTS
+  name: keyof typeof DOM_EVENTS
   // you can modify this to prevent bubbling up the tree
   preventBubbling: boolean
   params: Record<string, any>
 }
 
 
-// TODO: указать тип defintion
-export const INCOME_EVENTS_DEFINITIONS: Record<string, any> = {
+export const DOM_EVENTS_DEFINITIONS: Record<string, Record<string, SuperItemInitDefinition>> = {
   // click:
   sendText: {
-
+    text: {
+      type: 'string',
+      nullable: false,
+    }
   },
   sendPhoto: {
 
@@ -45,7 +50,7 @@ export const INCOME_EVENTS_DEFINITIONS: Record<string, any> = {
   },
 }
 
-export const INCOME_EVENTS = {
+export const DOM_EVENTS = {
   click: 'click',
   // messenger events
   sendText: 'sendText',
