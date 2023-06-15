@@ -368,10 +368,17 @@ export class Component {
     let cmpDefinitions: CmpInstanceDefinition[] = []
 
     if (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length) {
+      if (this.componentDefinition.childless) {
+        throw new Error(`Component ${this.name} is childless and can't have tmpl`)
+      }
+
       cmpDefinitions = this.componentDefinition.tmpl
     }
-    else if (!isEmptyObject(this.slotsDefinition)) {
-      // if this has slot definition then put Slot component
+    else if (
+      !isEmptyObject(this.slotsDefinition)
+      && !this.componentDefinition.childless
+    ) {
+      // if this has slot definition and not childless then put Slot component
       cmpDefinitions = [{ component: 'Slot' }]
     }
 

@@ -6,6 +6,7 @@ import {Component} from '../Component.js';
 // It is definition of component class
 export interface ComponentDefinition {
   name: string
+  // if true means component don't have children
   childless?: boolean
   // this is custom component class to use instead of common Component class
   Component?: typeof Component,
