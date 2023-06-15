@@ -26,22 +26,12 @@ import {ScreenComponent} from './routerBase/ScreenComponent.js';
 import {RenderEvents} from './types/RenderEvents.js';
 
 
-// TODO: внимательно продумать unmount и destroy
-// TODO: продумать связь props с потомками компонента
-// TODO: дети поднимают события наверх, на которые явно подписались в шаблоне
-//       хотя можно явно вызывать у родителя, а он уже будет отсеивать
 // TODO: если компонент отмонтирован то он должен перестать генерировать события вверх
 //       и перестать слушать props все другие события
+// TODO: если в props есть sprog - то он должен выполниться в scope главного компонента
 
 // TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
-
-// TODO: instantiateChild должно пойти вглубь и должно создаться все дерево потомков
-// TODO: когда создаются потомки в глубине то должна быть связть props с компонентов
-//       в чьем tmpl это происходит
-// TODO: тоесть если в props есть sprog - то он должен выполниться в scope главного компонента
-
-
 
 
 export enum COMPONENT_EVENTS {
@@ -80,6 +70,7 @@ export interface ComponentScope {
  */
 export class Component {
   readonly isRoot: boolean = false
+  readonly renderable: boolean = true
   // componentId
   readonly id: string
   readonly events = new IndexedEventEmitter()
@@ -240,7 +231,7 @@ export class Component {
     this.scope.$super.destroy()
     // props and state are destroyed as scope children
     // emit component destroy event
-    if (allowRender) {
+    if (this.renderable && allowRender) {
       this.app.$$render(RenderEvents.destroy, renderComponentBase(this))
     }
   }
@@ -275,7 +266,9 @@ export class Component {
     // mount child always silent
     for (const child of this.children) await child.mount(false)
 
-    if (allowRender) this.app.$$render(RenderEvents.mount, this.render())
+    if (this.renderable && allowRender) {
+      this.app.$$render(RenderEvents.mount, this.render())
+    }
 
     this.events.emit(COMPONENT_EVENTS.mounted)
   }
@@ -294,7 +287,9 @@ export class Component {
     // unmount child always silent
     for (const child of this.children) await child.unmount(false)
 
-    if (allowRender) this.app.$$render(RenderEvents.unMount, renderComponentBase(this))
+    if (this.renderable && allowRender) {
+      this.app.$$render(RenderEvents.unMount, renderComponentBase(this))
+    }
 
     this.events.emit(COMPONENT_EVENTS.unmounted)
   }

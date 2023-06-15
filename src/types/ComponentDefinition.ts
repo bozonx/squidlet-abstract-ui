@@ -1,10 +1,13 @@
 import {SuperItemInitDefinition, SprogDefinition, SuperFuncDefinition} from 'squidlet-sprog'
 import {CmpInstanceDefinition} from './CmpInstanceDefinition.js';
+import {Component} from '../Component.js';
 
 
 // It is definition of component class
 export interface ComponentDefinition {
   name: string
+  // this is custom component class to use instead of common Component class
+  Component?: typeof Component,
   // definition of props which are controlled by parent component
   props?: Record<string, SuperItemInitDefinition>
   // local state
