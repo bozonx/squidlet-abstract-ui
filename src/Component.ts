@@ -375,7 +375,9 @@ export class Component {
       (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length)
         ? this.componentDefinition.tmpl
         : []
-        //: [{ component: 'Slot' }]
+        // TODO: поидее надо вставить комонент Slot, но он сам у себя не должен
+        //       ничего вставлять и не должен рендериться
+        //: ((this.name === 'Slot') ? [] : [{ component: 'Slot' }])
 
     return cmpDefinitions.map((el) => this.instantiateChildComponent(el))
   }
