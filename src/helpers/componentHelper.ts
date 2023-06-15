@@ -3,8 +3,7 @@ import {
   ProxyfiedData,
 } from 'squidlet-sprog'
 import {omitObj} from 'squidlet-lib'
-import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
-import {SlotsDefinition} from '../ComponentSlotsManager.js';
+import {CmpInstanceDefinition, SlotsDefinition} from '../types/CmpInstanceDefinition.js';
 import {Component} from '../Component.js';
 import {RenderedElement} from '../types/RenderedElement.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';

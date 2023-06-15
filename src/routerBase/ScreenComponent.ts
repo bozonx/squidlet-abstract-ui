@@ -3,8 +3,8 @@ import {SuperItemInitDefinition, ProxyfiedData, SuperData} from 'squidlet-sprog'
 import {Component} from '../Component.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {AppSingleton} from '../AppSingleton.js';
-import {SlotsDefinition} from '../ComponentSlotsManager.js';
 import {Route} from '../types/Route.js';
+import {SlotsDefinition} from '../types/CmpInstanceDefinition.js';
 
 
 export interface ScreenDefinition extends ComponentDefinition {

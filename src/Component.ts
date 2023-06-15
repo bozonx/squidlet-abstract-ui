@@ -13,10 +13,9 @@ import {
   SuperItemInitDefinition
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter, isEmptyObject} from 'squidlet-lib'
-import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
+import {CmpInstanceDefinition, SlotsDefinition} from './types/CmpInstanceDefinition.js'
 import {DOM_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
-import {SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
 import {AppSingleton} from './AppSingleton.js'
 import {
