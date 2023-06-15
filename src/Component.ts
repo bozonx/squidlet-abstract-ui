@@ -12,11 +12,11 @@ import {
   SuperFunc,
   SuperItemInitDefinition
 } from 'squidlet-sprog'
-import {omitUndefined, makeUniqId, IndexedEventEmitter} from 'squidlet-lib'
+import {omitUndefined, makeUniqId, IndexedEventEmitter, isEmptyObject} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
 import {DOM_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
-import {ComponentSlotsManager, SlotsDefinition} from './ComponentSlotsManager.js'
+import {SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
 import {AppSingleton} from './AppSingleton.js'
 import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} from './helpers/componentHelper.js';
@@ -70,7 +70,6 @@ export interface ComponentScope {
  */
 export class Component {
   readonly isRoot: boolean = false
-  readonly renderable: boolean = true
   // componentId
   readonly id: string
   readonly events = new IndexedEventEmitter()
@@ -82,7 +81,8 @@ export class Component {
   readonly scopeComponent?: Component
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
-  readonly slots: ComponentSlotsManager
+  readonly slotsDefinition?: SlotsDefinition
+  //readonly slots: ComponentSlotsManager
   // it uses only by parent to set props. Don't use it by yourself
   $$propsSetter!: (name: string, value: any) => void
   protected readonly app: AppSingleton
@@ -130,13 +130,13 @@ export class Component {
     // TODO: они должны быть очищены от sprog или всё вместе?
     this.initialProps = initialProps
     this.id = this.makeId()
-    this.slots = new ComponentSlotsManager(slotsDefinition)
+    this.slotsDefinition = slotsDefinition
+    //this.slots = new ComponentSlotsManager(slotsDefinition)
     this.props = (new SuperStruct(componentDefinition.props || {}, true)).getProxy()
     this.state = (new SuperData(componentDefinition.state)).getProxy()
     this.scope = newScope<ComponentScope>({
       props: this.props,
       state: this.state,
-      slots: this.slots,
       app: this.app.context,
       // TODO: получается так нельзя делать???
       // get props() {
@@ -226,12 +226,11 @@ export class Component {
     // destroy all the children without emitting render events
     for (const component of this.children) await component.destroy(false)
 
-    await this.slots.destroy()
     this.children.$super.destroy()
     this.scope.$super.destroy()
     // props and state are destroyed as scope children
     // emit component destroy event
-    if (this.renderable && allowRender) {
+    if (allowRender) {
       this.app.$$render(RenderEvents.destroy, renderComponentBase(this))
     }
   }
@@ -266,7 +265,7 @@ export class Component {
     // mount child always silent
     for (const child of this.children) await child.mount(false)
 
-    if (this.renderable && allowRender) {
+    if (allowRender) {
       this.app.$$render(RenderEvents.mount, this.render())
     }
 
@@ -287,7 +286,7 @@ export class Component {
     // unmount child always silent
     for (const child of this.children) await child.unmount(false)
 
-    if (this.renderable && allowRender) {
+    if (allowRender) {
       this.app.$$render(RenderEvents.unMount, renderComponentBase(this))
     }
 
@@ -369,10 +368,8 @@ export class Component {
     const cmpDefinitions =
       (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length)
         ? this.componentDefinition.tmpl
-        : []
-        // TODO: поидее надо вставить комонент Slot, но он сам у себя не должен
-        //       ничего вставлять и не должен рендериться
-        //: ((this.name === 'Slot') ? [] : [{ component: 'Slot' }])
+        // if this has slot definition then put Slot component
+        : ((isEmptyObject(this.slotsDefinition)) ? [] : [{ component: 'Slot' }])
 
     return cmpDefinitions.map((el) => this.instantiateChildComponent(el))
   }

@@ -6,6 +6,7 @@ import {Component} from '../Component.js';
 // It is definition of component class
 export interface ComponentDefinition {
   name: string
+  childless?: boolean
   // this is custom component class to use instead of common Component class
   Component?: typeof Component,
   // definition of props which are controlled by parent component

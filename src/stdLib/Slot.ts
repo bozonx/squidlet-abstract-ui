@@ -13,7 +13,6 @@ class SlotComponent extends Component {
 
   // TODO: а как быть с потомками они же всеравно должны отрендериться????
 
-  readonly renderable: boolean = false;
 }
 
 

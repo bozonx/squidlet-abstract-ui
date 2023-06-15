@@ -7,6 +7,8 @@ export interface SlotsDefinition {
 }
 
 
+// TODO: походу не нужно
+
 export class ComponentSlotsManager {
   private slotsDefinition: SlotsDefinition
 
