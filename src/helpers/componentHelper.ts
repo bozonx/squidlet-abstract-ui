@@ -8,6 +8,7 @@ import {SlotsDefinition} from '../ComponentSlotsManager.js';
 import {Component} from '../Component.js';
 import {RenderedElement} from '../types/RenderedElement.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
+import {AppSingleton} from '../AppSingleton.js';
 
 
 export function parseCmpInstanceDefinition(instanceDefinition: CmpInstanceDefinition): {
@@ -35,6 +36,38 @@ export function parseCmpInstanceDefinition(instanceDefinition: CmpInstanceDefini
   }
 
   return { componentName, propsValues, slotDefinition }
+}
+
+/**
+ * Make instances of my direct children
+ * @private
+ */
+export function instantiateChildComponent(
+  childInstanceDefinition: CmpInstanceDefinition,
+  app: AppSingleton,
+  parent: Component,
+  scopeComponent: Component
+): Component {
+  const {
+    componentName,
+    propsValues,
+    slotDefinition,
+  } = parseCmpInstanceDefinition(childInstanceDefinition)
+
+  const componentDefinition = app.getComponentDefinition(
+    componentName
+  )
+  // use class defined in component or simple component
+  const ComponentClass = componentDefinition.Component || Component
+
+  return new ComponentClass(
+    app,
+    parent,
+    componentDefinition,
+    propsValues,
+    slotDefinition,
+    scopeComponent
+  )
 }
 
 

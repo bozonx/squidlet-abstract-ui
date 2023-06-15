@@ -19,7 +19,12 @@ import {RenderedElement} from './types/RenderedElement.js'
 import {SlotsDefinition} from './ComponentSlotsManager.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
 import {AppSingleton} from './AppSingleton.js'
-import {makeComponentUiParams, parseCmpInstanceDefinition, renderComponentBase} from './helpers/componentHelper.js';
+import {
+  instantiateChildComponent,
+  makeComponentUiParams,
+  parseCmpInstanceDefinition,
+  renderComponentBase
+} from './helpers/componentHelper.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 import {AppContext} from './AppContext.js';
 import {ScreenComponent} from './routerBase/ScreenComponent.js';
@@ -112,7 +117,7 @@ export class Component {
   }
 
 
-  protected constructor(
+  constructor(
     app: AppSingleton,
     parent: Component,
     // definition component itself
@@ -359,24 +364,24 @@ export class Component {
   /**
    * Execute slot of some deep child component slot.
    * @param slotDefinitionToRender
+   * @param parent
    * @param vars - some variables which will be put so scope where slot will be executed
    */
-  async execSlot(slotDefinitionToRender: CmpInstanceDefinition[], vars?: Record<string, any>) {
+  async execSlot(
+    slotDefinitionToRender: CmpInstanceDefinition[],
+    parent: Component,
+    vars?: Record<string, any>
+  ) {
     const scope = this.scope.$newScope(vars)
-    const result: Component[] = []
 
-    for (const slotDef of slotDefinitionToRender) {
-      const {
-        componentName,
-        propsValues,
-        slotDefinition,
-      } = parseCmpInstanceDefinition(slotDef)
+    // TODO: как scope использовать ???
 
-      // TODO: надо сформировать список компонентов
-
-    }
-
-    return result
+    return slotDefinitionToRender.map((el) => instantiateChildComponent(
+      el,
+      this.app,
+      parent,
+      this,
+    ))
   }
 
 
@@ -422,36 +427,13 @@ export class Component {
     }
 
     return cmpDefinitions
-      .map((el) => this.instantiateChildComponent(el))
-  }
-
-  /**
-   * Make instances of my direct children
-   * @param childInstanceDefinition
-   * @private
-   */
-  private instantiateChildComponent(childInstanceDefinition: CmpInstanceDefinition): Component {
-    const {
-      componentName,
-      propsValues,
-      slotDefinition,
-    } = parseCmpInstanceDefinition(childInstanceDefinition)
-
-    const componentDefinition = this.app.getComponentDefinition(
-      componentName
-    )
-    // use class defined in component or simple component
-    const ComponentClass = componentDefinition.Component || Component
-
-    return new ComponentClass(
-      this.app,
-      this,
-      componentDefinition,
-      propsValues,
-      slotDefinition,
-      // all my direct children in my scope
-      this
-    )
+      .map((el) => instantiateChildComponent(
+        el,
+        this.app,
+        this,
+        // all my direct children in my scope
+        this
+      ))
   }
 
   private renderChildren(): RenderedElement[] | undefined {
