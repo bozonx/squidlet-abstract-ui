@@ -98,7 +98,6 @@ export class AppSingleton {
   emitIncomeEvent(event: IncomeEvent['name'], componentId: string, params: Record<string, any>) {
     const incomeEvent: IncomeEvent = {
       name: event,
-      preventBubbling: false,
       params,
     }
     // emit ordinary event

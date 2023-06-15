@@ -88,6 +88,7 @@ export class Component {
   readonly children: ProxyfiedArray<Component>
   // Parent of this component. If it is root then it will be null
   readonly parent: Component
+  readonly scopeComponent?: Component
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
   readonly slots: ComponentSlotsManager
@@ -127,10 +128,13 @@ export class Component {
     componentDefinition: ComponentDefinition,
     initialProps: Record<string, any>,
     // slots of component which get from parent component template
-    slotsDefinition?: SlotsDefinition
+    slotsDefinition?: SlotsDefinition,
+    // component which renders its template where this component is
+    scopeComponent?: Component
   ) {
     this.app = app
     this.parent = parent
+    this.scopeComponent = scopeComponent
     this.componentDefinition = componentDefinition
     this.initialProps = initialProps
     this.id = this.makeId()
@@ -141,6 +145,7 @@ export class Component {
       props: this.props,
       state: this.state,
       slots: this.slots,
+      emit: this.emit,
       app: this.app.context,
       // TODO: получается так нельзя делать???
       // get props() {
@@ -235,6 +240,19 @@ export class Component {
 
 
   /**
+   * Emit custom event to scopeComponent
+   */
+  emit = (eventName: string, params: Record<string, SuperItemInitDefinition>) => {
+    if (!this.scopeComponent) return
+
+    this.scopeComponent.incomeEvent({
+      name: eventName,
+      params: params,
+      target: this,
+    })
+  }
+
+  /**
    * Mount this component's element.
    * Actually means emit mount event and listen element's income events.
    */
@@ -245,7 +263,7 @@ export class Component {
     // start listening income events
     this.incomeEventListenerIndex = this.app.events.addListener(
       this.app.makeIncomeEventName(this.id),
-      this.handleIncomeEvent
+      this.incomeEvent
     )
     // mount child always silent
     for (const child of this.children) await child.mount(false)

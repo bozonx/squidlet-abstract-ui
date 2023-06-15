@@ -1,11 +1,14 @@
 import {SuperItemInitDefinition} from 'squidlet-sprog'
+import {Component} from '../Component.js';
 
 
 export interface IncomeEvent {
-  name: keyof typeof DOM_EVENTS
+  name: string
   // you can modify this to prevent bubbling up the tree
-  preventBubbling: boolean
-  params: Record<string, any>
+  preventBubbling?: boolean
+  params: Record<string, SuperItemInitDefinition>
+  // if custom component then target has to be set
+  target?: Component,
 }
 
 
