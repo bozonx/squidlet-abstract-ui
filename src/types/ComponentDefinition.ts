@@ -36,4 +36,6 @@ export interface ComponentDefinition {
   onUnmount?: SprogDefinition[]
   // it will be run before destroy
   onDestroy?: SprogDefinition[]
+  // it will be run on each update of component's props, state and children array
+  onUpdate?: SprogDefinition[]
 }

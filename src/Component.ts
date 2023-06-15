@@ -390,9 +390,16 @@ export class Component {
    * @private
    */
   private handleAnyChange() {
-    // TODO: call onChange cb
-    // TODO: сделать полный пересчёт темплейта потомков и slot
-    // TODO: при этом могут какие-то удалиться или добавиться
+    (async () => {
+      // TODO: это должно вначале или в конце вызываться?
+      if (this.componentDefinition.onUpdate) {
+        await this.runSprogCallback(this.componentDefinition.onUpdate)
+      }
+
+      // TODO: сделать полный пересчёт темплейта потомков и slot
+      // TODO: при этом могут какие-то удалиться или добавиться
+    })()
+      .catch(this.app.log.error)
   }
 
   private instantiateChildrenComponents(): Component[] {
