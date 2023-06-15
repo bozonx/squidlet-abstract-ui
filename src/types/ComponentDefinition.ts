@@ -16,6 +16,9 @@ export interface ComponentDefinition {
   uiParams?: (string | [string, () => any])[]
   // handlers of income ui events or custom events
   // These handlers will be called in component scope
+  // for DOM events you don't need to put props, they will be gotten from
+  // default DOM props definitions DOM_EVENTS_DEFINITIONS.
+  // Also you can use redefine to rename prop or redefined its params
   handlers?: Record<string, SuperFuncDefinition>
   tmpl?: CmpInstanceDefinition[]
   // Life cycle callbacks. They are just sprog line which will be called

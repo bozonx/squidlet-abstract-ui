@@ -309,24 +309,32 @@ export class Component {
    */
   incomeEvent = (event: IncomeEvent) => {
     (async () => {
-      // TODO: сделать bubbling если нет preventBubbling
-
-
-      const funcDefinition = this.componentDefinition
+      const handlerDefinition = this.componentDefinition
         ?.handlers?.[event.name]
 
-      if (!funcDefinition) return
+      if (!handlerDefinition) return
 
-      const paramsDefinition: Record<string, SuperItemInitDefinition> | undefined =
+      const domEventPropsDefinitions: Record<string, SuperItemInitDefinition> | undefined =
         DOM_EVENTS_DEFINITIONS[event.name]
+
+      if (domEventPropsDefinitions && handlerDefinition.props) {
+        throw new Error(`You can't set props for DOM events, use redefine instead`)
+      }
+
       const superFunc = new SuperFunc(
         this.scope,
-        paramsDefinition || {},
-        funcDefinition.lines,
-        funcDefinition.redefine
+        domEventPropsDefinitions || handlerDefinition.props || {},
+        handlerDefinition.lines,
+        handlerDefinition.redefine
       )
 
-      await superFunc.exec()
+      await superFunc.exec({ event })
+
+      if (!event.preventBubbling) {
+        // TODO: сделать bubbling если нет preventBubbling
+        // TODO: а он должен делаться даже на кастомные эвенты или только на DOM ?
+        // TODO: и вообще оно нужно?
+      }
     })()
       .catch(this.app.log.error)
   }
