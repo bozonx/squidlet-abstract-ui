@@ -25,6 +25,8 @@ class SlotComponent extends Component {
     // TODO: как scope использовать ???
     // TODO: наверное его подменить у компонента
     // TODO: а если такой компонент есть, то ему подменить scope ???
+    // TODO: надо проверить есть ли такой компонент и если нет то тогда создать
+    // TODO: или получается что Slot просто их создает как своих потомков
 
     return slotDefinitionToRender.map((el) => instantiateChildComponent(
       el,
