@@ -145,7 +145,6 @@ export class Component {
       props: this.props,
       state: this.state,
       slots: this.slots,
-      emit: this.emit,
       app: this.app.context,
       // TODO: получается так нельзя делать???
       // get props() {
@@ -162,6 +161,8 @@ export class Component {
       // },
       screen: this.screen,
       component: this,
+      // emit custom event to scopeComponent
+      emit: this.emit,
     })
     // TODO: а изменения порядка children через него будет или через отдельные методы?
     // TODO: если через него то надо слушать его события чтобы отрисовывать изменение порядка
@@ -171,6 +172,8 @@ export class Component {
       readonly: false,
       nullable: false,
     })).getProxy()
+
+    // TODO: можно же сразу создать все дерево компонентов
   }
 
 
@@ -194,7 +197,7 @@ export class Component {
     this.$$propsSetter = this.props.$super.init(this.initialProps)
 
     this.state.$super.init()
-    this.children.$super.init(this.instantiateChildren())
+    this.children.$super.init(this.instantiateChildrenComponents())
 
     // init all the children components
     for (const childIndex of this.children.$super.allKeys) {
@@ -363,26 +366,43 @@ export class Component {
   }
 
 
-  private instantiateChildren(): Component[] {
-    const res: Component[] = []
+  private instantiateChildrenComponents(): Component[] {
+
+    // TODO: получается что у каждого компонента есть tmpl - плосский список потомков
+    //       и slot означает что вставить во внутрь этого компонента список компонентов
+    //       относящиеся к scope компонента чей tmpl рисуется
+
     // If component have tmpl then get child from it - it is default behaviour
     if (this.componentDefinition.tmpl) {
+      const res: Component[] = []
+
       // every item in tmpl will be a separate Component
       for (const childInstanceDef of this.componentDefinition.tmpl) {
-        res.push(this.instantiateChild(childInstanceDef))
+        res.push(this.instantiateChildComponent(childInstanceDef))
+
+        // TODO: надо сделать init() компоненту
+
+        // TODO: в итоге должен быть плоский список прямых потомков компонентов
+        //       но каждый компонент проинициализирован и все его потомки
+
+        // TODO: если встретилась вставка Slot - нужно вставить
+        //       причём slot может быть вложенный глубоко, но надо его брать из
+        //       scopeComponent
+
       }
     }
     // if component doesn't have a tmpl then just render default slot like it is tmpl
     else {
-      for (const childInstanceDef of this.slots.getDefaultDefinition() || []) {
-        res.push(this.instantiateChild(childInstanceDef))
-      }
+      // TODO: default slot должен вставляться как есть
+      // for (const childInstanceDef of this.slots.getDefaultDefinition() || []) {
+      //   res.push(this.instantiateChild(childInstanceDef))
+      // }
     }
     // if not - so not one children then
-    return res
+    return []
   }
 
-  private instantiateChild(childInstanceDefinition: CmpInstanceDefinition): Component {
+  private instantiateChildComponent(childInstanceDefinition: CmpInstanceDefinition): Component {
     const {
       componentName,
       propsValues,
@@ -399,6 +419,8 @@ export class Component {
       componentDefinition,
       propsValues,
       slotDefinition,
+      // give my scope component or myself that means that new scope root
+      this.scopeComponent || this,
     )
   }
 
