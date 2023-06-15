@@ -365,13 +365,18 @@ export class Component {
 
 
   private instantiateChildrenComponents(): Component[] {
-    const cmpDefinitions =
-      (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length)
-        ? this.componentDefinition.tmpl
-        // if this has slot definition then put Slot component
-        : ((isEmptyObject(this.slotsDefinition)) ? [] : [{ component: 'Slot' }])
+    let cmpDefinitions: CmpInstanceDefinition[] = []
 
-    return cmpDefinitions.map((el) => this.instantiateChildComponent(el))
+    if (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length) {
+      cmpDefinitions = this.componentDefinition.tmpl
+    }
+    else if (!isEmptyObject(this.slotsDefinition)) {
+      // if this has slot definition then put Slot component
+      cmpDefinitions = [{ component: 'Slot' }]
+    }
+
+    return cmpDefinitions
+      .map((el) => this.instantiateChildComponent(el))
   }
 
   private instantiateChildComponent(childInstanceDefinition: CmpInstanceDefinition): Component {
@@ -384,6 +389,8 @@ export class Component {
     const componentDefinition = this.app.getComponentDefinition(
       componentName
     )
+
+    // TODO: если есть спец компоненты то его использовать
 
     return new Component(
       this.app,
