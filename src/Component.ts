@@ -358,6 +358,29 @@ export class Component {
       .catch(this.app.log.error)
   }
 
+  /**
+   * Execute slot of some deep child component slot.
+   * @param slotDefinitionToRender
+   * @param vars - some variables which will be put so scope where slot will be executed
+   */
+  async execSlot(slotDefinitionToRender: CmpInstanceDefinition[], vars?: Record<string, any>) {
+    const scope = this.scope.$newScope(vars)
+    const result: Component[] = []
+
+    for (const slotDef of slotDefinitionToRender) {
+      const {
+        componentName,
+        propsValues,
+        slotDefinition,
+      } = parseCmpInstanceDefinition(slotDef)
+
+      // TODO: надо сформировать список компонентов
+
+    }
+
+    return result
+  }
+
 
   protected makeId(): string {
     return makeUniqId(COMPONENT_ID_BYTES_NUM)
@@ -387,6 +410,11 @@ export class Component {
       .map((el) => this.instantiateChildComponent(el))
   }
 
+  /**
+   * Make instances of my direct children
+   * @param childInstanceDefinition
+   * @private
+   */
   private instantiateChildComponent(childInstanceDefinition: CmpInstanceDefinition): Component {
     const {
       componentName,
@@ -407,7 +435,7 @@ export class Component {
       propsValues,
       slotDefinition,
       // all my direct children in my scope
-      this,
+      this
     )
   }
 
