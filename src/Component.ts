@@ -35,6 +35,12 @@ import {RenderEvents} from './types/RenderEvents.js';
 // TODO: поддержка перемещения элементов - добавить в SuperArray
 // TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
 
+// TODO: instantiateChild должно пойти вглубь и должно создаться все дерево потомков
+// TODO: когда создаются потомки в глубине то должна быть связть props с компонентов
+//       в чьем tmpl это происходит
+// TODO: тоесть если в props есть sprog - то он должен выполниться в scope главного компонента
+
+
 
 
 export enum COMPONENT_EVENTS {
@@ -295,18 +301,12 @@ export class Component {
     } as RenderedElement) as RenderedElement
   }
 
-
-  protected makeId(): string {
-    return makeUniqId(COMPONENT_ID_BYTES_NUM)
-  }
-
-
   /**
-   * Handle event which income from frontend.
-   * It will call corresponding event handler.
+   * Handle event which income from frontend or other custom events from components
+   * It will call corresponding event handler which is set in component definition.
    * @param event
    */
-  private handleIncomeEvent = (event: IncomeEvent) => {
+  incomeEvent = (event: IncomeEvent) => {
     (async () => {
 
       // TODO: если так посмотреть то мы изначально знаем и имена параметров и из
@@ -328,9 +328,23 @@ export class Component {
       // TODO: надо вызвать OrderedFunc, можно через scope.run
 
       //await scope.run(this.componentDefinition.handlers.click)
+
+      const superFunc = new SuperFunc(
+        this.scope,
+        funcDefinition.props,
+        funcDefinition.lines
+      )
+
+      await superFunc.exec()
     })()
       .catch(this.app.log.error)
   }
+
+
+  protected makeId(): string {
+    return makeUniqId(COMPONENT_ID_BYTES_NUM)
+  }
+
 
   private instantiateChildren(): Component[] {
     const res: Component[] = []
