@@ -367,45 +367,21 @@ export class Component {
 
 
   private instantiateChildrenComponents(): Component[] {
+    // TODO: надо сделать init() компоненту
 
-    // TODO: получается что у каждого компонента есть tmpl - плосский список потомков
-    //       и slot означает что вставить во внутрь этого компонента список компонентов
-    //       относящиеся к scope компонента чей tmpl рисуется
+    const cmpDefinitions =
+      (this.componentDefinition.tmpl && !this.componentDefinition.tmpl.length)
+        ? this.componentDefinition.tmpl
+        : [{ component: 'Slot' }]
 
-    // If component have tmpl then get child from it - it is default behaviour
-    if (this.componentDefinition.tmpl) {
-      const res: Component[] = []
-
-      // every item in tmpl will be a separate Component
-      for (const childInstanceDef of this.componentDefinition.tmpl) {
-        res.push(this.instantiateChildComponent(childInstanceDef))
-
-        // TODO: надо сделать init() компоненту
-
-        // TODO: в итоге должен быть плоский список прямых потомков компонентов
-        //       но каждый компонент проинициализирован и все его потомки
-
-        // TODO: если встретилась вставка Slot - нужно вставить
-        //       причём slot может быть вложенный глубоко, но надо его брать из
-        //       scopeComponent
-
-      }
-    }
-    // if component doesn't have a tmpl then just render default slot like it is tmpl
-    else {
-      // TODO: default slot должен вставляться как есть
-      // for (const childInstanceDef of this.slots.getDefaultDefinition() || []) {
-      //   res.push(this.instantiateChild(childInstanceDef))
-      // }
-    }
-    // if not - so not one children then
-    return []
+    return cmpDefinitions.map((el) => this.instantiateChildComponent(el))
   }
 
   private instantiateChildComponent(childInstanceDefinition: CmpInstanceDefinition): Component {
     const {
       componentName,
       propsValues,
+      // TODO: сделать это ф-ией ???
       slotDefinition,
     } = parseCmpInstanceDefinition(childInstanceDefinition)
 
