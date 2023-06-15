@@ -361,29 +361,6 @@ export class Component {
       .catch(this.app.log.error)
   }
 
-  /**
-   * Execute slot of some deep child component slot.
-   * @param slotDefinitionToRender
-   * @param parent
-   * @param vars - some variables which will be put so scope where slot will be executed
-   */
-  async execSlot(
-    slotDefinitionToRender: CmpInstanceDefinition[],
-    parent: Component,
-    vars?: Record<string, any>
-  ) {
-    const scope = this.scope.$newScope(vars)
-
-    // TODO: как scope использовать ???
-
-    return slotDefinitionToRender.map((el) => instantiateChildComponent(
-      el,
-      this.app,
-      parent,
-      this,
-    ))
-  }
-
 
   protected makeId(): string {
     return makeUniqId(COMPONENT_ID_BYTES_NUM)
