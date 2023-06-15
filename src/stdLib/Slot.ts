@@ -11,7 +11,7 @@ import {Component} from '../Component.js';
 
 class SlotComponent extends Component {
 
-  // TODO: а как быть с потомками они же всеравно должны отрендериться????
+  // TODO: нужно взять slotDefinition из parent и выполнить в scopedComponent
 
 }
 

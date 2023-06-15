@@ -379,6 +379,7 @@ export class Component {
       && !this.componentDefinition.childless
     ) {
       // if this has slot definition and not childless then put Slot component
+      // which will render the default slot
       cmpDefinitions = [{ component: 'Slot' }]
     }
 
@@ -396,10 +397,10 @@ export class Component {
     const componentDefinition = this.app.getComponentDefinition(
       componentName
     )
+    // use class defined in component or simple component
+    const ComponentClass = componentDefinition.Component || Component
 
-    // TODO: если есть спец компоненты то его использовать
-
-    return new Component(
+    return new ComponentClass(
       this.app,
       this,
       componentDefinition,
