@@ -13,7 +13,7 @@ describe(`component slots`, () => {
           slot: [
             {
               component: 'Text',
-              text: 'Hello'
+              value: 'Hello'
             }
           ]
         }
@@ -25,7 +25,7 @@ describe(`component slots`, () => {
     main.systemEvents.once(SYSTEM_EVENTS.newApp, (app) => {
       app.events.addListener(APP_EVENTS.render, (event, el) => {
 
-        console.log(111, JSON.stringify(el, null, 2));
+        //console.log(111, JSON.stringify(el, null, 2));
 
         renderSpy(event, clearRenderElement(el))
       })
@@ -49,7 +49,9 @@ describe(`component slots`, () => {
                 {
                   name: 'Text',
                   parentChildPosition: 0,
-                  text: 'Hello'
+                  params: {
+                    value: 'Hello'
+                  },
                 }
               ]
             }

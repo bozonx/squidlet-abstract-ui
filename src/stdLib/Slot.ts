@@ -26,8 +26,6 @@ class SlotComponent extends Component {
 
 
   protected instantiateChildrenComponents(): Component[] {
-    let cmpDefinitions: CmpInstanceDefinition[] = []
-
     // TODO: как scope использовать ???
     //const scope = this.scope.$newScope(vars)
 
@@ -35,14 +33,14 @@ class SlotComponent extends Component {
     else if (isEmptyObject(this.parent.slotsDefinition)) throw new Error('No slotsDefinition in parent')
     else if (!this.scopeComponent) throw new Error('No scopeComponent')
 
-    const slot = this.parent
+    const slotComponents = this.parent
       .slotsDefinition![this.props.name || SLOT_DEFAULT]
 
-    if (!slot) throw new Error('No any slot in parent')
+    if (!slotComponents) throw new Error('No any slot in parent')
 
     // TODO: надо чтобы props этого потомка выполнился с параметрами slot
 
-    return cmpDefinitions
+    return slotComponents
       .map((el) => instantiateChildComponent(
         el,
         this.app,

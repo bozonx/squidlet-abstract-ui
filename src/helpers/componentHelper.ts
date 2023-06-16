@@ -72,7 +72,6 @@ export function instantiateChildComponent(
 
 
 // TODO: review
-
 export function renderComponentBase(cmp: Component): RenderedElement {
   const baseParams = {
     name: cmp.name,
@@ -106,7 +105,6 @@ export function renderComponentBase(cmp: Component): RenderedElement {
   }
 }
 
-// TODO: review
 export function makeComponentUiParams(
   componentDefinition: ComponentDefinition,
   props: ProxyfiedStruct,
@@ -118,15 +116,16 @@ export function makeComponentUiParams(
 
   for (const item of componentDefinition.uiParams) {
     if (typeof item === 'string') {
-      if (state.hasKey(item)) {
+      if (state.$super.hasKey(item)) {
         // deep param path is supported
-        res[item] = state.getValue(item)
+        res[item] = state.$super.getValue(item)
       }
-      else if (props.hasKey(item)) {
-        res[item] = props.getValue(item)
+      else if (props.$super.hasKey(item)) {
+        res[item] = props.$super.getValue(item)
       }
     }
     else {
+      // TODO: а это зачем ???
       // means [string, () => any]
       res[item[0]] = item[1]()
     }
