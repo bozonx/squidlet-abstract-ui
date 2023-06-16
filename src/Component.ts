@@ -13,7 +13,7 @@ import {
   SuperItemInitDefinition
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter, isEmptyObject} from 'squidlet-lib'
-import {CmpInstanceDefinition, SlotsDefinition} from './types/CmpInstanceDefinition.js'
+import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
 import {DOM_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
 import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
@@ -21,13 +21,13 @@ import {AppSingleton} from './AppSingleton.js'
 import {
   instantiateChildComponent,
   makeComponentUiParams,
-  parseCmpInstanceDefinition,
   renderComponentBase
 } from './helpers/componentHelper.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 import {AppContext} from './AppContext.js';
 import {ScreenComponent} from './routerBase/ScreenComponent.js';
 import {RenderEvents} from './types/RenderEvents.js';
+import {SlotsDefinition} from './stdLib/Slot.js';
 
 
 // TODO: если компонент отмонтирован то он должен перестать генерировать события вверх
@@ -135,7 +135,6 @@ export class Component {
     this.initialProps = initialProps
     this.id = this.makeId()
     this.slotsDefinition = slotsDefinition
-    //this.slots = new ComponentSlotsManager(slotsDefinition)
     this.props = (new SuperStruct(componentDefinition.props || {}, true)).getProxy()
     this.state = (new SuperData(componentDefinition.state)).getProxy()
     this.scope = newScope<ComponentScope>({
@@ -339,25 +338,7 @@ export class Component {
     return makeUniqId(COMPONENT_ID_BYTES_NUM)
   }
 
-
-  /**
-   * This is called on any change of props, state or children array
-   * @private
-   */
-  private handleAnyChange() {
-    (async () => {
-      // TODO: это должно вначале или в конце вызываться?
-      if (this.componentDefinition.onUpdate) {
-        await this.runSprogCallback(this.componentDefinition.onUpdate)
-      }
-
-      // TODO: сделать полный пересчёт темплейта потомков и slot
-      // TODO: при этом могут какие-то удалиться или добавиться
-    })()
-      .catch(this.app.log.error)
-  }
-
-  private instantiateChildrenComponents(): Component[] {
+  protected instantiateChildrenComponents(): Component[] {
     let cmpDefinitions: CmpInstanceDefinition[] = []
 
     if (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length) {
@@ -384,6 +365,24 @@ export class Component {
         // all my direct children in my scope
         this
       ))
+  }
+
+
+  /**
+   * This is called on any change of props, state or children array
+   * @private
+   */
+  private handleAnyChange() {
+    (async () => {
+      // TODO: это должно вначале или в конце вызываться?
+      if (this.componentDefinition.onUpdate) {
+        await this.runSprogCallback(this.componentDefinition.onUpdate)
+      }
+
+      // TODO: сделать полный пересчёт темплейта потомков и slot
+      // TODO: при этом могут какие-то удалиться или добавиться
+    })()
+      .catch(this.app.log.error)
   }
 
   private renderChildren(): RenderedElement[] | undefined {

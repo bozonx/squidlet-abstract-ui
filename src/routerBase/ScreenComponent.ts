@@ -4,7 +4,7 @@ import {Component} from '../Component.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {AppSingleton} from '../AppSingleton.js';
 import {Route} from '../types/Route.js';
-import {SlotsDefinition} from '../types/CmpInstanceDefinition.js';
+import {SlotsDefinition} from '../stdLib/Slot.js';
 
 
 export interface ScreenDefinition extends ComponentDefinition {

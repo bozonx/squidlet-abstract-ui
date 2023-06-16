@@ -24,6 +24,9 @@ describe(`component slots`, () => {
 
     main.systemEvents.once(SYSTEM_EVENTS.newApp, (app) => {
       app.events.addListener(APP_EVENTS.render, (event, el) => {
+
+        console.log(111, JSON.stringify(el, null, 2));
+
         renderSpy(event, clearRenderElement(el))
       })
     })

@@ -3,11 +3,12 @@ import {
   ProxyfiedData,
 } from 'squidlet-sprog'
 import {omitObj} from 'squidlet-lib'
-import {CmpInstanceDefinition, SlotsDefinition} from '../types/CmpInstanceDefinition.js';
+import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
 import {Component} from '../Component.js';
 import {RenderedElement} from '../types/RenderedElement.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {AppSingleton} from '../AppSingleton.js';
+import {SlotsDefinition} from '../stdLib/Slot.js';
 
 
 export function parseCmpInstanceDefinition(instanceDefinition: CmpInstanceDefinition): {
