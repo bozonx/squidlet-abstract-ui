@@ -2,7 +2,7 @@ import {IndexedEventEmitter, Logger} from 'squidlet-lib'
 import {ProxyfiedData, SuperData} from 'squidlet-sprog'
 import {Main} from './Main.js';
 import {RootComponent} from './RootComponent.js';
-import {DOM_EVENTS, IncomeEvent} from './types/IncomeEvent.js';
+import {IncomeEvent} from './types/IncomeEvent.js';
 import {RenderedElement} from './types/RenderedElement.js';
 import {AppRouter} from './routerBase/AppRouter.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
