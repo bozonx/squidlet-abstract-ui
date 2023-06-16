@@ -1,4 +1,3 @@
-import {omitObj} from "squidlet-lib";
 import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js"
 import {APP_EVENTS} from "../../src/AppSingleton.js";
 
