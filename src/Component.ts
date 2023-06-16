@@ -142,34 +142,17 @@ export class Component {
       props: this.props,
       state: this.state,
       app: this.app.context,
-      // TODO: получается так нельзя делать???
-      // get props() {
-      //   return this.props
-      // },
-      // get state() {
-      //   return this.state
-      // },
-      // get slots() {
-      //   return this.slots
-      // },
-      // get app() {
-      //   return this.app.context
-      // },
       screen: this.screen,
       component: this,
-      // emit custom event to scopeComponent
+      // emit custom output event which will catch scopeComponent
       emit: this.emit,
     })
-    // TODO: а изменения порядка children через него будет или через отдельные методы?
-    // TODO: если через него то надо слушать его события чтобы отрисовывать изменение порядка
     this.children = (new SuperArray({
       // TODO: поидее надо тип Component
       type: 'object',
       readonly: false,
       nullable: false,
     })).getProxy()
-
-    // TODO: можно же сразу создать все дерево компонентов
   }
 
 
@@ -198,17 +181,8 @@ export class Component {
 
     this.state.$super.init()
     this.children.$super.init(this.instantiateChildrenComponents())
-
-    // TODO: надо сделать init() всем потомкам
-
-
     // init all the children components
-    for (const childIndex of this.children.$super.allKeys) {
-      // child is component
-      await this.children[childIndex].init()
-
-      // TODO: надо начать слушать события детей которые они поднимают наверх
-    }
+    for (const child of this.children) await child.init()
 
     this.events.emit(COMPONENT_EVENTS.initFinished)
 
