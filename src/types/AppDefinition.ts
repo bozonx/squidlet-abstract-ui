@@ -5,8 +5,7 @@ import {ComponentDefinition} from './ComponentDefinition.js';
 
 
 export interface AppDefinition extends Pick<ComponentDefinition, 'tmpl' | 'state'> {
-  // TODO: сюда пользователь может вставлять либы компонентов
-  // it is just app's components lib
+  // custom components of libs of components
   components?: ComponentDefinition[]
   // these screens you can several times in routes
   screens?: ScreenDefinition[]
