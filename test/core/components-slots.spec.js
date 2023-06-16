@@ -2,8 +2,12 @@ import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js"
 import {APP_EVENTS} from "../../src/AppSingleton.js";
 
 
+// TODO: test named slots of custom components
+// TODO: test slots with params
+
+
 describe(`component slots`, () => {
-  it.only(`common`, async () => {
+  it(`default slot`, async () => {
     const main = new Main()
     const renderSpy = sinon.spy()
     const appDef = {
