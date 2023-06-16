@@ -58,7 +58,7 @@ export function instantiateChildComponent(
     componentName
   )
   // use class defined in component or simple component
-  const ComponentClass = componentDefinition.Component || Component
+  const ComponentClass = componentDefinition.ComponentClass || Component
 
   return new ComponentClass(
     app,
@@ -71,7 +71,10 @@ export function instantiateChildComponent(
 }
 
 
-// TODO: review
+/**
+ * Render base parameters of a component without params and children
+ * @param cmp
+ */
 export function renderComponentBase(cmp: Component): RenderedElement {
   const baseParams = {
     name: cmp.name,

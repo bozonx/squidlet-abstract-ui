@@ -9,7 +9,7 @@ export interface ComponentDefinition {
   // if true means component don't have children. It shouldn't have tmpl and slot
   childless?: boolean
   // this is custom component class to use instead of common Component class
-  Component?: typeof Component,
+  ComponentClass?: typeof Component,
   // definition of props which are controlled by parent component
   props?: Record<string, SuperItemInitDefinition>
   // local state

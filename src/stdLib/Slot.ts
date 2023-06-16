@@ -53,7 +53,7 @@ class SlotComponent extends Component {
 
 export const Slot: ComponentDefinition = {
   name: 'Slot',
-  Component: SlotComponent,
+  ComponentClass: SlotComponent,
   props: {
     // if used named slot, pet its name here
     // if not set then default will be used
