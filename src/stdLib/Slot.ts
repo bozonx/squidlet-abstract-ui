@@ -1,3 +1,4 @@
+import {isEmptyObject} from 'squidlet-lib'
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {Component} from '../Component.js';
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
@@ -16,7 +17,7 @@ export const SLOT_DEFAULT = 'default'
 class SlotComponent extends Component {
 
   async init() {
-    if (this.slotsDefinition) {
+    if (!isEmptyObject(this.slotsDefinition)) {
       throw new Error(`You can't define slots definition to Slot component`)
     }
 
@@ -31,11 +32,11 @@ class SlotComponent extends Component {
     //const scope = this.scope.$newScope(vars)
 
     if (!this.parent) throw new Error('No parent')
-    else if (!this.parent.slotsDefinition) throw new Error('No slotsDefinition in parent')
+    else if (isEmptyObject(this.parent.slotsDefinition)) throw new Error('No slotsDefinition in parent')
     else if (!this.scopeComponent) throw new Error('No scopeComponent')
 
     const slot = this.parent
-      .slotsDefinition[this.props.name || SLOT_DEFAULT]
+      .slotsDefinition![this.props.name || SLOT_DEFAULT]
 
     if (!slot) throw new Error('No any slot in parent')
 
