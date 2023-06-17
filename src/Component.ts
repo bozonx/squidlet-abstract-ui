@@ -182,6 +182,7 @@ export class Component {
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя
 
+
     this.$$propsSetter = this.props.$super.init(this.initialProps)
 
     //this.hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
@@ -194,10 +195,6 @@ export class Component {
     this.children.$super.init(this.instantiateChildrenComponents())
     // init all the children components
     for (const child of this.children) await child.init()
-
-    console.log(1111111, this.props)
-
-    await this.props.$super.execute(this.scope)
 
     this.events.emit(COMPONENT_EVENTS.initFinished)
 
@@ -251,6 +248,11 @@ export class Component {
    * Actually means emit mount event and listen element's income events.
    */
   async mount(allowRender: boolean = true) {
+    // update props
+    // if (this.scopeComponent) {
+    //   await this.props.$super.execute(this.scopeComponent.scope)
+    // }
+
     if (this.componentDefinition.onMount) {
       await this.runSprogCallback(this.componentDefinition.onMount)
     }

@@ -1,5 +1,6 @@
 import {Main, SYSTEM_EVENTS} from "../../src/index.js";
 import {APP_EVENTS} from "../../src/AppSingleton.js";
+import {COMPONENT_EVENTS} from "../../src/Component.js";
 
 
 describe(`component props`, () => {
@@ -19,10 +20,11 @@ describe(`component props`, () => {
           tmpl: [
             {
               component: 'Text',
-              value: {
-                $exp: 'getValue',
-                path: 'props.prop1',
-              }
+              value: 'str'
+              // value: {
+              //   $exp: 'getValue',
+              //   path: 'props.prop1',
+              // }
             }
           ],
         }
@@ -36,11 +38,9 @@ describe(`component props`, () => {
       tmpl: [
         {
           component: 'MyCmp',
-          props: {
-            prop1: {
-              $exp: 'getValue',
-              path: 'state.v1',
-            }
+          prop1: {
+            $exp: 'getValue',
+            path: 'state.v1',
           }
         }
       ]
@@ -52,6 +52,10 @@ describe(`component props`, () => {
       app.events.addListener(APP_EVENTS.initFinished, () => {
         assert.equal(app.root.children[0].props.prop1, '0')
         assert.equal(app.root.state.v1, '1')
+      })
+
+      app.root.events.addListener(COMPONENT_EVENTS.mounted, () => {
+        assert.equal(app.root.children[0].props.prop1, '1')
       })
 
       app.events.addListener(APP_EVENTS.render, (event, el) => {
