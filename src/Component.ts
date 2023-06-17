@@ -86,8 +86,9 @@ export class Component {
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
   readonly slotsDefinition?: SlotsDefinition
-  readonly hasReactiveProps: boolean = false
-  //readonly slots: ComponentSlotsManager
+  // does props have super array, struct or super data
+  // do not change it please
+  hasReactiveProps: boolean = false
   // it uses only by parent to set props. Don't use it by yourself
   $$propsSetter!: (name: string, value: any) => void
   protected readonly app: AppSingleton
@@ -98,7 +99,7 @@ export class Component {
   // It is scope for template runtime
   protected readonly scope: ComponentScope & SuperScope
   private incomeEventListenerIndex?: number
-  private initialProps: Record<string, any>
+  private readonly initialProps: Record<string, any>
 
 
   /**
@@ -153,7 +154,6 @@ export class Component {
       readonly: false,
       nullable: false,
     })).getProxy()
-    this.hasReactiveProps = this.props.$super.hasSprogDeepChildren()
   }
 
 
@@ -175,6 +175,8 @@ export class Component {
 
     // TODO: а если там указанны super значения, а в definition простые?
     this.$$propsSetter = this.props.$super.init(this.initialProps)
+
+    this.hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
 
     this.props.subscribe(() => this.handleAnyChange())
     this.state.subscribe(() => this.handleAnyChange())
