@@ -86,6 +86,7 @@ export class Component {
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
   readonly slotsDefinition?: SlotsDefinition
+  readonly hasReactiveProps: boolean = false
   //readonly slots: ComponentSlotsManager
   // it uses only by parent to set props. Don't use it by yourself
   $$propsSetter!: (name: string, value: any) => void
@@ -152,6 +153,7 @@ export class Component {
       readonly: false,
       nullable: false,
     })).getProxy()
+    this.hasReactiveProps = this.props.$super.hasSprogDeepChildren()
   }
 
 
@@ -331,6 +333,24 @@ export class Component {
       await superFunc.exec({ event })
     })()
       .catch(this.app.log.error)
+  }
+
+  /**
+   * This is called from parent on any chage of scoped component
+   */
+  handlePropsChange(scopedComponent: Component) {
+    if (this.hasReactiveProps) {
+      // TODO: check own props changes
+      /*
+        если есть то просто вставляет значения от scope родителя себе в props
+         и дальше все произойдёт само. там поднимутся изменения своего дерева
+      */
+    }
+
+    // ask all the children
+    for (const child of this.children) {
+      child.handlePropsChange(scopedComponent)
+    }
   }
 
 
