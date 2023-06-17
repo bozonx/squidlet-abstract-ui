@@ -404,13 +404,15 @@ export class Component {
    */
   private handleAnyChange() {
     (async () => {
-      // TODO: это должно вначале или в конце вызываться?
       if (this.componentDefinition.onUpdate) {
         await this.runSprogCallback(this.componentDefinition.onUpdate)
       }
 
-      // TODO: сделать полный пересчёт темплейта потомков и slot
-      // TODO: при этом могут какие-то удалиться или добавиться
+      // ask all the children
+      for (const child of this.children) {
+        // changes have place in my that means I am is scoped component
+        child.handlePropsChange(this)
+      }
     })()
       .catch(this.app.log.error)
   }
