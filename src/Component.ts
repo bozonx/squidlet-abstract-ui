@@ -86,9 +86,11 @@ export class Component {
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
   readonly slotsDefinition?: SlotsDefinition
+
   // does props have super array, struct or super data
   // do not change it please
-  hasReactiveProps: boolean = false
+  //hasReactiveProps: boolean = false
+
   // it uses only by parent to set props. Don't use it by yourself
   $$propsSetter!: (name: string, value: any) => void
   protected readonly app: AppSingleton
@@ -176,7 +178,7 @@ export class Component {
     // TODO: а если там указанны super значения, а в definition простые?
     this.$$propsSetter = this.props.$super.init(this.initialProps)
 
-    this.hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
+    //this.hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
 
     this.props.subscribe(() => this.handleAnyChange())
     this.state.subscribe(() => this.handleAnyChange())
@@ -341,10 +343,16 @@ export class Component {
    * This is called from parent on any chage of scoped component
    */
   handlePropsChange(scopedComponent: Component) {
-    if (this.hasReactiveProps) {
+    // TODO: hasReactiveProps может быть any и меняться в рантайме
+    //        надо как-то проверить заранее, но если есть any то проверять каждый раз
+    //        наверное сделать this.staticProps - если нет any и super types
+
+    const hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
+
+    if (hasReactiveProps) {
       // TODO: check own props changes
       /*
-        если есть то просто вставляет значения от scope родителя себе в props
+        просто вставляет значения от scope родителя себе в props
          и дальше все произойдёт само. там поднимутся изменения своего дерева
       */
     }
