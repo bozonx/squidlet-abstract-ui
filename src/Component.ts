@@ -10,7 +10,8 @@ import {
   ProxifiedSuperValue,
   SprogDefinition,
   SuperFunc,
-  SuperItemInitDefinition
+  SuperItemInitDefinition,
+  isSprogExpr
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter, isEmptyObject} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
@@ -61,10 +62,14 @@ export interface ComponentScope {
   props: ProxyfiedStruct
   // own state
   state: ProxyfiedData
+  // this is scoped component
+  //self?: Component
   component: Component
   // any other variables
   [index: string]: any
 }
+
+export type FullComponentScope = ComponentScope & SuperScope
 
 
 /**
@@ -86,6 +91,12 @@ export class Component {
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
   readonly slotsDefinition?: SlotsDefinition
+  // local state of component instance
+  // please do not use it as public property
+  readonly state: ProxyfiedData
+  // It is scope for template runtime
+  // please do not use it as public property
+  readonly scope: FullComponentScope
 
   // does props have super array, struct or super data
   // do not change it please
@@ -96,10 +107,6 @@ export class Component {
   protected readonly app: AppSingleton
   // component's class definition
   protected readonly componentDefinition: ComponentDefinition
-  // local state of component instance
-  protected readonly state: ProxyfiedData
-  // It is scope for template runtime
-  protected readonly scope: ComponentScope & SuperScope
   private incomeEventListenerIndex?: number
   private readonly initialProps: Record<string, any>
 
@@ -175,7 +182,6 @@ export class Component {
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя
 
-    // TODO: а если там указанны super значения, а в definition простые?
     this.$$propsSetter = this.props.$super.init(this.initialProps)
 
     //this.hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
@@ -188,6 +194,10 @@ export class Component {
     this.children.$super.init(this.instantiateChildrenComponents())
     // init all the children components
     for (const child of this.children) await child.init()
+
+    console.log(1111111, this.props)
+
+    await this.props.$super.execute(this.scope)
 
     this.events.emit(COMPONENT_EVENTS.initFinished)
 
@@ -342,7 +352,7 @@ export class Component {
   /**
    * This is called from parent on any chage of scoped component
    */
-  handlePropsChange(scopedComponent: Component) {
+  async handlePropsChange(scopedComponent: Component) {
     // TODO: hasReactiveProps может быть any и меняться в рантайме
     //        надо как-то проверить заранее, но если есть any то проверять каждый раз
     //        наверное сделать this.staticProps - если нет any и super types
@@ -350,16 +360,24 @@ export class Component {
     const hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
 
     if (hasReactiveProps) {
-      // TODO: check own props changes
-      /*
-        просто вставляет значения от scope родителя себе в props
-         и дальше все произойдёт само. там поднимутся изменения своего дерева
-      */
+      // make scope of scopedComponent
+      // const scope = this.scope.$newScope({
+      //   props: scopedComponent.props,
+      //   state: scopedComponent.state,
+      //   app: this.app.context,
+      //   screen: scopedComponent.screen,
+      //   component: this,
+      //   // emit custom output event which will catch scopeComponent
+      //   emit: this.emit,
+      // })
+      // it will execute expressions of props and rise events
+      // which will leading to update of children
+      await this.props.$super.execute(scopedComponent.scope)
     }
 
     // ask all the children
     for (const child of this.children) {
-      child.handlePropsChange(scopedComponent)
+      await child.handlePropsChange(scopedComponent)
     }
   }
 
@@ -367,6 +385,7 @@ export class Component {
   protected makeId(): string {
     return makeUniqId(COMPONENT_ID_BYTES_NUM)
   }
+
 
   protected instantiateChildrenComponents(): Component[] {
     let cmpDefinitions: CmpInstanceDefinition[] = []
@@ -411,7 +430,7 @@ export class Component {
       // ask all the children
       for (const child of this.children) {
         // changes have place in my that means I am is scoped component
-        child.handlePropsChange(this)
+        await child.handlePropsChange(this)
       }
     })()
       .catch(this.app.log.error)
