@@ -14,7 +14,13 @@ import {
   removeExpressions,
   removeSimple
 } from 'squidlet-sprog'
-import {omitUndefined, makeUniqId, IndexedEventEmitter, isEmptyObject} from 'squidlet-lib'
+import {
+  omitUndefined,
+  makeUniqId,
+  IndexedEventEmitter,
+  isEmptyObject,
+  isSameDeep
+} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
 import {DOM_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
@@ -110,6 +116,7 @@ export class Component {
   protected readonly componentDefinition: ComponentDefinition
   private incomeEventListenerIndex?: number
   private readonly initialProps: Record<string, any>
+  private lastRender?: RenderedElement
 
 
   /**
@@ -389,15 +396,22 @@ export class Component {
     }
 
 
-    console.log(1111, scopedComponent.scope.state, removeSimple(this.initialProps))
 
     await this.props.$super.execute(scopedComponent.scope, removeSimple(this.initialProps))
-
-    console.log(222, this.props)
 
     // ask all the children
     for (const child of this.children) {
       await child.handlePropsChange(scopedComponent)
+    }
+
+    if (!this.mounted) return
+
+    const newRender = this.renderSelf()
+
+    if (newRender.params && !isSameDeep(this.lastRender?.params, newRender.params)) {
+      this.app.$$render(RenderEvents.update, newRender)
+
+      this.lastRender = newRender
     }
   }
 

@@ -20,7 +20,6 @@ describe(`component props`, () => {
           tmpl: [
             {
               component: 'Text',
-              //value: 'str'
               value: {
                 $exp: 'getValue',
                 path: 'props.prop1',
@@ -97,28 +96,14 @@ describe(`component props`, () => {
 
     assert.equal(main.app.root.children[0].props.prop1, '2')
 
-    // TODO: должен быть рендер
-
-    //renderSpy.should.have.been.calledTwice
-    // renderSpy.should.have.been.calledWith(RenderEvents.mount, {
-    //   name: 'Root',
-    //   parentChildPosition: -1,
-    //   children: [
-    //     {
-    //       name: 'MyCmp',
-    //       parentChildPosition: 0,
-    //       children: [
-    //         {
-    //           name: 'Text',
-    //           parentChildPosition: 0,
-    //           params: {
-    //             value: '2'
-    //           },
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // })
+    renderSpy.should.have.been.calledTwice
+    renderSpy.should.have.been.calledWith(RenderEvents.update, {
+      name: 'Text',
+      parentChildPosition: 0,
+      params: {
+        value: '2'
+      },
+    })
 
   })
 
