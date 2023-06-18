@@ -4,7 +4,7 @@ import {COMPONENT_EVENTS} from "../../src/Component.js";
 
 
 describe(`component props`, () => {
-  it.only(`common`, async () => {
+  it(`common`, async () => {
     const main = new Main()
     const renderSpy = sinon.spy()
     const appDef = {
