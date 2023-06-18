@@ -11,7 +11,8 @@ import {
   SprogDefinition,
   SuperFunc,
   SuperItemInitDefinition,
-  isSprogExpr
+  removeExpressions,
+  removeSimple
 } from 'squidlet-sprog'
 import {omitUndefined, makeUniqId, IndexedEventEmitter, isEmptyObject} from 'squidlet-lib'
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
@@ -142,7 +143,6 @@ export class Component {
     this.parent = parent
     this.scopeComponent = scopeComponent
     this.componentDefinition = componentDefinition
-    // TODO: они должны быть очищены от sprog или всё вместе?
     this.initialProps = initialProps
     this.id = this.makeId()
     this.slotsDefinition = slotsDefinition
@@ -182,8 +182,7 @@ export class Component {
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя
 
-
-    this.$$propsSetter = this.props.$super.init(this.initialProps)
+    this.$$propsSetter = this.props.$super.init(removeExpressions(this.initialProps))
 
     //this.hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
 
@@ -249,9 +248,9 @@ export class Component {
    */
   async mount(allowRender: boolean = true) {
     // update props
-    // if (this.scopeComponent) {
-    //   await this.props.$super.execute(this.scopeComponent.scope)
-    // }
+    if (this.scopeComponent) {
+      await this.props.$super.execute(this.scopeComponent.scope, removeSimple(this.initialProps))
+    }
 
     if (this.componentDefinition.onMount) {
       await this.runSprogCallback(this.componentDefinition.onMount)
@@ -374,13 +373,39 @@ export class Component {
       // })
       // it will execute expressions of props and rise events
       // which will leading to update of children
-      await this.props.$super.execute(scopedComponent.scope)
+
+      // TODO: надо сначала выполнить, а потом уже устанавливать значения
+
+      // for (const key of this.props.$super.allKeys) {
+      //   if (!isSprogExpr(this.props[key])) continue
+      //
+      //   // TODO: получается что должен быть особый definition
+      //   const res = await scopedComponent.scope.$run(this.props[key])
+      //
+      //   this.props[key] = res
+      // }
+
+      //await this.props.$super.execute(scopedComponent.scope, removeSimple(this.initialProps))
     }
+
+
+    console.log(1111, scopedComponent.scope.state, removeSimple(this.initialProps))
+
+    await this.props.$super.execute(scopedComponent.scope, removeSimple(this.initialProps))
+
+    console.log(222, this.props)
 
     // ask all the children
     for (const child of this.children) {
       await child.handlePropsChange(scopedComponent)
     }
+  }
+
+  async tick(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      // TODO: сделать настоящий тик
+      setTimeout(resolve)
+    })
   }
 
 
@@ -425,9 +450,17 @@ export class Component {
    */
   private handleAnyChange() {
     (async () => {
+      // call onUpdate cb
       if (this.componentDefinition.onUpdate) {
         await this.runSprogCallback(this.componentDefinition.onUpdate)
       }
+
+      // console.log(1111, this.state, this.props)
+      //
+      // // update current values
+      // await this.props.$super.execute(this.scope, removeSimple(this.initialProps))
+      //
+      // console.log(2222, this.state, this.props)
 
       // ask all the children
       for (const child of this.children) {
