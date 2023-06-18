@@ -364,38 +364,12 @@ export class Component {
     // TODO: hasReactiveProps может быть any и меняться в рантайме
     //        надо как-то проверить заранее, но если есть any то проверять каждый раз
     //        наверное сделать this.staticProps - если нет any и super types
+    //const hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
+    // if (hasReactiveProps) {
+    // }
 
-    const hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
-
-    if (hasReactiveProps) {
-      // make scope of scopedComponent
-      // const scope = this.scope.$newScope({
-      //   props: scopedComponent.props,
-      //   state: scopedComponent.state,
-      //   app: this.app.context,
-      //   screen: scopedComponent.screen,
-      //   component: this,
-      //   // emit custom output event which will catch scopeComponent
-      //   emit: this.emit,
-      // })
-      // it will execute expressions of props and rise events
-      // which will leading to update of children
-
-      // TODO: надо сначала выполнить, а потом уже устанавливать значения
-
-      // for (const key of this.props.$super.allKeys) {
-      //   if (!isSprogExpr(this.props[key])) continue
-      //
-      //   // TODO: получается что должен быть особый definition
-      //   const res = await scopedComponent.scope.$run(this.props[key])
-      //
-      //   this.props[key] = res
-      // }
-
-      //await this.props.$super.execute(scopedComponent.scope, removeSimple(this.initialProps))
-    }
-
-
+    // do not render updates of component and its children if it is unmounted
+    if (!this.mounted) return
 
     await this.props.$super.execute(scopedComponent.scope, removeSimple(this.initialProps))
 
@@ -403,8 +377,6 @@ export class Component {
     for (const child of this.children) {
       await child.handlePropsChange(scopedComponent)
     }
-
-    if (!this.mounted) return
 
     const newRender = this.renderSelf()
 
