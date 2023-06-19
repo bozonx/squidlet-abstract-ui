@@ -95,10 +95,10 @@ export class AppSingleton {
   /**
    * Call it from outside code
    */
-  emitIncomeEvent(event: IncomeEvent['name'], componentId: string, params: Record<string, any>) {
+  emitIncomeEvent(event: IncomeEvent['name'], componentId: string, params?: Record<string, any>) {
     const incomeEvent: IncomeEvent = {
       name: event,
-      params,
+      params: params || {},
     }
     // emit ordinary event
     this.events.emit(APP_EVENTS.income, componentId, incomeEvent)

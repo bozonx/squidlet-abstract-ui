@@ -12,7 +12,8 @@ import {
   SuperFunc,
   SuperItemInitDefinition,
   removeExpressions,
-  removeSimple
+  removeSimple,
+  All_TYPES
 } from 'squidlet-sprog'
 import {
   omitUndefined,
@@ -332,6 +333,7 @@ export class Component {
    * @param event
    */
   incomeEvent = (event: IncomeEvent) => {
+
     (async () => {
       const handlerDefinition = this.componentDefinition
         ?.handlers?.[event.name]
@@ -345,9 +347,17 @@ export class Component {
         throw new Error(`You can't set props for DOM events, use redefine instead`)
       }
 
+      const paramsDefinitions = {
+        ...(domEventPropsDefinitions || handlerDefinition.props),
+        event: {
+          type: All_TYPES.object as keyof typeof All_TYPES,
+          readonly: true,
+        }
+      }
+
       const superFunc = new SuperFunc(
         this.scope,
-        domEventPropsDefinitions || handlerDefinition.props || {},
+        paramsDefinitions,
         handlerDefinition.lines,
         handlerDefinition.redefine
       )
