@@ -98,8 +98,4 @@ describe(`main and app`, () => {
     assert.isTrue(main.app.root.state.$super.isDestroyed)
   })
 
-  it(`rise income event into App`, async () => {
-    // TODO: call app.emitIncomeEvent
-  })
-
 })

@@ -2,8 +2,11 @@ import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js";
 import {APP_EVENTS} from "../../src/AppSingleton.js";
 
 
+// TODO: test handler with params
+
+
 describe(`component events`, () => {
-  it.only(`income from frontend`, async () => {
+  it(`income from frontend`, async () => {
     const main = new Main()
     const renderSpy = sinon.spy()
     const appDef = {
@@ -74,5 +77,10 @@ describe(`component events`, () => {
       },
     })
   })
+
+  it.only(`custom event`, async () => {
+
+  })
+
 })
 
