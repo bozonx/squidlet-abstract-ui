@@ -6,7 +6,7 @@ export interface IncomeEvent {
   name: string
   // you can modify this to prevent bubbling up the tree
   //preventBubbling?: boolean
-  params: Record<string, SuperItemInitDefinition>
+  params: Record<string, any>
   // if custom component then target has to be set
   target?: Component,
 }

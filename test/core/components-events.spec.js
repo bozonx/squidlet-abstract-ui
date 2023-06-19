@@ -2,9 +2,6 @@ import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js";
 import {APP_EVENTS} from "../../src/AppSingleton.js";
 
 
-// TODO: test handler with params
-
-
 describe(`component events`, () => {
   it(`income from frontend`, async () => {
     const main = new Main()
@@ -51,10 +48,6 @@ describe(`component events`, () => {
     await main.setApp(appDef)
 
     main.systemEvents.once(SYSTEM_EVENTS.newApp, (app) => {
-      // app.events.addListener(APP_EVENTS.initFinished, () => {
-      //
-      // })
-
       app.events.addListener(APP_EVENTS.render, (event, el) => {
         renderSpy(event, clearRenderElement(el))
       })
@@ -64,6 +57,7 @@ describe(`component events`, () => {
 
     main.app.emitIncomeEvent('click', main.app.root.children[0].id)
 
+    // TODO: может без него все норм?
     await main.app.root.tick()
 
     assert.equal(main.app.root.children[0].state.val, 'clicked')
@@ -79,7 +73,74 @@ describe(`component events`, () => {
   })
 
   it.only(`custom event`, async () => {
+    const main = new Main()
+    const renderSpy = sinon.spy()
+    const appDef = {
+      components: [
+        {
+          name: 'MyCmp',
+        }
+      ],
+      state: {
+        val: {
+          type: 'string',
+          default: 'inited',
+        }
+      },
+      handlers: {
+        custom: {
+          params: {
+            p1: {
+              type: 'string',
+            }
+          },
+          lines: [
+            {
+              $exp: 'setValue',
+              path: 'state.val',
+              value: 'params.p1',
+            }
+          ]
+        }
+      },
+      tmpl: [
+        {
+          component: 'MyCmp',
+        },
+        {
+          component: 'Text',
+          value: {
+            $exp: 'getValue',
+            path: 'state.val',
+          }
+        }
+      ]
+    }
 
+    await main.setApp(appDef)
+
+    main.systemEvents.once(SYSTEM_EVENTS.newApp, (app) => {
+      app.events.addListener(APP_EVENTS.render, (event, el) => {
+        renderSpy(event, clearRenderElement(el))
+      })
+    })
+
+    await main.init()
+
+    main.app.root.children[0].emit('custom', {p1: 'fromCustomEmit'})
+
+    await main.app.root.tick()
+
+    assert.equal(main.app.root.state.val, 'fromCustomEmit')
+
+    // renderSpy.should.have.been.calledTwice
+    // renderSpy.should.have.been.calledWith(RenderEvents.update, {
+    //   name: 'Text',
+    //   parentChildPosition: 0,
+    //   params: {
+    //     value: 'clicked'
+    //   },
+    // })
   })
 
 })

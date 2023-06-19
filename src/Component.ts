@@ -240,7 +240,7 @@ export class Component {
   /**
    * Emit custom event to scopeComponent
    */
-  emit = (eventName: string, params: Record<string, SuperItemInitDefinition>) => {
+  emit = (eventName: string, params: Record<string, any>) => {
     if (!this.scopeComponent) return
 
     this.scopeComponent.incomeEvent({
