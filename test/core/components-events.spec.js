@@ -96,9 +96,13 @@ describe(`component events`, () => {
             {
               $exp: 'setValue',
               path: 'state.val',
+              //value: 'fromCustomEmit'
               value: {
                 $exp: 'getValue',
-                path:'params.p1',
+
+                // TODO: чото тупо както!!!!
+
+                path:'params.event.params..p1',
               },
             }
           ]
@@ -134,14 +138,14 @@ describe(`component events`, () => {
 
     assert.equal(main.app.root.state.val, 'fromCustomEmit')
 
-    // renderSpy.should.have.been.calledTwice
-    // renderSpy.should.have.been.calledWith(RenderEvents.update, {
-    //   name: 'Text',
-    //   parentChildPosition: 0,
-    //   params: {
-    //     value: 'clicked'
-    //   },
-    // })
+    renderSpy.should.have.been.calledTwice
+    renderSpy.should.have.been.calledWith(RenderEvents.update, {
+      name: 'Text',
+      parentChildPosition: 1,
+      params: {
+        value: 'fromCustomEmit'
+      },
+    })
   })
 
 })

@@ -364,6 +364,9 @@ export class Component {
         handlerDefinition.redefine
       )
 
+      // , params: event.params
+      // TODO: какаято путаница с event и params
+
       await superFunc.exec({ event })
     })()
       .catch(this.app.log.error)
