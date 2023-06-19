@@ -57,11 +57,9 @@ describe(`component events`, () => {
 
     main.app.emitIncomeEvent('click', main.app.root.children[0].id)
 
-    // TODO: может без него все норм?
     await main.app.root.tick()
 
     assert.equal(main.app.root.children[0].state.val, 'clicked')
-
     renderSpy.should.have.been.calledTwice
     renderSpy.should.have.been.calledWith(RenderEvents.update, {
       name: 'Text',

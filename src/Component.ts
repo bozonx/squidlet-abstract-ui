@@ -343,12 +343,12 @@ export class Component {
       const domEventPropsDefinitions: Record<string, SuperItemInitDefinition> | undefined =
         DOM_EVENTS_DEFINITIONS[event.name]
 
-      if (domEventPropsDefinitions && handlerDefinition.props) {
+      if (domEventPropsDefinitions && handlerDefinition.params) {
         throw new Error(`You can't set props for DOM events, use redefine instead`)
       }
 
       const paramsDefinitions = {
-        ...(domEventPropsDefinitions || handlerDefinition.props),
+        ...(domEventPropsDefinitions || handlerDefinition.params),
         event: {
           type: All_TYPES.object as keyof typeof All_TYPES,
           readonly: true,
