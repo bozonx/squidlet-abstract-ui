@@ -47,12 +47,7 @@ export class AppSingleton {
 
   constructor(main: Main) {
     this.main = main
-    this.root = new RootComponent(
-      this,
-      this.main.componentsManager.appDefinition.tmpl,
-      this.main.componentsManager.appDefinition.state,
-    )
-
+    this.root = new RootComponent(this, this.main.componentsManager.appDefinition)
   }
 
 

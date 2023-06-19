@@ -333,10 +333,11 @@ export class Component {
    * @param event
    */
   incomeEvent = (event: IncomeEvent) => {
-
     (async () => {
       const handlerDefinition = this.componentDefinition
         ?.handlers?.[event.name]
+
+      console.log(222, event.params, handlerDefinition, this.componentDefinition)
 
       if (!handlerDefinition) return
 
