@@ -95,6 +95,7 @@ describe(`component props`, () => {
     await main.app.root.tick()
 
     assert.equal(main.app.root.children[0].props.prop1, '2')
+    assert.equal(main.app.root.children[0].children[0].props.value, '2')
 
     renderSpy.should.have.been.calledTwice
     renderSpy.should.have.been.calledWith(RenderEvents.update, {
