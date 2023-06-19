@@ -96,7 +96,10 @@ describe(`component events`, () => {
             {
               $exp: 'setValue',
               path: 'state.val',
-              value: 'params.p1',
+              value: {
+                $exp: 'getValue',
+                path:'params.p1',
+              },
             }
           ]
         }

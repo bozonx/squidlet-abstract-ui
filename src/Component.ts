@@ -337,8 +337,6 @@ export class Component {
       const handlerDefinition = this.componentDefinition
         ?.handlers?.[event.name]
 
-      console.log(222, event.params, handlerDefinition, this.componentDefinition)
-
       if (!handlerDefinition) return
 
       const domEventPropsDefinitions: Record<string, SuperItemInitDefinition> | undefined =
@@ -356,10 +354,13 @@ export class Component {
         }
       }
 
+      console.log(222, event.params, handlerDefinition, paramsDefinitions)
+
       const superFunc = new SuperFunc(
         this.scope,
         paramsDefinitions,
         handlerDefinition.lines,
+        // TODO: а зачем нужен redefine если всеравно всё будет в params. ???
         handlerDefinition.redefine
       )
 
