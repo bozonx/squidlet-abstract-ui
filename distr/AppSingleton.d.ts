@@ -8,13 +8,6 @@ import { AppRouter } from './routerBase/AppRouter.js';
 import { ComponentDefinition } from './types/ComponentDefinition.js';
 import { AppContext } from './AppContext.js';
 import { RenderEvents } from './types/RenderEvents.js';
-export declare enum APP_EVENTS {
-    initStarted = 0,
-    initFinished = 1,
-    destroy = 2,
-    render = 3,
-    income = 4
-}
 /**
  * It is a context for components and whole app structure.
  * Think of this as one of instances for the same app and one of users.
