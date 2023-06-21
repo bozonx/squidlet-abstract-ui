@@ -23,7 +23,7 @@ describe(`main and app`, () => {
       ]
     }
 
-    await main.setApp(appDef)
+    main.setApp(appDef)
 
     main.systemEvents.addListener(SYSTEM_EVENTS.initStarted, sysInitSpy)
     main.systemEvents.addListener(SYSTEM_EVENTS.initStarted, sysInitFinishSpy)

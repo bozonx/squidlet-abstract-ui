@@ -43,7 +43,7 @@ describe(`router`, () => {
       ]
     }
 
-    await main.setApp(appDef)
+    main.setApp(appDef)
     await main.init()
 
   })

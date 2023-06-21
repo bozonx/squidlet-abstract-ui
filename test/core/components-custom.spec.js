@@ -25,7 +25,7 @@ describe(`custom component`, () => {
       ]
     }
 
-    await main.setApp(appDef)
+    main.setApp(appDef)
 
     main.systemEvents.once(SYSTEM_EVENTS.newApp, (app) => {
       app.events.addListener(APP_EVENTS.render, (event, el) => {
