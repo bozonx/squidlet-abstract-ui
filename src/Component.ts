@@ -354,8 +354,6 @@ export class Component {
         }
       }
 
-      console.log(222, event.params, handlerDefinition, paramsDefinitions)
-
       const superFunc = new SuperFunc(
         this.scope,
         paramsDefinitions,

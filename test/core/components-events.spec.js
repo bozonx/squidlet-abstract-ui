@@ -70,7 +70,7 @@ describe(`component events`, () => {
     })
   })
 
-  it.only(`custom event`, async () => {
+  it(`custom event`, async () => {
     const main = new Main()
     const renderSpy = sinon.spy()
     const appDef = {
@@ -99,10 +99,7 @@ describe(`component events`, () => {
               //value: 'fromCustomEmit'
               value: {
                 $exp: 'getValue',
-
-                // TODO: чото тупо както!!!!
-
-                path:'params.event.params..p1',
+                path:'params.event.params.p1',
               },
             }
           ]
@@ -149,4 +146,3 @@ describe(`component events`, () => {
   })
 
 })
-

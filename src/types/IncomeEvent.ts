@@ -6,6 +6,7 @@ export interface IncomeEvent {
   name: string
   // you can modify this to prevent bubbling up the tree
   //preventBubbling?: boolean
+  // this is params of SuperFunc which will be called
   params: Record<string, any>
   // if custom component then target has to be set
   target?: Component,
