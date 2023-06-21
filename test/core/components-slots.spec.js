@@ -1,5 +1,5 @@
 import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js"
-import {APP_EVENTS} from "../../src/AppSingleton.js";
+import {APP_EVENTS} from "../../src/types/AppEvents.js";
 
 
 // TODO: test named slots of custom components

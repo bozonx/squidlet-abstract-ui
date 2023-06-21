@@ -8,20 +8,10 @@ import {AppRouter} from './routerBase/AppRouter.js';
 import {ComponentDefinition} from './types/ComponentDefinition.js';
 import {AppContext} from './AppContext.js';
 import {RenderEvents} from './types/RenderEvents.js';
+import {APP_EVENTS} from './types/AppEvents.js';
 
 
 const COMPONENT_EVENT_PREFIX = '|C|'
-
-export enum APP_EVENTS {
-  initStarted,
-  initFinished,
-  // destroy started
-  destroy,
-  // outcome event which has to be handled by external renderer
-  render,
-  // ordinary income event
-  income,
-}
 
 
 /**

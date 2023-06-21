@@ -1,7 +1,7 @@
 import {omitObj} from "squidlet-lib";
 import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js";
 import {COMPONENT_EVENTS} from "../../src/Component.js";
-import {APP_EVENTS} from "../../src/AppSingleton.js";
+import {APP_EVENTS} from "../../src/types/AppEvents.js";
 
 
 describe(`main and app`, () => {
