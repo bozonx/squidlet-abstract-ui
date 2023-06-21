@@ -1,5 +1,5 @@
 export interface RenderedElement {
-  // Element name. Actually means component name
+  // component name
   name: string
   // id of component in component tree which is handle this element
   componentId: string

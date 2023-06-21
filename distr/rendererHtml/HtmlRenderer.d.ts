@@ -1,7 +1,8 @@
 import { RenderedElement } from '../types/RenderedElement.js';
 import { RenderEvents } from '../types/RenderEvents.js';
+export declare const COMPONENT_DATA_MARKER = "data-c-id";
 export declare class HtmlRenderer {
-    readonly appSelector: string;
+    readonly rootSelector: string;
     constructor(appSelector: string);
     init(): void;
     render(event: RenderEvents, el: RenderedElement): void;
@@ -9,4 +10,6 @@ export declare class HtmlRenderer {
     private unmountTree;
     private destroyTree;
     private updateElement;
+    private getElementByComponentId;
+    private renderElement;
 }
