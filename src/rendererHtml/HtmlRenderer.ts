@@ -2,10 +2,7 @@ import {RenderedElement} from '../types/RenderedElement.js';
 import {RenderEvents} from '../types/RenderEvents.js';
 import {ROOT_COMPONENT_ID} from '../RootComponent.js';
 import {RENDER_FUNCS} from './renderFuncs.js';
-
-
-export const COMPONENT_DATA_MARKER = 'data-c-id'
-
+import {COMPONENT_DATA_MARKER} from './constants.js';
 
 
 export class HtmlRenderer {
