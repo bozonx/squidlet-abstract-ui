@@ -1,17 +1,14 @@
+import _ from 'lodash';
 import { RenderEvents } from '../types/RenderEvents.js';
 import { ROOT_COMPONENT_ID } from '../RootComponent.js';
-export const COMPONENT_DATA_MARKER = 'data-c-id';
+import { RENDER_FUNCS } from './renderFuncs.js';
+import { CHILDREN_MARKER, COMPONENT_DATA_MARKER } from './constants.js';
 export class HtmlRenderer {
     rootSelector;
     constructor(appSelector) {
         this.rootSelector = appSelector;
     }
     init() {
-        //     document.querySelector<HTMLDivElement>(this.rootSelector)!.innerHTML = `
-        //   <div>
-        //     test
-        //   </div>
-        // `
         // element.addEventListener('click', () => setCounter(counter + 1))
         //setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
     }
@@ -35,7 +32,7 @@ export class HtmlRenderer {
         }
     }
     mountTree(treeRoot) {
-        console.log(`mounting`, treeRoot);
+        //console.log(`mounting`, treeRoot)
         const rootEl = this.getElementByComponentId(treeRoot.componentId);
         if (!rootEl) {
             console.error(`can't find root element for`, treeRoot.componentId);
@@ -56,11 +53,21 @@ export class HtmlRenderer {
         if (componentId === ROOT_COMPONENT_ID) {
             return document.querySelector(this.rootSelector);
         }
-        // TODO: проверить
         // else find component
-        return document.querySelector(`[${COMPONENT_DATA_MARKER}=${componentId}]`);
+        return document.querySelector(`[${COMPONENT_DATA_MARKER}="${componentId}"]`);
     }
     renderElement(el) {
-        return `<div ${COMPONENT_DATA_MARKER}="${el.componentId}">${el.name}</div>`;
+        console.log(1111, el);
+        // recursively render children
+        const children = (el.children || [])
+            .map((child) => this.renderElement(child));
+        const childrenStr = children.join('\n');
+        // if it is custom component then just render its children
+        if (!RENDER_FUNCS[el.name])
+            return childrenStr;
+        const renderedEl = RENDER_FUNCS[el.name](el);
+        return _.template(renderedEl)({
+            [CHILDREN_MARKER]: childrenStr
+        });
     }
 }

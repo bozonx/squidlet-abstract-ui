@@ -16,10 +16,12 @@
     "test": "./test"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "squidlet-lib": "*",
     "yaml": "^2.3.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.195",
     "@types/node": "^18.16.0",
     "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",

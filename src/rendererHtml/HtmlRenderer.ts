@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import {RenderedElement} from '../types/RenderedElement.js';
 import {RenderEvents} from '../types/RenderEvents.js';
 import {ROOT_COMPONENT_ID} from '../RootComponent.js';
 import {RENDER_FUNCS} from './renderFuncs.js';
-import {COMPONENT_DATA_MARKER} from './constants.js';
+import {CHILDREN_MARKER, COMPONENT_DATA_MARKER} from './constants.js';
 
 
 export class HtmlRenderer {
@@ -10,13 +11,12 @@ export class HtmlRenderer {
 
 
   constructor(appSelector: string) {
-    this.rootSelector = appSelector;
+    this.rootSelector = appSelector
   }
 
   init() {
 
 // element.addEventListener('click', () => setCounter(counter + 1))
-//setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 
   }
 
@@ -27,7 +27,8 @@ export class HtmlRenderer {
         this.mountTree(el)
         break
       case RenderEvents.unMount:
-        this.unmountTree(el)
+        // the same as destroy
+        this.destroyTree(el)
         break
       case RenderEvents.destroy:
         this.destroyTree(el)
@@ -43,7 +44,7 @@ export class HtmlRenderer {
 
 
   private mountTree(treeRoot: RenderedElement) {
-    console.log(`mounting`, treeRoot)
+    //console.log(`mounting`, treeRoot)
 
     const rootEl = this.getElementByComponentId(treeRoot.componentId)
 
@@ -56,12 +57,10 @@ export class HtmlRenderer {
     rootEl.innerHTML = this.renderElement(treeRoot)
   }
 
-  private unmountTree(treeRoot: RenderedElement) {
-    // TODO: add
-  }
-
   private destroyTree(treeRoot: RenderedElement) {
-    // TODO: add
+    const rootEl = this.getElementByComponentId(treeRoot.componentId)
+    // remove the element and its children
+    rootEl?.remove()
   }
 
   private updateElement(treeRoot: RenderedElement) {
@@ -79,11 +78,19 @@ export class HtmlRenderer {
   }
 
   private renderElement(el: RenderedElement) {
-    if (RENDER_FUNCS[el.name]) {
-      return RENDER_FUNCS[el.name](el)
-    }
-    // if it is custom component then do not render it
-    return ''
+    // recursively render children
+    const children: string[] = (el.children || [])
+      .map((child) => this.renderElement(child))
+    const childrenStr = children.join('\n')
+
+    // if it is custom component then just render its children
+    if (!RENDER_FUNCS[el.name]) return childrenStr
+
+    const renderedEl = RENDER_FUNCS[el.name](el)
+
+    return _.template(renderedEl)({
+      [CHILDREN_MARKER]: childrenStr
+    })
   }
 
 }
