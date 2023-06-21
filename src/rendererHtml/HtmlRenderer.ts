@@ -1,10 +1,11 @@
-import {IncomeEvent} from '../types/IncomeEvent.js';
 import {RenderedElement} from '../types/RenderedElement.js';
 import {RenderEvents} from '../types/RenderEvents.js';
 import {ROOT_COMPONENT_ID} from '../RootComponent.js';
+import {RENDER_FUNCS} from './renderFuncs.js';
 
 
 export const COMPONENT_DATA_MARKER = 'data-c-id'
+
 
 
 export class HtmlRenderer {
@@ -16,11 +17,6 @@ export class HtmlRenderer {
   }
 
   init() {
-//     document.querySelector<HTMLDivElement>(this.rootSelector)!.innerHTML = `
-//   <div>
-//     test
-//   </div>
-// `
 
 // element.addEventListener('click', () => setCounter(counter + 1))
 //setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
@@ -86,7 +82,11 @@ export class HtmlRenderer {
   }
 
   private renderElement(el: RenderedElement) {
-    return `<div ${COMPONENT_DATA_MARKER}="${el.componentId}">${el.name}</div>`
+    if (RENDER_FUNCS[el.name]) {
+      return RENDER_FUNCS[el.name](el)
+    }
+    // if it is custom component then do not render it
+    return ''
   }
 
 }
