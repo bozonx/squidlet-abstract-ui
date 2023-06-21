@@ -106,5 +106,12 @@
     "outDir": "./distr"
   },
   "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", "next.config.js"],
-  "exclude": ["distr", "node_modules"]
+  "exclude": [
+    "distr",
+    "node_modules",
+    "starterHtmlServer",
+    "starterSPA-boilerplate",
+    "starterSSR",
+    "starterTelegram"
+  ]
 }
