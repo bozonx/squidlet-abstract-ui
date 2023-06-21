@@ -7,3 +7,5 @@ export * from './types/AppEvents.js';
 export * from './types/IncomeEvent.js';
 export * from './types/RenderEvents.js';
 export * from './types/RenderedElement.js';
+// Renders
+export * from './rendererHtml/index.js';
