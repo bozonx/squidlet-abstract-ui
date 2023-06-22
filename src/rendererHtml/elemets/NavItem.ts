@@ -7,6 +7,7 @@ export function renderNavItem(el: RenderedElement): string {
     + `${COMPONENT_DATA_MARKER}="${el.componentId}" `
     + `class="s-nav-item"`
     + `>`
+    + `<a href="${el.params?.to}" >${el.params?.value}</a>`
     + `${CHILDREN_MARKER_TMPL}`
     + `</li>`
 }
