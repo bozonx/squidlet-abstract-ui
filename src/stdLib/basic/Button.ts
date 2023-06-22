@@ -1,28 +1,45 @@
-export const Button = `
-name: Button
-uiParams:
-  - text
-`
+import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 
-// import {INPUT_DEFAULTS, InputBase, InputInitial} from '../types/InputBase.js';
-//
-//
-// export const BUTTON_TYPE = 'Button'
-//
-//
-// export interface Button extends InputBase {
-//   type: typeof BUTTON_TYPE
-//   disabled: boolean
-//   text: string
-//   onClick(): void
-// }
-//
-//
-// export function button(params: InputInitial<Button>): Button {
-//   return {
-//     type: BUTTON_TYPE,
-//     ...INPUT_DEFAULTS,
-//     ...params,
-//   }
-// }
+// TODO: add style - rounded, flat etc
+// TODO: add color - primary, secondary etc
+
+
+export const Button: ComponentDefinition = {
+  name: 'Button',
+  childless: true,
+  props: {
+    value: {
+      type: 'string',
+      nullable: true,
+    },
+    leftIcon: {
+      type: 'string',
+      nullable: true,
+    },
+    disabled: {
+      type: 'boolean',
+      default: false,
+    },
+    pending: {
+      type: 'boolean',
+      default: false,
+    },
+    to: {
+      type: 'string',
+      nullable: true,
+    },
+    showExternalIcon: {
+      type: 'boolean',
+      default: true,
+    }
+  },
+  uiParams: [
+    'value',
+    'leftIcon',
+    'disabled',
+    'pending',
+    'to',
+    'showExternalIcon'
+  ],
+}

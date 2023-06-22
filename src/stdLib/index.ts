@@ -27,7 +27,8 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   NavSub,
   Text,
   VerticalNav,
-  // wrappers - use other components
+
+  // wrappers - they use other components
   Router,
   Slot,
 
@@ -35,9 +36,9 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   // Button
   // ButtonGroup
   // ForEach
-  // IfElse
-  // ifMount
   // InputText
   // InputTextArea
   // InputNumber
+  // IfElse
+  // ifMount
 ]

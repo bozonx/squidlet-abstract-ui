@@ -14,7 +14,7 @@ export const NavItem: ComponentDefinition = {
     },
     showExternalIcon: {
       type: 'boolean',
-      nullable: true,
+      default: true,
     }
   },
   uiParams: [
