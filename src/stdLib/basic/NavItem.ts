@@ -27,7 +27,7 @@ export const NavItem: ComponentDefinition = {
     'to',
     'showExternalIcon'
   ],
-  tmpl: [
-    // TODO: если указан слот то воткнуть вложенное меню - NavSub
-  ]
+  // tmpl: [
+  //   // TODO: если указан слот то воткнуть вложенное меню - NavSub
+  // ]
 }

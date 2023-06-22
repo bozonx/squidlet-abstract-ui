@@ -10,7 +10,6 @@ export class HtmlRenderer {
     }
     init() {
         // element.addEventListener('click', () => setCounter(counter + 1))
-        //setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
     }
     render(event, el) {
         switch (event) {
@@ -18,7 +17,8 @@ export class HtmlRenderer {
                 this.mountTree(el);
                 break;
             case RenderEvents.unMount:
-                this.unmountTree(el);
+                // the same as destroy
+                this.destroyTree(el);
                 break;
             case RenderEvents.destroy:
                 this.destroyTree(el);
@@ -40,11 +40,10 @@ export class HtmlRenderer {
         }
         rootEl.innerHTML = this.renderElement(treeRoot);
     }
-    unmountTree(treeRoot) {
-        // TODO: add
-    }
     destroyTree(treeRoot) {
-        // TODO: add
+        const rootEl = this.getElementByComponentId(treeRoot.componentId);
+        // remove the element and its children
+        rootEl?.remove();
     }
     updateElement(treeRoot) {
         // TODO: add
@@ -57,7 +56,6 @@ export class HtmlRenderer {
         return document.querySelector(`[${COMPONENT_DATA_MARKER}="${componentId}"]`);
     }
     renderElement(el) {
-        console.log(1111, el);
         // recursively render children
         const children = (el.children || [])
             .map((child) => this.renderElement(child));

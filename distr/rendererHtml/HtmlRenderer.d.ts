@@ -6,7 +6,6 @@ export declare class HtmlRenderer {
     init(): void;
     render(event: RenderEvents, el: RenderedElement): void;
     private mountTree;
-    private unmountTree;
     private destroyTree;
     private updateElement;
     private getElementByComponentId;
