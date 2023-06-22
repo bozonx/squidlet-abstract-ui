@@ -8,6 +8,10 @@ export const NavItem: ComponentDefinition = {
       type: 'string',
       nullable: true,
     },
+    icon: {
+      type: 'string',
+      nullable: true,
+    },
     to: {
       type: 'string',
       nullable: true,
@@ -19,6 +23,7 @@ export const NavItem: ComponentDefinition = {
   },
   uiParams: [
     'value',
+    'icon',
     'to',
     'showExternalIcon'
   ],
