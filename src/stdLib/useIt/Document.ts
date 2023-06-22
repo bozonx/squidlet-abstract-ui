@@ -7,7 +7,7 @@
 
 
 
-import {ComponentDefinition} from '../types/ComponentDefinition.js';
+import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 export const Document: ComponentDefinition = {
   name: 'Document',
