@@ -1,8 +1,8 @@
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 
 
-export const MenuItem: ComponentDefinition = {
-  name: 'MenuItem',
+export const NavItem: ComponentDefinition = {
+  name: 'NavItem',
   props: {
     value: {
       type: 'string',

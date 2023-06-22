@@ -3,8 +3,8 @@ import {Div} from './Div.js';
 import {Text} from './Text.js';
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {Slot} from './Slot.js';
-import {MenuItem} from './MenuItem.js';
-import {VerticalMenu} from './VerticalMenu.js';
+import {NavItem} from './NavItem.js';
+import {VerticalNav} from './VerticalNav.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
@@ -12,6 +12,6 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Router,
   Text,
   Slot,
-  VerticalMenu,
-  MenuItem,
+  VerticalNav,
+  NavItem,
 ]

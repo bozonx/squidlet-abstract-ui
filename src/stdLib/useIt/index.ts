@@ -4,7 +4,7 @@ export const GOOD_UI: Record<string, string> = {
   // ButtonGroup,
   // Nav,
   // NestedMenu,
-  // VerticalMenu,
+  // VerticalNav,
   // ExternalLink,
   // Container,
   // Link,
