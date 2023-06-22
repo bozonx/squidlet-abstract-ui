@@ -1,9 +1,15 @@
 
 
 .s-nav-vertical {
-
+  list-style: none;
+  margin: 1em 0 1em 0;
+  padding: 0;
 }
 
 .s-nav-item {
-  background: red;
+}
+
+.s-nav-item > a {
+  display: block;
+  padding: 1em 2em;
 }
