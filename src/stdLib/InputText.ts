@@ -1,4 +1,4 @@
-export interface TextInput {
+export interface InputText {
   name: string
   visible: boolean
   label: string
