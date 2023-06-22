@@ -20,6 +20,8 @@ import {InputNumber} from './basic/InputNumber.js';
 import {InputCheckBox} from './basic/InputCheckBox.js';
 import {TwoColLayout} from './basic/TwoColLayout.js';
 import {ThreeColLayout} from './basic/ThreeColLayout.js';
+import {Tabs} from './basic/Tabs.js';
+import {TabsLayout} from './basic/TabsLayout.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
@@ -40,6 +42,8 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   NavSub,
   NavVertical,
   SectionMain,
+  Tabs,
+  TabsLayout,
   Text,
   ThreeColLayout,
   TwoColLayout,
