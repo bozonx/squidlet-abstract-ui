@@ -18,27 +18,31 @@ import {InputText} from './basic/InputText.js';
 import {InputTextArea} from './basic/InputTextArea.js';
 import {InputNumber} from './basic/InputNumber.js';
 import {InputCheckBox} from './basic/InputCheckBox.js';
+import {TwoColLayout} from './basic/TwoColLayout.js';
+import {ThreeColLayout} from './basic/ThreeColLayout.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
   // basic - reader as is
   Button,
   ButtonGroup,
-  InputCheckBox,
   Div,
   Header,
-  NavHorizontal,
+  InputCheckBox,
   InputNumber,
   InputText,
   InputTextArea,
   Link,
-  SectionMain,
   NavDelimiter,
   NavHeader,
+  NavHorizontal,
   NavItem,
   NavSub,
-  Text,
   NavVertical,
+  SectionMain,
+  Text,
+  ThreeColLayout,
+  TwoColLayout,
 
   // wrappers - they use other components
   Router,
