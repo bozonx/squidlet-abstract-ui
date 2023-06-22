@@ -1,29 +1,42 @@
+import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 
+export const Link: ComponentDefinition = {
+  name: 'Link',
+  childless: true,
+  props: {
+    value: {
+      type: 'string',
+      default: '',
+      nullable: true,
+    }
+  },
+  uiParams: [ 'value' ],
+}
 
-export const Link = `
-name: Link
-uiParams:
-  - path
-  - text
-handlers:
-  click:
-    $exp: newSuperFunc
-    props:
-      pathToRoute:
-        type: string
-        default:
-          $exp: getPrimitive
-          path: context.args[0]
-    lines:
-      - $exp: callSuperFunc
-        path: app.router.toPath
-        params:
-          path:
-            $exp: getPrimitive
-            path: context.pathToRoute
 
-`
+// export const Link = `
+// name: Link
+// uiParams:
+//   - path
+//   - text
+// handlers:
+//   click:
+//     $exp: newSuperFunc
+//     props:
+//       pathToRoute:
+//         type: string
+//         default:
+//           $exp: getPrimitive
+//           path: context.args[0]
+//     lines:
+//       - $exp: callSuperFunc
+//         path: app.router.toPath
+//         params:
+//           path:
+//             $exp: getPrimitive
+//             path: context.pathToRoute
+//`
 
 // - $exp: simpleCall
 //   $jsExp: console.log(555, context.args, context.pathToRoute)
