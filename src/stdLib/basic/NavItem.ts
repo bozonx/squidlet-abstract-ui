@@ -22,22 +22,7 @@ export const NavItem: ComponentDefinition = {
     'to',
     'showExternalIcon'
   ],
-  // tmpl: [
-  //   // TODO: если нет to то ввиде кнопки
-  //   {
-  //     component: 'Link',
-  //     value: {
-  //       $exp: 'getValue',
-  //       path: 'props.value',
-  //     },
-  //     to: {
-  //       $exp: 'getValue',
-  //       path: 'props.to',
-  //     },
-  //     showExternalIcon: {
-  //       $exp: 'getValue',
-  //       path: 'props.showExternalIcon',
-  //     },
-  //   }
-  // ]
+  tmpl: [
+    // TODO: если указан слот то воткнуть вложенное меню - NavSub
+  ]
 }
