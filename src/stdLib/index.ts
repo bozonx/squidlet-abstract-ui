@@ -14,15 +14,23 @@ import {NavSub} from './basic/NavSub.js';
 import {Link} from './basic/Link.js';
 import {Button} from './basic/Button.js';
 import {ButtonGroup} from './basic/ButtonGroup.js';
+import {InputText} from './basic/InputText.js';
+import {InputTextArea} from './basic/InputTextArea.js';
+import {InputNumber} from './basic/InputNumber.js';
+import {CheckBox} from './basic/CheckBox.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
   // basic - reader as is
   Button,
   ButtonGroup,
+  CheckBox,
   Div,
   Header,
   HorizontalNav,
+  InputNumber,
+  InputText,
+  InputTextArea,
   Link,
   MainSection,
   NavDelimiter,
@@ -37,9 +45,6 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Slot,
 
   // ForEach
-  // InputText
-  // InputTextArea
-  // InputNumber
   // IfElse
   // ifMount
 ]

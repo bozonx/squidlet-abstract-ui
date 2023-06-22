@@ -1,34 +1,20 @@
 import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 
-// TODO: add validation rules
-
-
-export const InputTextArea: ComponentDefinition = {
-  name: 'InputTextArea',
+export const CheckBox: ComponentDefinition = {
+  name: 'CheckBox',
   childless: true,
   props: {
     value: {
-      type: 'string',
+      type: 'boolean',
       nullable: true,
-    },
-    placeholder: {
-      type: 'string',
-      nullable: true,
-    },
-    lines: {
-      type: 'number',
-      default: 3,
+      default: false,
     },
     label: {
       type: 'string',
       nullable: true,
     },
     hint: {
-      type: 'string',
-      nullable: true,
-    },
-    errorMsg: {
       type: 'string',
       nullable: true,
     },
@@ -39,11 +25,8 @@ export const InputTextArea: ComponentDefinition = {
   },
   uiParams: [
     'value',
-    'placeholder',
-    'lines',
     'label',
     'hint',
-    'errorMsg',
     'disabled',
   ],
 }
