@@ -8,10 +8,12 @@ import {VerticalNav} from './VerticalNav.js';
 import {HorizontalNav} from './HorizontalNav.js';
 import {NavDelimiter} from './NavDelimiter.js';
 import {MainSection} from './MainSection.js';
+import {Header} from './Header.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
   Div,
+  Header,
   HorizontalNav,
   MainSection,
   NavDelimiter,
