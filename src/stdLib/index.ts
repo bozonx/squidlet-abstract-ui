@@ -11,6 +11,7 @@ import {MainSection} from './basic/MainSection.js';
 import {Header} from './basic/Header.js';
 import {NavHeader} from './basic/NavHeader.js';
 import {NavSub} from './basic/NavSub.js';
+import {Link} from './basic/Link.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
@@ -18,6 +19,7 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Div,
   Header,
   HorizontalNav,
+  Link,
   MainSection,
   NavDelimiter,
   NavHeader,
@@ -29,7 +31,7 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Router,
   Slot,
 
-  // Link
+
   // Button
   // ButtonGroup
   // ForEach

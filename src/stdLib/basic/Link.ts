@@ -7,11 +7,22 @@ export const Link: ComponentDefinition = {
   props: {
     value: {
       type: 'string',
-      default: '',
+      nullable: true,
+    },
+    to: {
+      type: 'string',
+      nullable: true,
+    },
+    showExternalIcon: {
+      type: 'boolean',
       nullable: true,
     }
   },
-  uiParams: [ 'value' ],
+  uiParams: [
+    'value',
+    'to',
+    'showExternalIcon'
+  ],
 }
 
 
