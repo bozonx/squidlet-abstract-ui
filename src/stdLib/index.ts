@@ -29,6 +29,6 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   // Link
   // NavHeader
   // InputText
-  // TextArea
-  // NumberInput
+  // InputTextArea
+  // InputNumber
 ]
