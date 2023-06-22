@@ -12,10 +12,14 @@ import {Header} from './basic/Header.js';
 import {NavHeader} from './basic/NavHeader.js';
 import {NavSub} from './basic/NavSub.js';
 import {Link} from './basic/Link.js';
+import {Button} from './basic/Button.js';
+import {ButtonGroup} from './basic/ButtonGroup.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
   // basic - reader as is
+  Button,
+  ButtonGroup,
   Div,
   Header,
   HorizontalNav,
@@ -32,9 +36,6 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Router,
   Slot,
 
-
-  // Button
-  // ButtonGroup
   // ForEach
   // InputText
   // InputTextArea

@@ -1,3 +1,6 @@
-export const ButtonGroup = `
-name: ButtonGroup
-`
+import {ComponentDefinition} from '../../types/ComponentDefinition.js';
+
+
+export const ButtonGroup: ComponentDefinition = {
+  name: 'ButtonGroup',
+}
