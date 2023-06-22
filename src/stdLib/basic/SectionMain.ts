@@ -1,6 +1,6 @@
 import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 
-export const MainSection: ComponentDefinition = {
-  name: 'MainSection',
+export const SectionMain: ComponentDefinition = {
+  name: 'SectionMain',
 }

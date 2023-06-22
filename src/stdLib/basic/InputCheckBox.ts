@@ -1,8 +1,8 @@
 import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 
-export const CheckBox: ComponentDefinition = {
-  name: 'CheckBox',
+export const InputCheckBox: ComponentDefinition = {
+  name: 'InputCheckBox',
   childless: true,
   props: {
     value: {
