@@ -26,6 +26,7 @@ import {LayoutPage} from './basic/LayoutPage.js';
 import {LayoutBottomTabs} from './basic/LayoutBottomTabs.js';
 import {LayoutDrawer} from './basic/LayoutDrawer.js';
 import {Drawer} from './basic/Drawer.js';
+import {LayoutModal} from './basic/LayoutModal.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
@@ -41,6 +42,7 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   InputTextArea,
   LayoutBottomTabs,
   LayoutDrawer,
+  LayoutModal,
   LayoutPage,
   LayoutThreeCol,
   LayoutTwoCol,
