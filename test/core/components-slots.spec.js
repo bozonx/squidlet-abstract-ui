@@ -2,6 +2,10 @@ import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js"
 import {APP_EVENTS} from "../../src/types/AppEvents.js";
 
 
+// TODO: test deep slot tree
+// TODO: test изменение значения параметра в parametrized scope
+
+
 describe(`component slots`, () => {
   it(`default slot`, async () => {
     const main = new Main()
@@ -139,7 +143,10 @@ describe(`component slots`, () => {
         {
           name: 'MyCmp',
           state: {
-            val: 'Hello'
+            val: {
+              type: 'string',
+              default: 'Hello',
+            }
           },
           tmpl: [
             {
@@ -149,10 +156,11 @@ describe(`component slots`, () => {
                   component: 'Slot',
                   name: 'some',
                   params: {
-                    val: {
-                      $exp: 'getValue',
-                      path: 'state.val',
-                    },
+                    val: 'Hello'
+                    // val: {
+                    //   $exp: 'getValue',
+                    //   path: 'state.val',
+                    // },
                   },
                 }
               ]
@@ -169,7 +177,7 @@ describe(`component slots`, () => {
                 component: 'Text',
                 value: {
                   $exp: 'getValue',
-                  path: 'params.val',
+                  path: 'slotParams.val',
                 },
               }
             ]

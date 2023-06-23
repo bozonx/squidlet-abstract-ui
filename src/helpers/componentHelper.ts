@@ -1,6 +1,7 @@
 import {
   ProxyfiedStruct,
   ProxyfiedData,
+  SuperScope,
 } from 'squidlet-sprog'
 import {omitObj} from 'squidlet-lib'
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
@@ -46,7 +47,7 @@ export function instantiateChildComponent(
   childInstanceDefinition: CmpInstanceDefinition,
   app: AppSingleton,
   parent: Component,
-  scopeComponent: Component
+  scopeComponent: Component,
 ): Component {
   const {
     componentName,
@@ -66,7 +67,7 @@ export function instantiateChildComponent(
     componentDefinition,
     propsValues,
     slotDefinition,
-    scopeComponent
+    scopeComponent,
   )
 }
 

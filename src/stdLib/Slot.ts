@@ -1,4 +1,5 @@
 import {isEmptyObject} from 'squidlet-lib'
+import {SuperScope, newScope} from 'squidlet-sprog'
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {Component} from '../Component.js';
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
@@ -24,9 +25,6 @@ class SlotComponent extends Component {
 
 
   protected instantiateChildrenComponents(): Component[] {
-    // TODO: как scope использовать ???
-    //const scope = this.scope.$newScope(vars)
-
     if (!this.scopeComponent) throw new Error('No scopeComponent')
     else if (!this.parent) throw new Error('No parent')
     else if (isEmptyObject(this.scopeComponent.slotsDefinition)) {
@@ -34,6 +32,7 @@ class SlotComponent extends Component {
     }
 
     let slotComponents
+    let externalScope: SuperScope | undefined
 
     if (this.props.tmplReplacement) {
       slotComponents = this.parent
@@ -46,15 +45,27 @@ class SlotComponent extends Component {
 
     if (!slotComponents) throw new Error('No any slot in scopeComponent')
 
-    // TODO: надо чтобы props этого потомка выполнился с параметрами slot
-    // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
+
+    if (this.props.params) {
+      // TODO: надо чтобы props этого потомка выполнился с параметрами slot
+
+      console.log(1111, this.props.params, this.scopeComponent.slotsDefinition)
+
+      // externalScope = newScope({
+      //   slotParams: this.props.params
+      // })
+
+    }
 
     return slotComponents
       .map((el) => instantiateChildComponent(
         el,
         this.app,
         this,
-        this.scopeComponent!
+
+        // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
+
+        this.scopeComponent!,
       ))
   }
 }

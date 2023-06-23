@@ -138,7 +138,7 @@ export class Component {
     // slots of component which get from parent component template
     slotsDefinition?: SlotsDefinition,
     // component which renders its template where this component is
-    scopeComponent?: Component
+    scopeComponent?: Component,
   ) {
     this.app = app
     this.parent = parent
@@ -164,6 +164,7 @@ export class Component {
       readonly: false,
       nullable: false,
     })).getProxy()
+
   }
 
 
