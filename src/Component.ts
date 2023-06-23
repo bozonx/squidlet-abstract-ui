@@ -39,14 +39,6 @@ import {RenderEvents} from './types/RenderEvents.js';
 import {SlotsDefinition} from './stdLib/Slot.js';
 
 
-// TODO: если компонент отмонтирован то он должен перестать генерировать события вверх
-//       и перестать слушать props все другие события
-// TODO: если в props есть sprog - то он должен выполниться в scope главного компонента
-
-// TODO: поддержка перемещения элементов - добавить в SuperArray
-// TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
-
-
 export enum COMPONENT_EVENTS {
   initStart,
   initFinished,
@@ -453,6 +445,8 @@ export class Component {
       if (this.componentDefinition.onUpdate) {
         await this.runSprogCallback(this.componentDefinition.onUpdate)
       }
+
+      this.events.emit(COMPONENT_EVENTS.update)
 
       // console.log(1111, this.state, this.props)
       //
