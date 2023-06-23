@@ -12,14 +12,4 @@ export const LayoutPage: ComponentDefinition = {
   uiParams: [
     'pageWidth',
   ],
-  tmpl: [
-    {
-      component: 'Slot',
-      slotName: 'left',
-    },
-    {
-      component: 'Slot',
-      slotName: 'right',
-    },
-  ]
 }
