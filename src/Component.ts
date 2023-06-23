@@ -424,8 +424,6 @@ export class Component {
       // if this has slot definition and not childless then put Slot component
       // which will render the default slot
 
-      console.log(2222, this.name, this.slotsDefinition!['default']!)
-
       // это старый способ - он сгенерирует лишний компонент Slot
       //cmpDefinitions = [{ component: 'Slot', tmplReplacement: true }]
       cmpDefinitions = this.slotsDefinition?.[SLOT_DEFAULT] || []

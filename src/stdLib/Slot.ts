@@ -27,7 +27,6 @@ class SlotComponent extends Component {
     // TODO: как scope использовать ???
     //const scope = this.scope.$newScope(vars)
 
-
     if (!this.scopeComponent) throw new Error('No scopeComponent')
     else if (!this.parent) throw new Error('No parent')
     else if (isEmptyObject(this.scopeComponent.slotsDefinition)) {
@@ -45,15 +44,9 @@ class SlotComponent extends Component {
         .slotsDefinition![this.props.name || SLOT_DEFAULT]
     }
 
-
-    console.log(111, this.scopeComponent?.name, this.scopeComponent?.slotsDefinition,
-      this.props, this.name, this.initialProps, slotComponents, this.props.tmplReplacement
-    )
-
     if (!slotComponents) throw new Error('No any slot in scopeComponent')
 
     // TODO: надо чтобы props этого потомка выполнился с параметрами slot
-
     // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
 
     return slotComponents
@@ -79,9 +72,8 @@ export const Slot: ComponentDefinition = {
       readonly: true,
       nullable: false,
     },
-    tmplReplacement: {
-      type: 'boolean',
-      default: false,
+    params: {
+      type: 'object',
       required: false,
       readonly: true,
       nullable: false,

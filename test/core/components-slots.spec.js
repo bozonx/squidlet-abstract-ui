@@ -40,17 +40,11 @@ describe(`component slots`, () => {
           parentChildPosition: 0,
           children: [
             {
-              name: 'Slot',
+              name: 'Text',
               parentChildPosition: 0,
-              children: [
-                {
-                  name: 'Text',
-                  parentChildPosition: 0,
-                  params: {
-                    value: 'Hello'
-                  },
-                }
-              ]
+              params: {
+                value: 'Hello'
+              },
             }
           ]
         }
@@ -58,7 +52,7 @@ describe(`component slots`, () => {
     })
   })
 
-  it.only(`named slot`, async () => {
+  it(`named slot`, async () => {
     const main = new Main()
     const renderSpy = sinon.spy()
     const appDef = {
@@ -86,6 +80,97 @@ describe(`component slots`, () => {
               {
                 component: 'Text',
                 value: 'Hello',
+              }
+            ]
+          }
+        }
+      ]
+    }
+
+    main.setApp(appDef)
+
+    main.systemEvents.once(SYSTEM_EVENTS.newApp, (app) => {
+      app.events.addListener(APP_EVENTS.render, (event, el) => {
+        renderSpy(event, clearRenderElement(el))
+      })
+    })
+
+    await main.init()
+
+    renderSpy.should.have.been.calledOnce
+    renderSpy.should.have.been.calledWith(RenderEvents.mount, {
+      name: 'Root',
+      parentChildPosition: -1,
+      children: [
+        {
+          name: 'MyCmp',
+          parentChildPosition: 0,
+          children: [
+            {
+              name: 'Div',
+              parentChildPosition: 0,
+              children: [
+                {
+                  name: 'Slot',
+                  parentChildPosition: 0,
+                  children: [
+                    {
+                      name: 'Text',
+                      parentChildPosition: 0,
+                      params: {
+                        value: 'Hello'
+                      },
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+        },
+      ]
+    })
+  })
+
+  it.only(`parametrized slot`, async () => {
+    const main = new Main()
+    const renderSpy = sinon.spy()
+    const appDef = {
+      components: [
+        {
+          name: 'MyCmp',
+          state: {
+            val: 'Hello'
+          },
+          tmpl: [
+            {
+              component: 'Div',
+              slot: [
+                {
+                  component: 'Slot',
+                  name: 'some',
+                  params: {
+                    val: {
+                      $exp: 'getValue',
+                      path: 'state.val',
+                    },
+                  },
+                }
+              ]
+            }
+          ],
+        }
+      ],
+      tmpl: [
+        {
+          component: 'MyCmp',
+          slot: {
+            some: [
+              {
+                component: 'Text',
+                value: {
+                  $exp: 'getValue',
+                  path: 'params.val',
+                },
               }
             ]
           }
@@ -141,7 +226,4 @@ describe(`component slots`, () => {
   })
 
 })
-
-// TODO: test named slots of custom components
-// TODO: test slots with params
 
