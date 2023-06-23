@@ -3,5 +3,7 @@ import {COMPONENT_DATA_MARKER} from '../constants.js';
 
 
 export function renderHeader(el: RenderedElement): string {
-  return `<span ${COMPONENT_DATA_MARKER}="${el.componentId}">${el.params?.value || ''}</span>`
+  const tag = 'h' + el.params!.level
+
+  return `<${tag} ${COMPONENT_DATA_MARKER}="${el.componentId}">${el.params?.value || ''}</${tag}>`
 }
