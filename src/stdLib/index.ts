@@ -18,8 +18,8 @@ import {InputText} from './basic/InputText.js';
 import {InputTextArea} from './basic/InputTextArea.js';
 import {InputNumber} from './basic/InputNumber.js';
 import {InputCheckBox} from './basic/InputCheckBox.js';
-import {LayoutTwoCol} from './basic/LayoutTwoCol.js';
-import {LayoutThreeCol} from './basic/LayoutThreeCol.js';
+import {Layout2Col} from './basic/Layout2Col.js';
+import {Layout3Col} from './basic/Layout3Col.js';
 import {Tabs} from './basic/Tabs.js';
 import {TabsLayout} from './basic/TabsLayout.js';
 import {LayoutPage} from './basic/LayoutPage.js';
@@ -40,12 +40,12 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   InputNumber,
   InputText,
   InputTextArea,
+  Layout2Col,
+  Layout3Col,
   LayoutBottomTabs,
   LayoutDrawer,
   LayoutModal,
   LayoutPage,
-  LayoutThreeCol,
-  LayoutTwoCol,
   Link,
   NavDelimiter,
   NavHeader,

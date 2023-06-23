@@ -47,8 +47,9 @@ export declare class Component {
     protected readonly app: AppSingleton;
     protected readonly componentDefinition: ComponentDefinition;
     private incomeEventListenerIndex?;
-    private readonly initialProps;
+    readonly initialProps: Record<string, any>;
     private lastRender?;
+    private slotParams;
     /**
      * component name. The same as in template and component definition
      */
@@ -63,6 +64,7 @@ export declare class Component {
      * remove it. And umount means that component doesn't remove from memory.
      */
     destroy(allowRender?: boolean): Promise<void>;
+    $$registerSlotParamsScope(slotName: string, slotScope: SuperScope): void;
     /**
      * Emit custom event to scopeComponent
      */

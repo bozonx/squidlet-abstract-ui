@@ -1,7 +1,7 @@
 import { isEmptyObject } from 'squidlet-lib';
 import { Component } from '../Component.js';
 import { instantiateChildComponent } from '../helpers/componentHelper.js';
-export const SLOT_DEFAULT = 'default';
+import { SLOT_DEFAULT } from '../types/constants.js';
 class SlotComponent extends Component {
     async init() {
         if (!isEmptyObject(this.slotsDefinition)) {
@@ -10,21 +10,35 @@ class SlotComponent extends Component {
         await super.init();
     }
     instantiateChildrenComponents() {
-        // TODO: как scope использовать ???
-        //const scope = this.scope.$newScope(vars)
-        if (!this.parent)
-            throw new Error('No parent');
-        else if (isEmptyObject(this.parent.slotsDefinition))
-            throw new Error('No slotsDefinition in parent');
-        else if (!this.scopeComponent)
+        if (!this.scopeComponent)
             throw new Error('No scopeComponent');
-        const slotComponents = this.parent
-            .slotsDefinition[this.props.name || SLOT_DEFAULT];
+        else if (!this.parent)
+            throw new Error('No parent');
+        else if (isEmptyObject(this.scopeComponent.slotsDefinition)) {
+            throw new Error('No slotsDefinition in scopeComponent');
+        }
+        let slotComponents;
+        if (this.props.tmplReplacement) {
+            slotComponents = this.parent
+                .slotsDefinition[this.props.name || SLOT_DEFAULT];
+        }
+        else {
+            slotComponents = this.scopeComponent
+                .slotsDefinition[this.props.name || SLOT_DEFAULT];
+        }
         if (!slotComponents)
-            throw new Error('No any slot in parent');
-        // TODO: надо чтобы props этого потомка выполнился с параметрами slot
+            throw new Error('No any slot in scopeComponent');
+        if (this.props.params && this.scopeComponent) {
+            // TODO: надо чтобы props этого потомка выполнился с параметрами slot
+            console.log(1111, this.props.params, this.scopeComponent.slotsDefinition);
+            const slotScope = this.scope
+                .$inherit({ slotParams: this.props.params });
+            this.scopeComponent.$$registerSlotParamsScope(this.props.name || SLOT_DEFAULT, slotScope);
+        }
         return slotComponents
-            .map((el) => instantiateChildComponent(el, this.app, this, this.scopeComponent));
+            .map((el) => instantiateChildComponent(el, this.app, this, 
+        // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
+        this.scopeComponent));
     }
 }
 export const Slot = {
@@ -35,6 +49,12 @@ export const Slot = {
         // if not set then default will be used
         name: {
             type: 'string',
+            required: false,
+            readonly: true,
+            nullable: false,
+        },
+        params: {
+            type: 'object',
             required: false,
             readonly: true,
             nullable: false,

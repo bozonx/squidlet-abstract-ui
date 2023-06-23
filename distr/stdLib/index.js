@@ -17,25 +17,43 @@ import { InputText } from './basic/InputText.js';
 import { InputTextArea } from './basic/InputTextArea.js';
 import { InputNumber } from './basic/InputNumber.js';
 import { InputCheckBox } from './basic/InputCheckBox.js';
+import { Layout2Col } from './basic/Layout2Col.js';
+import { Layout3Col } from './basic/Layout3Col.js';
+import { Tabs } from './basic/Tabs.js';
+import { TabsLayout } from './basic/TabsLayout.js';
+import { LayoutPage } from './basic/LayoutPage.js';
+import { LayoutBottomTabs } from './basic/LayoutBottomTabs.js';
+import { LayoutDrawer } from './basic/LayoutDrawer.js';
+import { Drawer } from './basic/Drawer.js';
+import { LayoutModal } from './basic/LayoutModal.js';
 export const STD_COMPONENTS = [
     // basic - reader as is
     Button,
     ButtonGroup,
-    InputCheckBox,
     Div,
+    Drawer,
     Header,
-    NavHorizontal,
+    InputCheckBox,
     InputNumber,
     InputText,
     InputTextArea,
+    Layout2Col,
+    Layout3Col,
+    LayoutBottomTabs,
+    LayoutDrawer,
+    LayoutModal,
+    LayoutPage,
     Link,
-    SectionMain,
     NavDelimiter,
     NavHeader,
+    NavHorizontal,
     NavItem,
     NavSub,
-    Text,
     NavVertical,
+    SectionMain,
+    Tabs,
+    TabsLayout,
+    Text,
     // wrappers - they use other components
     Router,
     Slot,

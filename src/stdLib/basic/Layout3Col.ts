@@ -1,6 +1,6 @@
 import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 
-export const LayoutTwoCol: ComponentDefinition = {
-  name: 'LayoutTwoCol',
+export const Layout3Col: ComponentDefinition = {
+  name: 'LayoutThreeCol',
 }

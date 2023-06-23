@@ -1,14 +1,9 @@
 import { newScope, SuperStruct, SuperArray, SuperData, SuperFunc, removeExpressions, removeSimple, All_TYPES } from 'squidlet-sprog';
 import { omitUndefined, makeUniqId, IndexedEventEmitter, isEmptyObject, isSameDeep } from 'squidlet-lib';
 import { DOM_EVENTS_DEFINITIONS } from './types/IncomeEvent.js';
-import { COMPONENT_ID_BYTES_NUM } from './types/constants.js';
+import { COMPONENT_ID_BYTES_NUM, SLOT_DEFAULT } from './types/constants.js';
 import { instantiateChildComponent, makeComponentUiParams, renderComponentBase } from './helpers/componentHelper.js';
 import { RenderEvents } from './types/RenderEvents.js';
-// TODO: если компонент отмонтирован то он должен перестать генерировать события вверх
-//       и перестать слушать props все другие события
-// TODO: если в props есть sprog - то он должен выполниться в scope главного компонента
-// TODO: поддержка перемещения элементов - добавить в SuperArray
-// TODO: можно ли перемещать компонент в другое дерево? если да то надо менять parent
 export var COMPONENT_EVENTS;
 (function (COMPONENT_EVENTS) {
     COMPONENT_EVENTS[COMPONENT_EVENTS["initStart"] = 0] = "initStart";
@@ -54,8 +49,10 @@ export class Component {
     // component's class definition
     componentDefinition;
     incomeEventListenerIndex;
+    // TODO: сделать обратно private
     initialProps;
     lastRender;
+    slotParams = {};
     /**
      * component name. The same as in template and component definition
      */
@@ -150,6 +147,9 @@ export class Component {
         if (allowRender) {
             this.app.$$render(RenderEvents.destroy, renderComponentBase(this));
         }
+    }
+    $$registerSlotParamsScope(slotName, slotScope) {
+        this.slotParams[slotName] = slotScope;
     }
     /**
      * Emit custom event to scopeComponent
@@ -293,6 +293,7 @@ export class Component {
     }
     instantiateChildrenComponents() {
         let cmpDefinitions = [];
+        let scopedComponent = this;
         if (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length) {
             if (this.componentDefinition.childless) {
                 throw new Error(`Component ${this.name} is childless and can't have tmpl`);
@@ -303,12 +304,14 @@ export class Component {
             && !this.componentDefinition.childless) {
             // if this has slot definition and not childless then put Slot component
             // which will render the default slot
-            cmpDefinitions = [{ component: 'Slot' }];
+            // это старый способ - он сгенерирует лишний компонент Slot
+            //cmpDefinitions = [{ component: 'Slot', tmplReplacement: true }]
+            cmpDefinitions = this.slotsDefinition?.[SLOT_DEFAULT] || [];
+            if (this.scopeComponent)
+                scopedComponent = this.scopeComponent;
         }
         return cmpDefinitions
-            .map((el) => instantiateChildComponent(el, this.app, this, 
-        // all my direct children in my scope
-        this));
+            .map((el) => instantiateChildComponent(el, this.app, this, scopedComponent));
     }
     /**
      * This is called on any change of props, state or children array
@@ -320,6 +323,7 @@ export class Component {
             if (this.componentDefinition.onUpdate) {
                 await this.runSprogCallback(this.componentDefinition.onUpdate);
             }
+            this.events.emit(COMPONENT_EVENTS.update);
             // console.log(1111, this.state, this.props)
             //
             // // update current values
