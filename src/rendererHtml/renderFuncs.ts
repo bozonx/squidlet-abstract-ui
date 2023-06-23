@@ -5,6 +5,7 @@ import {renderNavVertical} from './elemets/NavVertical.js';
 import {renderNavItem} from './elemets/NavItem.js';
 import {renderLayout2Col} from './elemets/Layout2Col.js';
 import {ChildrenRenderer} from './types.js';
+import {renderLayout3Col} from './elemets/Layout3Col.js';
 
 
 export const RENDER_FUNCS: Record<string, (el: RenderedElement, renderChild: ChildrenRenderer) => string> = {
@@ -13,4 +14,5 @@ export const RENDER_FUNCS: Record<string, (el: RenderedElement, renderChild: Chi
   NavVertical: renderNavVertical,
   NavItem: renderNavItem,
   Layout2Col: renderLayout2Col,
+  Layout3Col: renderLayout3Col,
 }
