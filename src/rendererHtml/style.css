@@ -13,3 +13,8 @@
   display: block;
   padding: 1em 2em;
 }
+
+.s-layout-2col {
+  display: flex;
+  width: 100%;
+}
