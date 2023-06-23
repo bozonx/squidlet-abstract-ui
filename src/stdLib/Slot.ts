@@ -29,6 +29,8 @@ class SlotComponent extends Component {
     // TODO: как scope использовать ???
     //const scope = this.scope.$newScope(vars)
 
+    console.log(111, this.scopeComponent?.name, this.scopeComponent?.slotsDefinition)
+
     if (!this.parent) throw new Error('No parent')
     else if (isEmptyObject(this.parent.slotsDefinition)) throw new Error('No slotsDefinition in parent')
     else if (!this.scopeComponent) throw new Error('No scopeComponent')

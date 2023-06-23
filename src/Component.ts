@@ -407,6 +407,7 @@ export class Component {
 
   protected instantiateChildrenComponents(): Component[] {
     let cmpDefinitions: CmpInstanceDefinition[] = []
+    let scopedComponent: Component = this
 
     if (this.componentDefinition.tmpl && this.componentDefinition.tmpl.length) {
       if (this.componentDefinition.childless) {
@@ -422,6 +423,9 @@ export class Component {
       // if this has slot definition and not childless then put Slot component
       // which will render the default slot
       cmpDefinitions = [{ component: 'Slot' }]
+
+      // TODO: тоже самое должно быть и в именных слотах
+      if (this.scopeComponent) scopedComponent = this.scopeComponent
     }
 
     return cmpDefinitions
@@ -429,8 +433,7 @@ export class Component {
         el,
         this.app,
         this,
-        // all my direct children in my scope
-        this
+        scopedComponent
       ))
   }
 

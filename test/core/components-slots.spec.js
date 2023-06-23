@@ -2,10 +2,6 @@ import {Main, RenderEvents, SYSTEM_EVENTS} from "../../src/index.js"
 import {APP_EVENTS} from "../../src/types/AppEvents.js";
 
 
-// TODO: test named slots of custom components
-// TODO: test slots with params
-
-
 describe(`component slots`, () => {
   it(`default slot`, async () => {
     const main = new Main()
@@ -62,7 +58,7 @@ describe(`component slots`, () => {
     })
   })
 
-  it(`named slot`, async () => {
+  it.only(`named slot`, async () => {
     const main = new Main()
     const renderSpy = sinon.spy()
     const appDef = {
@@ -108,7 +104,7 @@ describe(`component slots`, () => {
       })
     })
 
-    //await main.init()
+    await main.init()
 
     // renderSpy.should.have.been.calledOnce
     // renderSpy.should.have.been.calledWith(RenderEvents.mount, {
@@ -139,3 +135,7 @@ describe(`component slots`, () => {
   })
 
 })
+
+// TODO: test named slots of custom components
+// TODO: test slots with params
+
