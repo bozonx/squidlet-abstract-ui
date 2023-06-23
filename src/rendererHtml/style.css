@@ -6,6 +6,13 @@
   padding: 0;
 }
 
+.s-nav-horizontal {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
 .s-nav-item {
 }
 
@@ -13,6 +20,15 @@
   display: block;
   padding: 1em 2em;
 }
+
+.s-nav-header {
+
+}
+
+.s-nav-delimiter {
+
+}
+
 
 .s-layout-2col {
   display: flex;
