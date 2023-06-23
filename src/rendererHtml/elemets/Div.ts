@@ -1,7 +1,8 @@
 import {RenderedElement} from '../../types/RenderedElement.js';
-import {CHILDREN_MARKER_TMPL, COMPONENT_DATA_MARKER} from '../constants.js';
+import {COMPONENT_DATA_MARKER} from '../constants.js';
+import {ChildrenRenderer} from '../types.js';
 
 
-export function renderDiv(el: RenderedElement): string {
-  return `<div ${COMPONENT_DATA_MARKER}="${el.componentId}">${CHILDREN_MARKER_TMPL}</d>`
+export function renderDiv(el: RenderedElement, renderChild: ChildrenRenderer): string {
+  return `<div ${COMPONENT_DATA_MARKER}="${el.componentId}">${renderChild(el.children)}</d>`
 }

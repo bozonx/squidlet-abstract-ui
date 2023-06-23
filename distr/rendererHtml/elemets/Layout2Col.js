@@ -1,8 +1,11 @@
-import { CHILDREN_MARKER_TMPL, COMPONENT_DATA_MARKER } from '../constants.js';
-export function renderLayout2Col(el) {
+import { COMPONENT_DATA_MARKER } from '../constants.js';
+export function renderLayout2Col(el, renderChild) {
     console.log(222, el);
     return `<div `
         + `${COMPONENT_DATA_MARKER}="${el.componentId}" `
         + `class="s-layout-2col"`
-        + `>${CHILDREN_MARKER_TMPL}</div>`;
+        + `>`
+        + `<div class="s-layout-2col__left">${renderChild(el.children)}</div>`
+        + `<div class="s-layout-2col__right"></div>`
+        + `</div>`;
 }

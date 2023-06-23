@@ -3,7 +3,8 @@ import {RenderedElement} from '../types/RenderedElement.js';
 import {RenderEvents} from '../types/RenderEvents.js';
 import {ROOT_COMPONENT_ID} from '../RootComponent.js';
 import {RENDER_FUNCS} from './renderFuncs.js';
-import {CHILDREN_MARKER, COMPONENT_DATA_MARKER} from './constants.js';
+import {COMPONENT_DATA_MARKER} from './constants.js';
+import {ChildrenRenderer} from './types.js';
 
 
 export class HtmlRenderer {
@@ -54,7 +55,7 @@ export class HtmlRenderer {
       return
     }
 
-    rootEl.innerHTML = this.renderElement(treeRoot)
+    rootEl.innerHTML = this.renderRoot(treeRoot)
   }
 
   private destroyTree(treeRoot: RenderedElement) {
@@ -77,20 +78,26 @@ export class HtmlRenderer {
     )
   }
 
-  private renderElement(el: RenderedElement) {
+  private renderRoot(el: RenderedElement): string {
     // recursively render children
-    const children: string[] = (el.children || [])
-      .map((child) => this.renderElement(child))
-    const childrenStr = children.join('\n')
+    // const children: string[] = (el.children || [])
+    //   .map((child) => this.renderElement(child))
+    //const childrenStr = children.join('\n')
 
     // if it is custom component then just render its children
-    if (!RENDER_FUNCS[el.name]) return childrenStr
+    if (!RENDER_FUNCS[el.name]) return this.childrenRenderer(el.children)
 
-    const renderedEl = RENDER_FUNCS[el.name](el)
+    return RENDER_FUNCS[el.name](el, this.childrenRenderer)
 
-    return _.template(renderedEl)({
-      [CHILDREN_MARKER]: childrenStr
-    })
+    // return _.template(renderedEl)({
+    //   [CHILDREN_MARKER]: childrenStr
+    // })
+  }
+
+  private childrenRenderer: ChildrenRenderer = (els?: RenderedElement[]): string => {
+    return els?.map((child) => {
+      return this.renderRoot(child)
+    }).join('\n') || ''
   }
 
 }
