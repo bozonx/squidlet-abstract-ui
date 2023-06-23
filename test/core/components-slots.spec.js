@@ -69,7 +69,7 @@ describe(`component slots`, () => {
               slot: [
                 {
                   component: 'Slot',
-                  name: 'some'
+                  slotName: 'some'
                 }
               ]
             }
@@ -154,7 +154,7 @@ describe(`component slots`, () => {
               slot: [
                 {
                   component: 'Slot',
-                  name: 'some',
+                  slotName: 'some',
                   params: {
                     val: 'Hello'
                     // val: {

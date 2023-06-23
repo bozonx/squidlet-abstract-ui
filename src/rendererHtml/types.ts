@@ -1,4 +1,4 @@
 import {RenderedElement} from '../types/RenderedElement.js';
 
 
-export type ChildrenRenderer = (els?: RenderedElement[]) => string
+export type ChildrenRenderer = (els?: RenderedElement | RenderedElement[]) => string

@@ -20,11 +20,11 @@ class SlotComponent extends Component {
         let slotComponents;
         if (this.props.tmplReplacement) {
             slotComponents = this.parent
-                .slotsDefinition[this.props.name || SLOT_DEFAULT];
+                .slotsDefinition[this.props.slotName || SLOT_DEFAULT];
         }
         else {
             slotComponents = this.scopeComponent
-                .slotsDefinition[this.props.name || SLOT_DEFAULT];
+                .slotsDefinition[this.props.slotName || SLOT_DEFAULT];
         }
         if (!slotComponents)
             throw new Error('No any slot in scopeComponent');
@@ -33,7 +33,7 @@ class SlotComponent extends Component {
             console.log(1111, this.props.params, this.scopeComponent.slotsDefinition);
             const slotScope = this.scope
                 .$inherit({ slotParams: this.props.params });
-            this.scopeComponent.$$registerSlotParamsScope(this.props.name || SLOT_DEFAULT, slotScope);
+            this.scopeComponent.$$registerSlotParamsScope(this.props.slotName || SLOT_DEFAULT, slotScope);
         }
         return slotComponents
             .map((el) => instantiateChildComponent(el, this.app, this, 
@@ -47,7 +47,7 @@ export const Slot = {
     props: {
         // if used named slot, pet its name here
         // if not set then default will be used
-        name: {
+        slotName: {
             type: 'string',
             required: false,
             readonly: true,
@@ -60,5 +60,6 @@ export const Slot = {
             nullable: false,
         },
         // TODO: add params to put to slot while executing
-    }
+    },
+    uiParams: ['slotName'],
 };

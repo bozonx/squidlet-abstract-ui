@@ -16,11 +16,11 @@ export const Layout2Col = {
     tmpl: [
         {
             component: 'Slot',
-            name: 'left',
+            slotName: 'left',
         },
         {
             component: 'Slot',
-            name: 'right',
+            slotName: 'right',
         },
     ]
 };

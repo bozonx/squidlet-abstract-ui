@@ -85,10 +85,13 @@ export class HtmlRenderer {
     return RENDER_FUNCS[el.name](el, this.childrenRenderer)
   }
 
-  private childrenRenderer: ChildrenRenderer = (els?: RenderedElement[]): string => {
-    return els?.map((child) => {
-      return this.renderElement(child)
-    }).join('\n') || ''
+  private childrenRenderer: ChildrenRenderer = (els?: RenderedElement | RenderedElement[]): string => {
+    if (!els) return ''
+
+    const resolvedEls = (Array.isArray(els)) ? els : [els]
+
+    return resolvedEls.map((child) => this.renderElement(child))
+      .join('\n')
   }
 
 }

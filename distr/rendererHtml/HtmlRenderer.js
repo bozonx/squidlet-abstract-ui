@@ -55,21 +55,16 @@ export class HtmlRenderer {
         return document.querySelector(`[${COMPONENT_DATA_MARKER}="${componentId}"]`);
     }
     renderElement(el) {
-        // recursively render children
-        // const children: string[] = (el.children || [])
-        //   .map((child) => this.renderElement(child))
-        //const childrenStr = children.join('\n')
         // if it is custom component then just render its children
         if (!RENDER_FUNCS[el.name])
             return this.childrenRenderer(el.children);
         return RENDER_FUNCS[el.name](el, this.childrenRenderer);
-        // return _.template(renderedEl)({
-        //   [CHILDREN_MARKER]: childrenStr
-        // })
     }
     childrenRenderer = (els) => {
-        return els?.map((child) => {
-            return this.renderElement(child);
-        }).join('\n') || '';
+        if (!els)
+            return '';
+        const resolvedEls = (Array.isArray(els)) ? els : [els];
+        return resolvedEls.map((child) => this.renderElement(child))
+            .join('\n');
     };
 }
