@@ -1,12 +1,11 @@
 import {RenderedElement} from '../../types/RenderedElement.js';
 import {COMPONENT_DATA_MARKER} from '../constants.js';
 import {ChildrenRenderer} from '../types.js';
+import {makeStyleTag} from '../helpers.js';
 
 
 export function renderLayoutPage(el: RenderedElement, renderChild: ChildrenRenderer): string {
-  const pageStyle = (el.params?.pageWidth)
-    ? `style="width: ${el.params?.pageWidth}"`
-    : ''
+  const pageStyle = makeStyleTag({width: el.params?.pageWidth})
 
   return `<div `
     + `${COMPONENT_DATA_MARKER}="${el.componentId}" `

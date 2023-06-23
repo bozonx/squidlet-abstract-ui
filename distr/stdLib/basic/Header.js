@@ -6,7 +6,12 @@ export const Header = {
             type: 'string',
             default: '',
             nullable: true,
+        },
+        level: {
+            type: 'number',
+            default: 1,
+            nullable: true,
         }
     },
-    uiParams: ['value'],
+    uiParams: ['value', 'level'],
 };
