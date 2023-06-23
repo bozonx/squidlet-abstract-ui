@@ -9,11 +9,13 @@ import {renderLayout3Col} from './elemets/Layout3Col.js';
 import {renderLayoutPage} from './elemets/LayoutPage.js';
 import {renderHeader} from './elemets/Header.js';
 import {renderSectionMain} from './elemets/SectionMain.js';
+import {renderLink} from './elemets/Link.js';
 
 
 export const RENDER_FUNCS: Record<string, (el: RenderedElement, renderChild: ChildrenRenderer) => string> = {
   Div: renderDiv,
   Text: renderText,
+  Link: renderLink,
   Header: renderHeader,
   NavVertical: renderNavVertical,
   NavItem: renderNavItem,
