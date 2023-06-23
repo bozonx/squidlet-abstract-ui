@@ -111,6 +111,7 @@ export class Component {
   // TODO: сделать обратно private
   readonly initialProps: Record<string, any>
   private lastRender?: RenderedElement
+  private slotParams: Record<string, SuperScope> = {}
 
 
   /**
@@ -164,7 +165,6 @@ export class Component {
       readonly: false,
       nullable: false,
     })).getProxy()
-
   }
 
 
@@ -228,6 +228,10 @@ export class Component {
     if (allowRender) {
       this.app.$$render(RenderEvents.destroy, renderComponentBase(this))
     }
+  }
+
+  $$registerSlotParamsScope(slotName: string, slotScope: SuperScope) {
+    this.slotParams[slotName] = slotScope
   }
 
 

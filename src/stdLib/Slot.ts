@@ -32,7 +32,6 @@ class SlotComponent extends Component {
     }
 
     let slotComponents
-    let externalScope: SuperScope | undefined
 
     if (this.props.tmplReplacement) {
       slotComponents = this.parent
@@ -46,15 +45,18 @@ class SlotComponent extends Component {
     if (!slotComponents) throw new Error('No any slot in scopeComponent')
 
 
-    if (this.props.params) {
+    if (this.props.params && this.scopeComponent) {
       // TODO: надо чтобы props этого потомка выполнился с параметрами slot
 
       console.log(1111, this.props.params, this.scopeComponent.slotsDefinition)
 
-      // externalScope = newScope({
-      //   slotParams: this.props.params
-      // })
+      const slotScope = this.scope
+        .$inherit({ slotParams: this.props.params })
 
+      this.scopeComponent.$$registerSlotParamsScope(
+        this.props.name || SLOT_DEFAULT,
+        slotScope
+      )
     }
 
     return slotComponents
