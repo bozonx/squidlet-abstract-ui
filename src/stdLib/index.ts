@@ -18,10 +18,14 @@ import {InputText} from './basic/InputText.js';
 import {InputTextArea} from './basic/InputTextArea.js';
 import {InputNumber} from './basic/InputNumber.js';
 import {InputCheckBox} from './basic/InputCheckBox.js';
-import {TwoColLayout} from './basic/TwoColLayout.js';
-import {ThreeColLayout} from './basic/ThreeColLayout.js';
+import {LayoutTwoCol} from './basic/LayoutTwoCol.js';
+import {LayoutThreeCol} from './basic/LayoutThreeCol.js';
 import {Tabs} from './basic/Tabs.js';
 import {TabsLayout} from './basic/TabsLayout.js';
+import {LayoutPage} from './basic/LayoutPage.js';
+import {LayoutBottomTabs} from './basic/LayoutBottomTabs.js';
+import {LayoutDrawer} from './basic/LayoutDrawer.js';
+import {Drawer} from './basic/Drawer.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
@@ -29,11 +33,17 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Button,
   ButtonGroup,
   Div,
+  Drawer,
   Header,
   InputCheckBox,
   InputNumber,
   InputText,
   InputTextArea,
+  LayoutBottomTabs,
+  LayoutDrawer,
+  LayoutPage,
+  LayoutThreeCol,
+  LayoutTwoCol,
   Link,
   NavDelimiter,
   NavHeader,
@@ -45,8 +55,6 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Tabs,
   TabsLayout,
   Text,
-  ThreeColLayout,
-  TwoColLayout,
 
   // wrappers - they use other components
   Router,
