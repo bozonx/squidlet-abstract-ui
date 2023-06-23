@@ -106,30 +106,36 @@ describe(`component slots`, () => {
 
     await main.init()
 
-    // renderSpy.should.have.been.calledOnce
+    renderSpy.should.have.been.calledOnce
     // renderSpy.should.have.been.calledWith(RenderEvents.mount, {
     //   name: 'Root',
     //   parentChildPosition: -1,
     //   children: [
     //     {
-    //       name: 'Div',
+    //       name: 'MyCmp',
     //       parentChildPosition: 0,
     //       children: [
     //         {
-    //           name: 'Slot',
+    //           name: 'Div',
     //           parentChildPosition: 0,
     //           children: [
     //             {
-    //               name: 'Text',
+    //               name: 'Slot',
     //               parentChildPosition: 0,
-    //               params: {
-    //                 value: 'Hello'
-    //               },
+    //               children: [
+    //                 {
+    //                   name: 'Text',
+    //                   parentChildPosition: 0,
+    //                   params: {
+    //                     value: 'Hello'
+    //                   },
+    //                 }
+    //               ]
     //             }
     //           ]
     //         }
-    //       ]
-    //     }
+    //       ],
+    //     },
     //   ]
     // })
   })

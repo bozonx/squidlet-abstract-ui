@@ -29,18 +29,34 @@ class SlotComponent extends Component {
     // TODO: как scope использовать ???
     //const scope = this.scope.$newScope(vars)
 
-    console.log(111, this.scopeComponent?.name, this.scopeComponent?.slotsDefinition)
 
-    if (!this.parent) throw new Error('No parent')
-    else if (isEmptyObject(this.parent.slotsDefinition)) throw new Error('No slotsDefinition in parent')
-    else if (!this.scopeComponent) throw new Error('No scopeComponent')
+    if (!this.scopeComponent) throw new Error('No scopeComponent')
+    else if (!this.parent) throw new Error('No parent')
+    else if (isEmptyObject(this.scopeComponent.slotsDefinition)) {
+      throw new Error('No slotsDefinition in scopeComponent')
+    }
 
-    const slotComponents = this.parent
-      .slotsDefinition![this.props.name || SLOT_DEFAULT]
+    let slotComponents
 
-    if (!slotComponents) throw new Error('No any slot in parent')
+    if (this.props.tmplReplacement) {
+      slotComponents = this.parent
+        .slotsDefinition![this.props.name || SLOT_DEFAULT]
+    }
+    else {
+      slotComponents = this.scopeComponent
+        .slotsDefinition![this.props.name || SLOT_DEFAULT]
+    }
+
+
+    console.log(111, this.scopeComponent?.name, this.scopeComponent?.slotsDefinition,
+      this.props, this.name, this.initialProps, slotComponents, this.props.tmplReplacement
+    )
+
+    if (!slotComponents) throw new Error('No any slot in scopeComponent')
 
     // TODO: надо чтобы props этого потомка выполнился с параметрами slot
+
+    // TODO: установить правильно scopeComponent
 
     return slotComponents
       .map((el) => instantiateChildComponent(
@@ -61,6 +77,13 @@ export const Slot: ComponentDefinition = {
     // if not set then default will be used
     name: {
       type: 'string',
+      required: false,
+      readonly: true,
+      nullable: false,
+    },
+    tmplReplacement: {
+      type: 'boolean',
+      default: false,
       required: false,
       readonly: true,
       nullable: false,

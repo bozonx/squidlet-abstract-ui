@@ -108,7 +108,8 @@ export class Component {
   // component's class definition
   protected readonly componentDefinition: ComponentDefinition
   private incomeEventListenerIndex?: number
-  private readonly initialProps: Record<string, any>
+  // TODO: сделать обратно private
+  readonly initialProps: Record<string, any>
   private lastRender?: RenderedElement
 
 
@@ -422,7 +423,8 @@ export class Component {
     ) {
       // if this has slot definition and not childless then put Slot component
       // which will render the default slot
-      cmpDefinitions = [{ component: 'Slot' }]
+      // TODO: может как-то по другому делать - не через слот???
+      cmpDefinitions = [{ component: 'Slot', tmplReplacement: true }]
 
       // TODO: тоже самое должно быть и в именных слотах
       if (this.scopeComponent) scopedComponent = this.scopeComponent
