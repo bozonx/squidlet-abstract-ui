@@ -21,7 +21,7 @@ import {InputCheckBox} from './basic/InputCheckBox.js';
 import {Layout2Col} from './basic/Layout2Col.js';
 import {Layout3Col} from './basic/Layout3Col.js';
 import {Tabs} from './basic/Tabs.js';
-import {TabsLayout} from './basic/TabsLayout.js';
+import {LayoutTabs} from './basic/LayoutTabs.js';
 import {LayoutPage} from './basic/LayoutPage.js';
 import {LayoutBottomTabs} from './basic/LayoutBottomTabs.js';
 import {LayoutDrawer} from './basic/LayoutDrawer.js';
@@ -46,6 +46,7 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   LayoutDrawer,
   LayoutModal,
   LayoutPage,
+  LayoutTabs,
   Link,
   NavDelimiter,
   NavHeader,
@@ -55,7 +56,6 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   NavVertical,
   SectionMain,
   Tabs,
-  TabsLayout,
   Text,
 
   // wrappers - they use other components

@@ -18,6 +18,18 @@ import {renderNavHorizontal} from './elemets/NavHorizontal.js';
 import {renderNavSub} from './elemets/NavSub.js';
 
 
+// TODO: add Drawer
+// TODO: add InputCheckBox
+// TODO: add InputNumber
+// TODO: add InputText
+// TODO: add InputTextArea
+// TODO: add LayoutBottomTabs
+// TODO: add LayoutDrawer
+// TODO: add LayoutModal
+// TODO: add LayoutTabs
+// TODO: add Tabs
+
+
 export const RENDER_FUNCS: Record<string, (el: RenderedElement, renderChild: ChildrenRenderer) => string> = {
   Button: renderButton,
   ButtonGroup: renderButtonGroup,

@@ -1,6 +1,6 @@
 import {ComponentDefinition} from '../../types/ComponentDefinition.js';
 
 
-export const TabsLayout: ComponentDefinition = {
-  name: 'TabsLayout',
+export const LayoutTabs: ComponentDefinition = {
+  name: 'LayoutTabs',
 }
