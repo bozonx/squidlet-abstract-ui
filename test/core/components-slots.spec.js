@@ -98,7 +98,7 @@ describe(`component slots`, () => {
     main.systemEvents.once(SYSTEM_EVENTS.newApp, (app) => {
       app.events.addListener(APP_EVENTS.render, (event, el) => {
 
-        console.log(111, JSON.stringify(el, null, 2));
+        console.log(333, JSON.stringify(el, null, 2));
 
         renderSpy(event, clearRenderElement(el))
       })
@@ -107,37 +107,37 @@ describe(`component slots`, () => {
     await main.init()
 
     renderSpy.should.have.been.calledOnce
-    // renderSpy.should.have.been.calledWith(RenderEvents.mount, {
-    //   name: 'Root',
-    //   parentChildPosition: -1,
-    //   children: [
-    //     {
-    //       name: 'MyCmp',
-    //       parentChildPosition: 0,
-    //       children: [
-    //         {
-    //           name: 'Div',
-    //           parentChildPosition: 0,
-    //           children: [
-    //             {
-    //               name: 'Slot',
-    //               parentChildPosition: 0,
-    //               children: [
-    //                 {
-    //                   name: 'Text',
-    //                   parentChildPosition: 0,
-    //                   params: {
-    //                     value: 'Hello'
-    //                   },
-    //                 }
-    //               ]
-    //             }
-    //           ]
-    //         }
-    //       ],
-    //     },
-    //   ]
-    // })
+    renderSpy.should.have.been.calledWith(RenderEvents.mount, {
+      name: 'Root',
+      parentChildPosition: -1,
+      children: [
+        {
+          name: 'MyCmp',
+          parentChildPosition: 0,
+          children: [
+            {
+              name: 'Div',
+              parentChildPosition: 0,
+              children: [
+                {
+                  name: 'Slot',
+                  parentChildPosition: 0,
+                  children: [
+                    {
+                      name: 'Text',
+                      parentChildPosition: 0,
+                      params: {
+                        value: 'Hello'
+                      },
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+        },
+      ]
+    })
   })
 
 })

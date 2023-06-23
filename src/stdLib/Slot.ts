@@ -3,15 +3,13 @@ import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {Component} from '../Component.js';
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
 import {instantiateChildComponent} from '../helpers/componentHelper.js';
+import {SLOT_DEFAULT} from '../types/constants.js';
 
 
 export interface SlotsDefinition {
   default?: CmpInstanceDefinition[]
   [index: string]: CmpInstanceDefinition[] | undefined
 }
-
-
-export const SLOT_DEFAULT = 'default'
 
 
 class SlotComponent extends Component {
@@ -56,7 +54,7 @@ class SlotComponent extends Component {
 
     // TODO: надо чтобы props этого потомка выполнился с параметрами slot
 
-    // TODO: установить правильно scopeComponent
+    // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
 
     return slotComponents
       .map((el) => instantiateChildComponent(

@@ -25,7 +25,7 @@ import {
 import {CmpInstanceDefinition} from './types/CmpInstanceDefinition.js'
 import {DOM_EVENTS_DEFINITIONS, IncomeEvent} from './types/IncomeEvent.js'
 import {RenderedElement} from './types/RenderedElement.js'
-import {COMPONENT_ID_BYTES_NUM} from './types/constants.js'
+import {COMPONENT_ID_BYTES_NUM, SLOT_DEFAULT} from './types/constants.js'
 import {AppSingleton} from './AppSingleton.js'
 import {
   instantiateChildComponent,
@@ -423,10 +423,13 @@ export class Component {
     ) {
       // if this has slot definition and not childless then put Slot component
       // which will render the default slot
-      // TODO: может как-то по другому делать - не через слот???
-      cmpDefinitions = [{ component: 'Slot', tmplReplacement: true }]
 
-      // TODO: тоже самое должно быть и в именных слотах
+      console.log(2222, this.name, this.slotsDefinition!['default']!)
+
+      // это старый способ - он сгенерирует лишний компонент Slot
+      //cmpDefinitions = [{ component: 'Slot', tmplReplacement: true }]
+      cmpDefinitions = this.slotsDefinition?.[SLOT_DEFAULT] || []
+
       if (this.scopeComponent) scopedComponent = this.scopeComponent
     }
 
