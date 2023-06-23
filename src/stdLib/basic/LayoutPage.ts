@@ -7,6 +7,7 @@ export const LayoutPage: ComponentDefinition = {
     // use 1em, or 10px etc
     pageWidth: {
       type: 'string',
+      default: '960px',
     },
   },
   uiParams: [
