@@ -18,3 +18,16 @@
   display: flex;
   width: 100%;
 }
+
+.s-layout-3col {
+  display: flex;
+  width: 100%;
+}
+
+.s-layout-page {
+  display: flex;
+  width: 100%;
+}
+.s-layout-page__page {
+
+}
