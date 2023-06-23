@@ -55,7 +55,7 @@ export class HtmlRenderer {
       return
     }
 
-    rootEl.innerHTML = this.renderRoot(treeRoot)
+    rootEl.innerHTML = this.renderElement(treeRoot)
   }
 
   private destroyTree(treeRoot: RenderedElement) {
@@ -78,25 +78,16 @@ export class HtmlRenderer {
     )
   }
 
-  private renderRoot(el: RenderedElement): string {
-    // recursively render children
-    // const children: string[] = (el.children || [])
-    //   .map((child) => this.renderElement(child))
-    //const childrenStr = children.join('\n')
-
+  private renderElement(el: RenderedElement): string {
     // if it is custom component then just render its children
     if (!RENDER_FUNCS[el.name]) return this.childrenRenderer(el.children)
 
     return RENDER_FUNCS[el.name](el, this.childrenRenderer)
-
-    // return _.template(renderedEl)({
-    //   [CHILDREN_MARKER]: childrenStr
-    // })
   }
 
   private childrenRenderer: ChildrenRenderer = (els?: RenderedElement[]): string => {
     return els?.map((child) => {
-      return this.renderRoot(child)
+      return this.renderElement(child)
     }).join('\n') || ''
   }
 

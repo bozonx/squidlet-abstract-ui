@@ -10,4 +10,5 @@ export declare class HtmlRenderer {
     private updateElement;
     private getElementByComponentId;
     private renderElement;
+    private childrenRenderer;
 }

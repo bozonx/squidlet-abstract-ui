@@ -1,8 +1,7 @@
-import _ from 'lodash';
 import { RenderEvents } from '../types/RenderEvents.js';
 import { ROOT_COMPONENT_ID } from '../RootComponent.js';
 import { RENDER_FUNCS } from './renderFuncs.js';
-import { CHILDREN_MARKER, COMPONENT_DATA_MARKER } from './constants.js';
+import { COMPONENT_DATA_MARKER } from './constants.js';
 export class HtmlRenderer {
     rootSelector;
     constructor(appSelector) {
@@ -57,15 +56,20 @@ export class HtmlRenderer {
     }
     renderElement(el) {
         // recursively render children
-        const children = (el.children || [])
-            .map((child) => this.renderElement(child));
-        const childrenStr = children.join('\n');
+        // const children: string[] = (el.children || [])
+        //   .map((child) => this.renderElement(child))
+        //const childrenStr = children.join('\n')
         // if it is custom component then just render its children
         if (!RENDER_FUNCS[el.name])
-            return childrenStr;
-        const renderedEl = RENDER_FUNCS[el.name](el);
-        return _.template(renderedEl)({
-            [CHILDREN_MARKER]: childrenStr
-        });
+            return this.childrenRenderer(el.children);
+        return RENDER_FUNCS[el.name](el, this.childrenRenderer);
+        // return _.template(renderedEl)({
+        //   [CHILDREN_MARKER]: childrenStr
+        // })
     }
+    childrenRenderer = (els) => {
+        return els?.map((child) => {
+            return this.renderElement(child);
+        }).join('\n') || '';
+    };
 }
