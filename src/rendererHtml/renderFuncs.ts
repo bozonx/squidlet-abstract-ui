@@ -7,11 +7,13 @@ import {renderLayout2Col} from './elemets/Layout2Col.js';
 import {ChildrenRenderer} from './types.js';
 import {renderLayout3Col} from './elemets/Layout3Col.js';
 import {renderLayoutPage} from './elemets/LayoutPage.js';
+import {renderHeader} from './elemets/Header.js';
 
 
 export const RENDER_FUNCS: Record<string, (el: RenderedElement, renderChild: ChildrenRenderer) => string> = {
   Div: renderDiv,
   Text: renderText,
+  Header: renderHeader,
   NavVertical: renderNavVertical,
   NavItem: renderNavItem,
   Layout2Col: renderLayout2Col,
