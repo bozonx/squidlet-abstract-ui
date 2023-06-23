@@ -11,10 +11,12 @@ import {renderHeader} from './elemets/Header.js';
 import {renderSectionMain} from './elemets/SectionMain.js';
 import {renderLink} from './elemets/Link.js';
 import {renderButton} from './elemets/Button.js';
+import {renderButtonGroup} from './elemets/ButtonGroup.js';
 
 
 export const RENDER_FUNCS: Record<string, (el: RenderedElement, renderChild: ChildrenRenderer) => string> = {
   Button: renderButton,
+  ButtonGroup: renderButtonGroup,
   Div: renderDiv,
   Header: renderHeader,
   Layout2Col: renderLayout2Col,

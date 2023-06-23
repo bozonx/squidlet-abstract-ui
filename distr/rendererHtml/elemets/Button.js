@@ -1,0 +1,13 @@
+import { COMPONENT_DATA_MARKER } from '../constants.js';
+export function renderButton(el) {
+    const id = `${COMPONENT_DATA_MARKER}="${el.componentId}"`;
+    const disabled = (el.params?.disabled) ? `disabled="disabled"` : '';
+    // TODO: add leftIcon
+    if (el.params?.to) {
+        const href = `href=${el.params.to}`;
+        // TODO: add showExternalIcon
+        return `<a class="s-button-link" ${id} ${href}>${el.params?.value || ''}</a>`;
+    }
+    // TODO: add pending
+    return `<button class="s-button" ${id} ${disabled}>${el.params?.value || ''}</button>`;
+}
