@@ -202,6 +202,8 @@ describe(`component slots`, () => {
 
     await main.init()
 
+    //await main.app.root.tick()
+
     renderSpy.should.have.been.calledOnce
     renderSpy.should.have.been.calledWith(RenderEvents.mount, {
       name: 'Root',

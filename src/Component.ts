@@ -111,7 +111,7 @@ export class Component {
   // TODO: сделать обратно private
   readonly initialProps: Record<string, any>
   private lastRender?: RenderedElement
-  private slotParams: Record<string, SuperScope> = {}
+  //private slotParams: Record<string, SuperScope> = {}
 
 
   /**
@@ -172,16 +172,6 @@ export class Component {
   async init() {
     this.events.emit(COMPONENT_EVENTS.initStart)
 
-    this.props.subscribe((target: ProxifiedSuperValue, path?: string) => {
-      // Listen to changes in props
-    })
-    this.state.subscribe((target: ProxifiedSuperValue, path?: string) => {
-      // Listen to changes in state
-    })
-    this.children.subscribe((target: ProxifiedSuperValue, path?: string) => {
-      // Listen to changes in children
-    })
-
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя
 
@@ -231,8 +221,10 @@ export class Component {
     }
   }
 
-  $$registerSlotParamsScope(slotName: string, slotScope: SuperScope) {
-    this.slotParams[slotName] = slotScope
+  $$registerSlotParams(slotParams: Record<any, any>) {
+    this.scope.$super.setOwnValue('slotParams', slotParams)
+
+    console.log(444, this.name, this.scope.$cloneSelf().slotParams)
   }
 
 
@@ -259,9 +251,13 @@ export class Component {
       await this.props.$super.execute(this.scopeComponent.scope, removeSimple(this.initialProps))
     }
 
+    // TODO: а почему личные scope не используются ???
+
     if (this.componentDefinition.onMount) {
       await this.runSprogCallback(this.componentDefinition.onMount)
     }
+
+    // TODO: слушать только если компоненту это нужно, если этот компонент будет отрисовываться
     // start listening income events
     this.incomeEventListenerIndex = this.app.events.addListener(
       this.app.makeIncomeEventName(this.id),

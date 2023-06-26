@@ -47,6 +47,7 @@ export class AppSingleton {
     this.storage = (new SuperData(
       this.main.componentsManager.appDefinition.storage
     )).getProxy()
+
     this.storage.$super.init()
     this.router.init(
       this.main.componentsManager.appDefinition.routes,

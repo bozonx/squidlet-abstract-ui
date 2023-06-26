@@ -1,5 +1,4 @@
 import {isEmptyObject} from 'squidlet-lib'
-import {SuperScope, newScope} from 'squidlet-sprog'
 import {ComponentDefinition} from '../types/ComponentDefinition.js';
 import {Component} from '../Component.js';
 import {CmpInstanceDefinition} from '../types/CmpInstanceDefinition.js';
@@ -34,45 +33,29 @@ class SlotComponent extends Component {
     const slotComponents = this.scopeComponent
       .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
 
-    // if (this.props.tmplReplacement) {
-    //   slotComponents = this.parent
-    //     .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
-    // }
-    // else {
-    //   slotComponents = this.scopeComponent
-    //     .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
-    // }
-
     if (!slotComponents) throw new Error('No any slot in scopeComponent')
     else if (!slotComponents.length) return []
 
-    // use parameterized slots
-    if (this.props.params && this.scopeComponent) {
-
-
-      // TODO: надо чтобы props этого потомка выполнился с параметрами slot
-
-      console.log(1111, this.props.params, this.scopeComponent.slotsDefinition)
-
-      const slotScope = this.scope
-        .$inherit({ slotParams: this.props.params })
-
-      this.scopeComponent.$$registerSlotParamsScope(
-        this.props.slotName || SLOT_DEFAULT,
-        slotScope
-      )
-    }
-
     return slotComponents
-      .map((el) => instantiateChildComponent(
-        el,
-        this.app,
-        this,
+      .map((el) => {
+        const cmp = instantiateChildComponent(
+          el,
+          this.app,
+          this,
 
-        // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
+          // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
 
-        this.scopeComponent!,
-      ))
+          this.scopeComponent!,
+        )
+
+        // TODO: лучше передать сразу в instantiateChildComponent
+        // TODO: надо чтобы оно сохранило связть со своим scope
+        if (this.props.params) {
+          cmp.$$registerSlotParams(this.props.params)
+        }
+
+        return cmp
+      })
   }
 }
 
