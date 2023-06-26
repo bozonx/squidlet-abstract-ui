@@ -158,6 +158,7 @@ export class Component {
       component: this,
       // emit custom output event which will catch scopeComponent
       emit: this.emit,
+      //slotParams: {val: 'Hello'}
     })
     this.children = (new SuperArray({
       // TODO: поидее надо тип Component

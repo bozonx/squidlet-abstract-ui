@@ -31,21 +31,25 @@ class SlotComponent extends Component {
       throw new Error('No slotsDefinition in scopeComponent')
     }
 
-    let slotComponents
+    const slotComponents = this.scopeComponent
+      .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
 
-    if (this.props.tmplReplacement) {
-      slotComponents = this.parent
-        .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
-    }
-    else {
-      slotComponents = this.scopeComponent
-        .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
-    }
+    // if (this.props.tmplReplacement) {
+    //   slotComponents = this.parent
+    //     .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
+    // }
+    // else {
+    //   slotComponents = this.scopeComponent
+    //     .slotsDefinition![this.props.slotName || SLOT_DEFAULT]
+    // }
 
     if (!slotComponents) throw new Error('No any slot in scopeComponent')
+    else if (!slotComponents.length) return []
 
-
+    // use parameterized slots
     if (this.props.params && this.scopeComponent) {
+
+
       // TODO: надо чтобы props этого потомка выполнился с параметрами slot
 
       console.log(1111, this.props.params, this.scopeComponent.slotsDefinition)

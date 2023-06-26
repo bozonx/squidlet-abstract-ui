@@ -117,6 +117,9 @@ describe(`component slots`, () => {
                 {
                   name: 'Slot',
                   parentChildPosition: 0,
+                  params: {
+                    slotName: 'some'
+                  },
                   children: [
                     {
                       name: 'Text',
@@ -215,6 +218,9 @@ describe(`component slots`, () => {
                 {
                   name: 'Slot',
                   parentChildPosition: 0,
+                  params: {
+                    slotName: 'some'
+                  },
                   children: [
                     {
                       name: 'Text',
