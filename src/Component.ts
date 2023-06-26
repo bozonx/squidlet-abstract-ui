@@ -7,12 +7,10 @@ import {
   ProxyfiedArray,
   SuperData,
   ProxyfiedData,
-  ProxifiedSuperValue,
   SprogDefinition,
   SuperFunc,
   SuperItemInitDefinition,
   removeExpressions,
-  removeSimple,
   All_TYPES
 } from 'squidlet-sprog'
 import {
@@ -180,6 +178,7 @@ export class Component {
     // TODO: родитель должен понять что ребенок дестроится и разорвать связь у себя
     //       и удалить его у себя
 
+    // TODO: а как правильно должна отработать removeExpressions ??? - всё в глубине убрать?
     this.$$propsSetter = this.props.$super.init(removeExpressions(this.initialProps))
 
     //this.hasReactiveProps = this.props.$super.hasSuperValueDeepChildren()
@@ -254,13 +253,13 @@ export class Component {
     // update props
     if (this.scopeComponent) {
       const scope = this.scopeComponent.scope
-        // TODO: надо взять выполненный props.params - а там он не выполненный
 
-        // TODO: возможно props обновляются не вглубину
+        // TODO: получается что получила в итоге $exp а не значение
+        // TODO: this.slotComponent?.props.params наверное взять exr из intial params
 
         .$inherit(this.slotComponent && {slotParams: this.slotComponent?.props.params})
 
-      await this.props.$super.execute(scope, removeSimple(this.initialProps))
+      await this.props.$super.execute(scope, this.initialProps, this.$$propsSetter)
     }
 
     // TODO: а почему личные scope не используются ???
@@ -392,7 +391,7 @@ export class Component {
     // do not render updates of component and its children if it is unmounted
     if (!this.mounted) return
 
-    await this.props.$super.execute(scopedComponent.scope, removeSimple(this.initialProps))
+    await this.props.$super.execute(scopedComponent.scope, this.initialProps)
 
     // ask all the children
     for (const child of this.children) {

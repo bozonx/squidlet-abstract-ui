@@ -159,11 +159,11 @@ describe(`component slots`, () => {
                   component: 'Slot',
                   slotName: 'some',
                   params: {
-                    val: 'Hello'
-                    // val: {
-                    //   $exp: 'getValue',
-                    //   path: 'state.val',
-                    // },
+                    //val: 'Hello'
+                    val: {
+                      $exp: 'getValue',
+                      path: 'state.val',
+                    },
                   },
                 }
               ]
