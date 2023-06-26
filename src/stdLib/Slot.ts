@@ -36,26 +36,22 @@ class SlotComponent extends Component {
     if (!slotComponents) throw new Error('No any slot in scopeComponent')
     else if (!slotComponents.length) return []
 
+    // TODO: должно родителю устанавливаться
+    // if (this.props.params) {
+    //   this.$$registerSlotParams(this.props.params)
+    // }
+
     return slotComponents
-      .map((el) => {
-        const cmp = instantiateChildComponent(
-          el,
-          this.app,
-          this,
+      .map((el) => instantiateChildComponent(
+        el,
+        this.app,
+        this,
 
-          // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
+        // TODO: установить правильно scopeComponent - см в Component.instantiateChildrenComponents
 
-          this.scopeComponent!,
-        )
-
-        // TODO: лучше передать сразу в instantiateChildComponent
-        // TODO: надо чтобы оно сохранило связть со своим scope
-        if (this.props.params) {
-          cmp.$$registerSlotParams(this.props.params)
-        }
-
-        return cmp
-      })
+        this.scopeComponent!,
+        this,
+      ))
   }
 }
 

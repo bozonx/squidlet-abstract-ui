@@ -48,6 +48,7 @@ export function instantiateChildComponent(
   app: AppSingleton,
   parent: Component,
   scopeComponent: Component,
+  slotComponent?: Component
 ): Component {
   const {
     componentName,
@@ -68,6 +69,7 @@ export function instantiateChildComponent(
     propsValues,
     slotDefinition,
     scopeComponent,
+    slotComponent
   )
 }
 

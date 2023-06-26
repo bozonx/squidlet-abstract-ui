@@ -87,7 +87,10 @@ export class Component {
   readonly children: ProxyfiedArray<Component>
   // Parent of this component. If it is root then it will be null
   readonly parent: Component
+  // component where I placed in tmpl
   readonly scopeComponent?: Component
+  // Slot component where I placed in
+  readonly slotComponent?: Component
   // Props values set in the parent tmpl
   readonly props: ProxyfiedStruct
   readonly slotsDefinition?: SlotsDefinition
@@ -140,10 +143,12 @@ export class Component {
     slotsDefinition?: SlotsDefinition,
     // component which renders its template where this component is
     scopeComponent?: Component,
+    slotComponent?: Component
   ) {
     this.app = app
     this.parent = parent
     this.scopeComponent = scopeComponent
+    this.slotComponent = slotComponent
     this.componentDefinition = componentDefinition
     this.initialProps = initialProps
     this.id = this.makeId()
@@ -248,7 +253,14 @@ export class Component {
   async mount(allowRender: boolean = true) {
     // update props
     if (this.scopeComponent) {
-      await this.props.$super.execute(this.scopeComponent.scope, removeSimple(this.initialProps))
+      const scope = this.scopeComponent.scope
+        // TODO: надо взять выполненный props.params - а там он не выполненный
+
+        // TODO: возможно props обновляются не вглубину
+
+        .$inherit(this.slotComponent && {slotParams: this.slotComponent?.props.params})
+
+      await this.props.$super.execute(scope, removeSimple(this.initialProps))
     }
 
     // TODO: а почему личные scope не используются ???
@@ -267,6 +279,7 @@ export class Component {
     for (const child of this.children) await child.mount(false)
 
     if (allowRender) {
+      // it will get uiParams from state and props
       this.app.$$render(RenderEvents.mount, this.render())
     }
 
