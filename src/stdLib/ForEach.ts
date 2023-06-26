@@ -1,7 +1,16 @@
-export const ForEach = `
-name: ForEach
+import {ComponentDefinition} from '../types/ComponentDefinition.js';
+import {Component} from '../Component.js';
 
-`
+
+class ForEachComponent extends Component {
+
+}
+
+
+export const ForEach: ComponentDefinition = {
+  name: 'ForEach',
+  ComponentClass: ForEachComponent,
+}
 
 /*
 props:

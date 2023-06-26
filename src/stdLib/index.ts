@@ -27,6 +27,9 @@ import {LayoutBottomTabs} from './basic/LayoutBottomTabs.js';
 import {LayoutDrawer} from './basic/LayoutDrawer.js';
 import {Drawer} from './basic/Drawer.js';
 import {LayoutModal} from './basic/LayoutModal.js';
+import {IfElse} from './IfElse.js';
+import {IfMount} from './ifMount.js';
+import {ForEach} from './ForEach.js';
 
 
 export const STD_COMPONENTS: ComponentDefinition[] = [
@@ -59,10 +62,11 @@ export const STD_COMPONENTS: ComponentDefinition[] = [
   Text,
 
   // wrappers - they use other components
+
+  // system components
   Router,
   Slot,
-
-  // ForEach
-  // IfElse
-  // ifMount
+  IfElse,
+  IfMount,
+  ForEach,
 ]
